@@ -30,3 +30,14 @@ bindkey '^xe' edit-command-line
 bindkey '^x^e' edit-command-line
 source /usr/share/nvm/init-nvm.sh
 export PATH="${PATH}:${HOME}/.krew/bin:${HOME}/.local/bin"
+
+alias du="ncdu --color dark"
+alias ls='exa --icons --git'
+alias ll='exa -l --icons --git'
+alias l='ll'
+alias cat='bat'
+alias df='duf'
+alias k='kubectl'
+alias kn='kubectl ns'
+alias kx='kubectl ctx'
+alias vim='lvim'
