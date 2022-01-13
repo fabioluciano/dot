@@ -1,0 +1,32 @@
+source /usr/share/zsh/scripts/zplug/init.zsh
+
+zplug 'zplug/zplug', hook-build:'zplug --self-manage'
+
+zplug 'zsh-users/zsh-syntax-highlighting', defer:2
+zplug 'zsh-users/zsh-history-substring-search', defer:3
+zplug 'zsh-users/zsh-autosuggestions' 
+zplug 'zsh-users/zsh-completions', depth:1
+
+zplug "dracula/zsh", as:theme
+
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    else
+        echo
+    fi
+fi
+zplug load
+
+HISTFILE=~/.zsh_history
+HISTSIZE=1000000
+SAVEHIST=1000000
+
+
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey '^xe' edit-command-line
+bindkey '^x^e' edit-command-line
+source /usr/share/nvm/init-nvm.sh
+export PATH="${PATH}:${HOME}/.krew/bin:${HOME}/.local/bin"

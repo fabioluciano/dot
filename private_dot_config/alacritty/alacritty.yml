@@ -1,0 +1,98 @@
+window:
+  title: Terminal
+  dynamic_title: true
+  dimensions:
+    columns: 100
+    lines: 40
+  padding:
+    x: 0
+    y: 0
+  dynamic_padding: false
+  decorations: full
+  startup_mode: Windowed
+  gtk_theme_variant: dark
+
+scrolling:
+  history: 10000
+  multiplier: 3
+
+font:
+  normal:
+    family: CaskaydiaCove Nerd Font Mono
+    style: Regular
+  bold:
+    family: CaskaydiaCove Nerd Font Mono
+    style: Bold
+  italic:
+    family: CaskaydiaCove Nerd Font Mono
+    style: Italic
+  bold_italic:
+    family: CaskaydiaCove Nerd Font Mono
+    style: Bold Italic
+  size: 14
+  offset:
+    y: 1
+    x: 0
+
+draw_bold_text_with_bright_colors: true
+env:
+  TERM: xterm-256color
+cursor:
+  # Cursor style
+  style:
+    # Cursor shape
+    #
+    # Values for `shape`:
+    #   - ▇ Block
+    #   - _ Underline
+    #   - | Beam
+    shape: Block
+
+    # Cursor blinking state
+    #
+    # Values for `blinking`:
+    #   - Never: Prevent the cursor from ever blinking
+    #   - Off: Disable blinking by default
+    #   - On: Enable blinking by default
+    #   - Always: Force the cursor to always blink
+    blinking: Always
+
+live_config_reload: true
+
+shell:
+  program: /usr/bin/zsh
+  args:
+    - --login
+    - -c
+    - "tmux new-session -A -s main"
+selection:
+  save_to_clipboard: true
+
+colors:
+  # Default colors
+  primary:
+    background: '#282a36'
+    foreground: '#f8f8f2'
+
+  # Normal colors
+  normal:
+    black: '#000000'
+    red: '#ff5555'
+    green: '#50fa7b'
+    yellow: '#f1fa8c'
+    blue: '#caa9fa'
+    magenta: '#ff79c6'
+    cyan: '#8be9fd'
+    white: '#bfbfbf'
+
+  # Bright colors
+  bright:
+    black: '#575b70'
+    red: '#ff6e67'
+    green: '#5af78e'
+    yellow: '#f4f99d'
+    blue: '#caa9fa'
+    magenta: '#ff92d0'
+    cyan: '#9aedfe'
+    white: '#e6e6e6'
+theme: Dracula
