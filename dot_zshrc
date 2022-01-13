@@ -7,6 +7,10 @@ zplug 'zsh-users/zsh-history-substring-search', defer:3
 zplug 'zsh-users/zsh-autosuggestions' 
 zplug 'zsh-users/zsh-completions', depth:1
 
+zplug "ohmyzsh/ohmyzsh", use:"lib/key-bindings.zsh"
+zplug "ohmyzsh/ohmyzsh", use:"lib/directories.zsh"
+zplug "Aloxaf/fzf-tab"
+
 zplug "dracula/zsh", as:theme
 
 if ! zplug check --verbose; then
@@ -19,16 +23,16 @@ if ! zplug check --verbose; then
 fi
 zplug load
 
+EDITOR=lvim
 HISTFILE=~/.zsh_history
 HISTSIZE=1000000
 SAVEHIST=1000000
 
-
-autoload -U edit-command-line
-zle -N edit-command-line
-bindkey '^xe' edit-command-line
-bindkey '^x^e' edit-command-line
+zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
 source /usr/share/nvm/init-nvm.sh
+source /usr/share/fzf/completion.zsh
+source /usr/share/fzf/key-bindings.zsh
+
 export PATH="${PATH}:${HOME}/.krew/bin:${HOME}/.local/bin"
 
 alias du="ncdu --color dark"
