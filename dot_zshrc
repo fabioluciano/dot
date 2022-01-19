@@ -28,15 +28,16 @@ HISTFILE=~/.zsh_history
 HISTSIZE=1000000
 SAVEHIST=1000000
 
-zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
 source /usr/share/nvm/init-nvm.sh
 source /usr/share/fzf/completion.zsh
 source /usr/share/fzf/key-bindings.zsh
 
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
+
 export PATH="${PATH}:${HOME}/.krew/bin:${HOME}/.local/bin"
 export FZF_TMUX_OPTS="-p"
 export FZF_CTRL_R_OPTS="--reverse --preview 'echo {}' --preview-window down:30:hidden:wrap --bind '?:toggle-preview'"
-
 
 alias du="ncdu --color dark"
 alias ls='exa --icons --git'
