@@ -69,6 +69,9 @@ lvim.plugins = {
       end
     },
     {
+      "matze/vim-move",
+    },
+    {
       "ray-x/lsp_signature.nvim",
       event = "BufRead",
       config = function()
