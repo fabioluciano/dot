@@ -1,0 +1,12 @@
+session_name: main
+windows:
+  - window_name: system
+    panes:
+      - ''
+  - window_name: monitoring
+    panes:
+      - htop
+      - nvtop
+  - window_name: work
+    panes:
+      - ''

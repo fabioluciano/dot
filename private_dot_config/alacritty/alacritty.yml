@@ -38,23 +38,9 @@ draw_bold_text_with_bright_colors: true
 env:
   TERM: xterm-256color
 cursor:
-  # Cursor style
   style:
-    # Cursor shape
-    #
-    # Values for `shape`:
-    #   - ▇ Block
-    #   - _ Underline
-    #   - | Beam
     shape: Block
 
-    # Cursor blinking state
-    #
-    # Values for `blinking`:
-    #   - Never: Prevent the cursor from ever blinking
-    #   - Off: Disable blinking by default
-    #   - On: Enable blinking by default
-    #   - Always: Force the cursor to always blink
     blinking: Always
 
 live_config_reload: true
@@ -64,7 +50,7 @@ shell:
   args:
     - --login
     - -c
-    - "tmux new-session -A -s main"
+    - "tmuxp load ~/.tmuxp.yml"
 selection:
   save_to_clipboard: true
 
