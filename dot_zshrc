@@ -9,6 +9,8 @@ zplug 'zsh-users/zsh-completions', depth:1
 
 zplug "ohmyzsh/ohmyzsh", use:"lib/key-bindings.zsh"
 zplug "ohmyzsh/ohmyzsh", use:"lib/directories.zsh"
+
+zplug 'Valiev/almostontop' 
 zplug "Aloxaf/fzf-tab"
 
 zplug "dracula/zsh", as:theme
@@ -38,12 +40,14 @@ zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
 export PATH="${PATH}:${HOME}/.krew/bin:${HOME}/.local/bin"
 export FZF_TMUX_OPTS="-p"
 export FZF_CTRL_R_OPTS="--reverse --preview 'echo {}' --preview-window down:30:hidden:wrap --bind '?:toggle-preview'"
+export PAGER="most"
+
 
 alias du="ncdu --color dark"
 alias ls='exa --icons --git'
 alias ll='exa -l --icons --git'
 alias l='ll'
-alias cat='bat'
+alias cat='bat --theme dracula'
 alias df='duf'
 alias k='kubectl'
 alias kn='kubectl ns'
