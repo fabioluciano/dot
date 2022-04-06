@@ -4,14 +4,17 @@ set-option -g visual-activity on
 set-option -g status-position top
 set-option -g base-index 1
 set-option -g renumber-windows on
+{{ if eq .chezmoi.os "linux" }}
 set-option -g default-terminal "tmux-256color"
 set-option -ag terminal-overrides ",xterm-256color:RGB"
+{{ end }}
 set-option -sg escape-time 0
 set-option -sg repeat-time 0
 set-option -gq mouse-utf8 on
 set-option -g mouse on
 set-option -g prefix C-a
 set-option -g visual-activity off
+set-option -g set-titles on
 
 ### Window Options
 set-window-option -g monitor-activity on
@@ -47,7 +50,11 @@ set -g @plugin 'dracula/tmux'
 ### Plugins Options
 
 #### Dracula Theme Options
+{{ if eq .chezmoi.os "linux" }}
 set -g @dracula-plugins "cpu-usage gpu-usage ram-usage"
+{{ else if eq .chezmoi.os "darwin" }}
+set -g @dracula-plugins "cpu-usage ram-usage"
+{{ end }}
 set -g @dracula-show-powerline true
 set -g @dracula-show-flags true
 set -g @dracula-show-left-icon session
@@ -58,4 +65,10 @@ set -g @bw-copy-to-clipboard 'on'
 
 set -g @extrakto_popup_size 70%
 
+
+{{ if eq .chezmoi.os "linux" }}
 run '/usr/share/tmux-plugin-manager/tpm'
+{{ else if eq .chezmoi.os "darwin" }}
+run '~/.tmux/plugins/tpm/tpm'
+{{ end }}
+
