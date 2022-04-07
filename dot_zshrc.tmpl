@@ -47,6 +47,14 @@ export PATH="${PATH}:${HOME}/.krew/bin:${HOME}/.local/bin"
 export FZF_TMUX_OPTS="-p"
 export FZF_CTRL_R_OPTS="--reverse --preview 'echo {}' --preview-window down:30:hidden:wrap --bind '?:toggle-preview'"
 
+if type brew &>/dev/null
+then
+  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+
+  autoload -Uz compinit
+  compinit
+fi
+
 alias du="ncdu --color dark"
 alias ls='exa --icons --git'
 alias ll='exa -l --icons --git'
