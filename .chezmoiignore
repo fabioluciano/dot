@@ -1,8 +1,10 @@
 README.md
-{{- if ne .chezmoi.hostname "work-laptop" }}
-.work # only manage .work on work-laptop
-{{- end }}
 
 {{- if ne .chezmoi.os "linux" }}
 .config/compiz-1
 {{- end }}
+
+{{- if ne .chezmoi.os "darwin" }}
+.Brewfile
+{{- end }}
+
