@@ -4,10 +4,10 @@ set-option -g visual-activity on
 set-option -g status-position top
 set-option -g base-index 1
 set-option -g renumber-windows on
-{{ if eq .chezmoi.os "linux" }}
+{{- if eq .chezmoi.os "linux" }}
 set-option -g default-terminal "tmux-256color"
 set-option -ag terminal-overrides ",xterm-256color:RGB"
-{{ end }}
+{{- end }}
 set-option -sg escape-time 0
 set-option -sg repeat-time 0
 set-option -gq mouse-utf8 on

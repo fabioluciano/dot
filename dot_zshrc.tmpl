@@ -1,4 +1,8 @@
+{{- if eq .chezmoi.os "linux" }}
 source /usr/share/zsh/scripts/zplug/init.zsh
+{{- else if eq .chezmoi.os "darwin" }}
+source /opt/homebrew/opt/zplug/init.zsh
+{{- end }}
 
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 
@@ -30,9 +34,11 @@ HISTFILE=~/.zsh_history
 HISTSIZE=1000000
 SAVEHIST=1000000
 
+{{- if eq .chezmoi.os "linux" }}
 source /usr/share/nvm/init-nvm.sh
 source /usr/share/fzf/completion.zsh
 source /usr/share/fzf/key-bindings.zsh
+{{- end }}
 
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
@@ -40,8 +46,6 @@ zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
 export PATH="${PATH}:${HOME}/.krew/bin:${HOME}/.local/bin"
 export FZF_TMUX_OPTS="-p"
 export FZF_CTRL_R_OPTS="--reverse --preview 'echo {}' --preview-window down:30:hidden:wrap --bind '?:toggle-preview'"
-export PAGER="most"
-
 
 alias du="ncdu --color dark"
 alias ls='exa --icons --git'
