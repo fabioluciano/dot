@@ -1,12 +1,14 @@
 -- general
 lvim.log.level = "warn"
 lvim.format_on_save = true
-lvim.colorscheme = "dracula"
+lvim.colorscheme = "tokyonight"
 vim.opt.wrap = true
 lvim.leader = "space"
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
+vim.g.tokyonight_style = "night"
 
-lvim.builtin.dashboard.active = true
+
+lvim.builtin.alpha.active = true
 lvim.builtin.notify.active = true
 lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
@@ -62,7 +64,13 @@ parser_configs.hcl = {
 
 -- Additional Plugins
 lvim.plugins = {
-    {
+    {"lunarvim/colorschemes"},
+    {"folke/tokyonight.nvim"}, {
+        "ray-x/lsp_signature.nvim",
+        config = function() require"lsp_signature".on_attach() end,
+        event = "BufRead"
+    },
+{
       "dracula/vim",
       config = function()
         vim.g.dracula_colorterm = 0

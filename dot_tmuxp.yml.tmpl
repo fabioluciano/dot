@@ -6,7 +6,9 @@ windows:
   - window_name: monitoring
     panes:
       - htop
+{{- if eq .chezmoi.os "linux" }}
       - nvtop
+{{- end }}
   - window_name: work
     panes:
       - ''
