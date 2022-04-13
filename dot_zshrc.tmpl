@@ -47,6 +47,8 @@ export PATH="${PATH}:${HOME}/.krew/bin:${HOME}/.local/bin"
 export FZF_TMUX_OPTS="-p"
 export FZF_CTRL_R_OPTS="--reverse --preview 'echo {}' --preview-window down:30:hidden:wrap --bind '?:toggle-preview'"
 
+eval "$(direnv hook zsh)"
+
 if type brew &>/dev/null
 then
   FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
@@ -59,7 +61,7 @@ alias du="ncdu --color dark"
 alias ls='exa --icons --git'
 alias ll='exa -l --icons --git'
 alias l='ll'
-alias cat='bat --theme Dracula'
+alias cat='bat'
 alias df='duf'
 alias k='kubectl'
 alias kn='kubectl ns'
