@@ -17,8 +17,6 @@ zplug "ohmyzsh/ohmyzsh", use:"lib/directories.zsh"
 zplug 'Valiev/almostontop' 
 zplug "Aloxaf/fzf-tab"
 
-zplug "dracula/zsh", as:theme
-
 if ! zplug check --verbose; then
     printf "Install? [y/N]: "
     if read -q; then
@@ -49,6 +47,7 @@ export FZF_CTRL_R_OPTS="--reverse --preview 'echo {}' --preview-window down:30:h
 
 eval "$(direnv hook zsh)"
 eval "$(zoxide init zsh)"
+eval "$(starship init zsh)"
 
 if type brew &>/dev/null
 then

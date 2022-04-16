@@ -6,8 +6,10 @@ set-option -g base-index 1
 set-option -g renumber-windows on
 {{- if eq .chezmoi.os "linux" }}
 set-option -g default-terminal "tmux-256color"
-set-option -ag terminal-overrides ",xterm-256color:RGB"
+{{- else if eq .chezmoi.os "darwin" }}
+set-option -g default-terminal "xterm-256color"
 {{- end }}
+set-option -ag terminal-overrides ",xterm-256color:RGB"
 set-option -sg escape-time 0
 set-option -sg repeat-time 0
 set-option -gq mouse-utf8 on
