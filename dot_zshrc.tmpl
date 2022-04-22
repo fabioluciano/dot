@@ -48,6 +48,7 @@ export FZF_CTRL_R_OPTS="--reverse --preview 'echo {}' --preview-window down:30:h
 eval "$(direnv hook zsh)"
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
+fpath+=~/.zfunc
 
 if type brew &>/dev/null
 then
