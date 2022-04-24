@@ -9,11 +9,19 @@ vim.g.tokyonight_style = "night"
 
 
 lvim.builtin.alpha.active = true
+
 lvim.builtin.notify.active = true
+
 lvim.builtin.terminal.active = true
+lvim.builtin.terminal.direction = "tab"
+
 lvim.builtin.nvimtree.setup.view.side = "left"
-lvim.builtin.nvimtree.show_icons.git = 1
 lvim.builtin.nvimtree.setup.view.auto_resize = true
+lvim.builtin.nvimtree.setup.view.width = 25
+lvim.builtin.nvimtree.setup.open_on_setup = true
+lvim.builtin.nvimtree.setup.open_on_tab = true
+
+
 lvim.builtin.project.active = true
 
 lvim.builtin.treesitter.ensure_installed = {
@@ -28,6 +36,7 @@ lvim.builtin.treesitter.ensure_installed = {
   "rust",
   "java",
   "yaml",
+  "hcl",
 }
 
 lvim.builtin.treesitter.ignore_install = { "haskell" }
@@ -35,32 +44,57 @@ lvim.builtin.treesitter.highlight.enabled = true
 
 local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
-  { command = "black" },
-  { command = "prettier" },
-  { command = "rustfmt" },
-  -- { command = "terraformls" },
+  {
+    command = "prettier",
+    args = { "--print-width", "100" },
+    filetypes = { "typescript", "typescriptreact" },
+  },
+  {
+    command = "black",
+    filetypes = { "python" }
+  },
+  {
+    command = "isort",
+    filetypes = { "python" }
+  },
+  {
+    command = "rustfmt",
+    filetypes = { "rust" }
+  },
 }
+
 
 -- set additional linters
 local linters = require "lvim.lsp.null-ls.linters"
 linters.setup {
-  { command = "pylint" },
-  { command = "eslint_d" },
-  -- { command = "terraform" },
-}
-
-local parser_configs = require('nvim-treesitter.parsers').get_parser_configs()
-
-parser_configs.norg = {
-  install_info = {
-    url = "https://github.com/nvim-neorg/tree-sitter-norg",
-    files = { "src/parser.c", "src/scanner.cc" },
-    branch = "main"
+  { command = "flake8" },
+  {
+    command = "shellcheck",
+    args = { "--severity", "warning" },
+    filetypes = { "shell" },
+  },
+  {
+    command = "codespell",
+    filetypes = { "javascript", "python" },
   },
 }
+
+local parser_configs = require("nvim-treesitter.parsers").get_parser_configs()
 parser_configs.hcl = {
   filetype = "hcl", "terraform",
 }
+
+local code_actions = require "lvim.lsp.null-ls.code_actions"
+code_actions.setup {
+  {
+    command = "proselint",
+    args = { "--json" },
+    filetypes = { "markdown", "tex" },
+  },
+}
+
+vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "rust_analyzer" })
+
 
 -- Additional Plugins
 lvim.plugins = {
@@ -105,13 +139,6 @@ lvim.plugins = {
     "matze/vim-move",
   },
   {
-    "ray-x/lsp_signature.nvim",
-    event = "BufRead",
-    config = function()
-      require "lsp_signature".setup()
-    end
-  },
-  {
     "andymass/vim-matchup",
     event = "CursorMoved",
     config = function()
@@ -146,23 +173,25 @@ lvim.plugins = {
     end,
   },
   {
-    "nvim-neorg/neorg",
+    "simrat39/rust-tools.nvim",
     config = function()
-      require('neorg').setup {
-        -- Tell Neorg what modules to load
-        load = {
-          ["core.defaults"] = {}, -- Load all the default modules
-          ["core.norg.concealer"] = {}, -- Allows for use of icons
-          ["core.norg.dirman"] = { -- Manage your directories with Neorg
-            config = {
-              workspaces = {
-                my_workspace = "~/neorg"
-              }
-            }
-          }
+      local lsp_installer_servers = require "nvim-lsp-installer.servers"
+      local _, requested_server = lsp_installer_servers.get_server "rust_analyzer"
+      require("rust-tools").setup({
+        tools = {
+          autoSetHints = true,
+          hover_with_actions = true,
+          runnables = {
+            use_telescope = true,
+          },
         },
-      }
+        server = {
+          cmd_env = requested_server._default_options.cmd_env,
+          on_attach = require("lvim.lsp").common_on_attach,
+          on_init = require("lvim.lsp").common_on_init,
+        },
+      })
     end,
-    requires = "nvim-lua/plenary.nvim"
-  }
+    ft = { "rust", "rs" },
+  },
 }

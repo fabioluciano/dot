@@ -32,11 +32,18 @@ HISTFILE=~/.zsh_history
 HISTSIZE=1000000
 SAVEHIST=1000000
 
+
+fpath+=~/.zfunc
+
 {{- if eq .chezmoi.os "linux" }}
 source /usr/share/nvm/init-nvm.sh
 source /usr/share/fzf/completion.zsh
 source /usr/share/fzf/key-bindings.zsh
 {{- end }}
+
+export LC_CTYPE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
 
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
@@ -48,7 +55,6 @@ export FZF_CTRL_R_OPTS="--reverse --preview 'echo {}' --preview-window down:30:h
 eval "$(direnv hook zsh)"
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
-fpath+=~/.zfunc
 
 if type brew &>/dev/null
 then
