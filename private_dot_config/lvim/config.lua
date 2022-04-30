@@ -6,6 +6,9 @@ vim.opt.wrap = true
 lvim.leader = "space"
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 vim.g.tokyonight_style = "night"
+vim.opt.list = true
+vim.opt.listchars:append("space:⋅")
+vim.opt.listchars:append("eol:↴")
 
 
 lvim.builtin.alpha.active = true
@@ -13,7 +16,8 @@ lvim.builtin.alpha.active = true
 lvim.builtin.notify.active = true
 
 lvim.builtin.terminal.active = true
-lvim.builtin.terminal.direction = "tab"
+lvim.builtin.terminal.direction = "horizontal"
+lvim.builtin.terminal.size = 10
 
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.view.auto_resize = true
@@ -21,8 +25,12 @@ lvim.builtin.nvimtree.setup.view.width = 25
 lvim.builtin.nvimtree.setup.open_on_setup = true
 lvim.builtin.nvimtree.setup.open_on_tab = true
 
-
 lvim.builtin.project.active = true
+
+lvim.autocommands.custom_groups = {
+  { "BufWinEnter", "*.rs", ":SymbolsOutline" },
+  { "InsertEnter", "*", ":normal zz" },
+}
 
 lvim.builtin.treesitter.ensure_installed = {
   "bash",
@@ -95,14 +103,10 @@ code_actions.setup {
 
 vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "rust_analyzer" })
 
-
 -- Additional Plugins
 lvim.plugins = {
   {
     "folke/tokyonight.nvim"
-  },
-  {
-    "liuchengxu/vista.vim"
   },
   {
     "ray-x/lsp_signature.nvim",
@@ -169,13 +173,6 @@ lvim.plugins = {
     end
   },
   {
-    "folke/todo-comments.nvim",
-    event = "BufRead",
-    config = function()
-      require("todo-comments").setup()
-    end,
-  },
-  {
     "simrat39/rust-tools.nvim",
     config = function()
       local lsp_installer_servers = require "nvim-lsp-installer.servers"
@@ -188,6 +185,10 @@ lvim.plugins = {
             use_telescope = true,
           },
         },
+        dap = {
+          adapter = require('rust-tools.dap').get_codelldb_adapter(
+            codelldb_path, liblldb_path)
+        },
         server = {
           cmd_env = requested_server._default_options.cmd_env,
           on_attach = require("lvim.lsp").common_on_attach,
@@ -197,4 +198,31 @@ lvim.plugins = {
     end,
     ft = { "rust", "rs" },
   },
+  {
+    "folke/todo-comments.nvim",
+    event = "BufRead",
+    config = function()
+      require("todo-comments").setup()
+    end,
+  },
+  {
+    "karb94/neoscroll.nvim",
+    event = "WinScrolled",
+    config = function()
+      require('neoscroll').setup({
+        -- All these keys will be mapped to their corresponding default scrolling animation
+        mappings = { '<C-u>', '<C-d>', '<C-b>', '<C-f>',
+          '<C-y>', '<C-e>', 'zt', 'zz', 'zb' },
+        hide_cursor = true, -- Hide cursor while scrolling
+        stop_eof = true, -- Stop at <EOF> when scrolling downwards
+        use_local_scrolloff = false, -- Use the local scope of scrolloff instead of the global scope
+        respect_scrolloff = false, -- Stop scrolling when the cursor reaches the scrolloff margin of the file
+        cursor_scrolls_alone = true, -- The cursor will keep on scrolling even if the window cannot scroll further
+        easing_function = nil, -- Default easing function
+        pre_hook = nil, -- Function to run before the scrolling animation starts
+        post_hook = nil, -- Function to run after the scrolling animation ends
+      })
+    end
+  },
+
 }
