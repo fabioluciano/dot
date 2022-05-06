@@ -18,7 +18,11 @@ scrolling:
 font:
   normal:
     family: FiraCode Nerd Font Mono
+{{- if eq .chezmoi.os "linux" }}
+    style: Medium
+{{- else if eq .chezmoi.os "darwin" }}
     style: Regular
+{{- end }}
   bold:
     family: FiraCode Nerd Font Mono
     style: Bold
@@ -83,3 +87,7 @@ shell:
     - "tmuxp load ~/.tmuxp.yml"
 selection:
   save_to_clipboard: true
+key_bindings:
+  - { key: Right, mods: Alt, chars: "\x1BF" }
+  - { key: Left,  mods: Alt, chars: "\x1BB" }
+
