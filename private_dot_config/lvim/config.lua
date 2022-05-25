@@ -28,11 +28,6 @@ lvim.builtin.nvimtree.setup.open_on_tab = true
 
 lvim.builtin.project.active = true
 
-lvim.autocommands.custom_groups = {
-  { "BufWinEnter", "*.rs", ":SymbolsOutline" },
-  { "InsertEnter", "*", ":normal zz" },
-}
-
 lvim.builtin.treesitter.ensure_installed = {
   "bash",
   "c",
