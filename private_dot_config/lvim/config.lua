@@ -180,10 +180,6 @@ lvim.plugins = {
             use_telescope = true,
           },
         },
-        dap = {
-          adapter = require('rust-tools.dap').get_codelldb_adapter(
-            codelldb_path, liblldb_path)
-        },
         server = {
           cmd_env = requested_server._default_options.cmd_env,
           on_attach = require("lvim.lsp").common_on_attach,
