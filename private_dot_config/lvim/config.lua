@@ -1,11 +1,10 @@
 -- general
 lvim.log.level = "warn"
 lvim.format_on_save = true
-lvim.colorscheme = "tokyonight"
+lvim.colorscheme = "tokyonight-night"
 vim.opt.wrap = true
 lvim.leader = "space"
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
-vim.g.tokyonight_style = "night"
 vim.opt.list = true
 vim.opt.listchars:append("space:⋅")
 vim.opt.listchars:append("eol:↴")
@@ -24,10 +23,9 @@ lvim.builtin.nvimtree.setup.actions.open_file.resize_window = true
 lvim.builtin.nvimtree.setup.actions.open_file.quit_on_open = true
 lvim.builtin.nvimtree.setup.view.width = 25
 lvim.builtin.nvimtree.setup.open_on_setup = true
-lvim.builtin.nvimtree.setup.open_on_tab = true
+lvim.lsp.automatic_servers_installation = true
 
 lvim.builtin.project.active = true
-
 lvim.builtin.treesitter.ensure_installed = {
   "bash",
   "c",
@@ -41,6 +39,8 @@ lvim.builtin.treesitter.ensure_installed = {
   "java",
   "yaml",
 }
+lvim.lsp.installer.setup.ensure_installed = { "pyright", "jsonls", "yamlls", "bashls", "rust_analyzer" }
+
 
 lvim.builtin.treesitter.ignore_install = { "haskell" }
 lvim.builtin.treesitter.highlight.enabled = true
@@ -101,7 +101,7 @@ vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "rust_analyz
 -- Additional Plugins
 lvim.plugins = {
   {
-    "folke/tokyonight.nvim"
+    "folke/tokyonight.nvim",
   },
   {
     "ray-x/lsp_signature.nvim",
@@ -169,25 +169,51 @@ lvim.plugins = {
   },
   {
     "simrat39/rust-tools.nvim",
+    -- ft = { "rust", "rs" }, -- IMPORTANT: re-enabling this seems to break inlay-hints
     config = function()
-      local lsp_installer_servers = require "nvim-lsp-installer.servers"
-      local _, requested_server = lsp_installer_servers.get_server "rust_analyzer"
-      require("rust-tools").setup({
+      require("rust-tools").setup {
         tools = {
-          autoSetHints = true,
-          hover_with_actions = true,
-          runnables = {
-            use_telescope = true,
+          executor = require("rust-tools/executors").termopen, -- can be quickfix or termopen
+          reload_workspace_from_cargo_toml = true,
+          inlay_hints = {
+            auto = true,
+            only_current_line = false,
+            show_parameter_hints = true,
+            parameter_hints_prefix = "<-",
+            other_hints_prefix = "=>",
+            max_len_align = false,
+            max_len_align_padding = 1,
+            right_align = false,
+            right_align_padding = 7,
+            highlight = "Comment",
+          },
+          hover_actions = {
+            border = {
+              { "╭", "FloatBorder" },
+              { "─", "FloatBorder" },
+              { "╮", "FloatBorder" },
+              { "│", "FloatBorder" },
+              { "╯", "FloatBorder" },
+              { "─", "FloatBorder" },
+              { "╰", "FloatBorder" },
+              { "│", "FloatBorder" },
+            },
+            auto_focus = true,
           },
         },
         server = {
-          cmd_env = requested_server._default_options.cmd_env,
-          on_attach = require("lvim.lsp").common_on_attach,
           on_init = require("lvim.lsp").common_on_init,
+          on_attach = function(client, bufnr)
+            require("lvim.lsp").common_on_attach(client, bufnr)
+            local rt = require "rust-tools"
+            -- Hover actions
+            vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
+            -- Code action groups
+            vim.keymap.set("n", "<leader>lA", rt.code_action_group.code_action_group, { buffer = bufnr })
+          end,
         },
-      })
+      }
     end,
-    ft = { "rust", "rs" },
   },
   {
     "folke/todo-comments.nvim",
@@ -215,5 +241,4 @@ lvim.plugins = {
       })
     end
   },
-
 }
