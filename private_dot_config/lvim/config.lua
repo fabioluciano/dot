@@ -3,78 +3,103 @@ lvim.log.level = "warn"
 lvim.format_on_save = true
 lvim.colorscheme = "tokyonight-night"
 vim.opt.wrap = true
-lvim.leader = "space"
-lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
+
 vim.opt.list = true
 vim.opt.listchars:append("space:⋅")
 vim.opt.listchars:append("eol:↴")
 
+-- keymappings
+lvim.leader = "space"
+lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
+
+lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
+lvim.builtin.which_key.mappings["t"] = {
+  name = "+Trouble",
+  r = { "<cmd>Trouble lsp_references<cr>", "References" },
+  f = { "<cmd>Trouble lsp_definitions<cr>", "Definitions" },
+  d = { "<cmd>Trouble document_diagnostics<cr>", "Diagnostics" },
+  q = { "<cmd>Trouble quickfix<cr>", "QuickFix" },
+  l = { "<cmd>Trouble loclist<cr>", "LocationList" },
+  w = { "<cmd>Trouble workspace_diagnostics<cr>", "Workspace Diagnostics" },
+}
 
 lvim.builtin.alpha.active = true
-
+lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.notify.active = true
+lvim.builtin.project.active = true
 
 lvim.builtin.terminal.active = true
 lvim.builtin.terminal.direction = "horizontal"
-lvim.builtin.terminal.size = 10
 
 lvim.builtin.nvimtree.setup.view.side = "left"
+lvim.builtin.nvimtree.setup.renderer.icons.show.git = true
 lvim.builtin.nvimtree.setup.actions.open_file.resize_window = true
 lvim.builtin.nvimtree.setup.actions.open_file.quit_on_open = true
 lvim.builtin.nvimtree.setup.view.width = 25
 lvim.builtin.nvimtree.setup.open_on_setup = true
-lvim.lsp.automatic_servers_installation = true
 
-lvim.builtin.project.active = true
 lvim.builtin.treesitter.ensure_installed = {
   "bash",
   "c",
+  "css",
+  "dockerfile",
+  "go",
+  "graphql",
+  "hcl",
+  "html",
+  "java",
   "javascript",
   "json",
+  "json",
   "lua",
+  "make",
+  "markdown",
+  "php",
+  "pug",
   "python",
-  "typescript",
-  "css",
+  "query",
+  "regex",
   "rust",
-  "java",
+  "scss",
+  "sql",
+  "toml",
+  "tsx",
+  "typescript",
+  "vue",
   "yaml",
+  "zig",
 }
-lvim.lsp.installer.setup.ensure_installed = { "pyright", "jsonls", "yamlls", "bashls", "rust_analyzer" }
-
 
 lvim.builtin.treesitter.ignore_install = { "haskell" }
 lvim.builtin.treesitter.highlight.enabled = true
 
+-- generic LSP settings
+lvim.lsp.installer.setup.ensure_installed = {
+  "sumeko_lua",
+  "jsonls",
+  "angularls",
+  "ansiblels",
+}
+
+-- formatters
 local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
+  { command = "black", filetypes = { "python" } },
+  { command = "isort", filetypes = { "python" } },
   {
     command = "prettier",
-    args = { "--print-width", "100" },
+    extra_args = { "--print-with", "100" },
     filetypes = { "typescript", "typescriptreact" },
-  },
-  {
-    command = "black",
-    filetypes = { "python" }
-  },
-  {
-    command = "isort",
-    filetypes = { "python" }
-  },
-  {
-    command = "rustfmt",
-    filetypes = { "rust" }
   },
 }
 
-
--- set additional linters
+-- additional linters
 local linters = require "lvim.lsp.null-ls.linters"
 linters.setup {
-  { command = "flake8" },
+  { command = "flake8", filetypes = { "python" } },
   {
     command = "shellcheck",
-    args = { "--severity", "warning" },
-    filetypes = { "shell" },
+    extra_args = { "--severity", "warning" },
   },
   {
     command = "codespell",
@@ -82,26 +107,14 @@ linters.setup {
   },
 }
 
-local parser_configs = require("nvim-treesitter.parsers").get_parser_configs()
-parser_configs.hcl = {
-  filetype = "hcl", "terraform",
-}
-
-local code_actions = require "lvim.lsp.null-ls.code_actions"
-code_actions.setup {
-  {
-    command = "proselint",
-    args = { "--json" },
-    filetypes = { "markdown", "tex" },
-  },
-}
-
 vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "rust_analyzer" })
 
 -- Additional Plugins
 lvim.plugins = {
+  { "folke/tokyonight.nvim" },
   {
-    "folke/tokyonight.nvim",
+    "folke/trouble.nvim",
+    cmd = "TroubleToggle",
   },
   {
     "ray-x/lsp_signature.nvim",
@@ -168,6 +181,32 @@ lvim.plugins = {
     end
   },
   {
+    "folke/todo-comments.nvim",
+    event = "BufRead",
+    config = function()
+      require("todo-comments").setup()
+    end,
+  },
+  {
+    "karb94/neoscroll.nvim",
+    event = "WinScrolled",
+    config = function()
+      require('neoscroll').setup({
+        -- All these keys will be mapped to their corresponding default scrolling animation
+        mappings = { '<C-u>', '<C-d>', '<C-b>', '<C-f>',
+          '<C-y>', '<C-e>', 'zt', 'zz', 'zb' },
+        hide_cursor = true, -- Hide cursor while scrolling
+        stop_eof = true, -- Stop at <EOF> when scrolling downwards
+        use_local_scrolloff = false, -- Use the local scope of scrolloff instead of the global scope
+        respect_scrolloff = false, -- Stop scrolling when the cursor reaches the scrolloff margin of the file
+        cursor_scrolls_alone = true, -- The cursor will keep on scrolling even if the window cannot scroll further
+        easing_function = nil, -- Default easing function
+        pre_hook = nil, -- Function to run before the scrolling animation starts
+        post_hook = nil, -- Function to run after the scrolling animation ends
+      })
+    end
+  },
+  {
     "simrat39/rust-tools.nvim",
     -- ft = { "rust", "rs" }, -- IMPORTANT: re-enabling this seems to break inlay-hints
     config = function()
@@ -215,30 +254,16 @@ lvim.plugins = {
       }
     end,
   },
-  {
-    "folke/todo-comments.nvim",
-    event = "BufRead",
-    config = function()
-      require("todo-comments").setup()
-    end,
-  },
-  {
-    "karb94/neoscroll.nvim",
-    event = "WinScrolled",
-    config = function()
-      require('neoscroll').setup({
-        -- All these keys will be mapped to their corresponding default scrolling animation
-        mappings = { '<C-u>', '<C-d>', '<C-b>', '<C-f>',
-          '<C-y>', '<C-e>', 'zt', 'zz', 'zb' },
-        hide_cursor = true, -- Hide cursor while scrolling
-        stop_eof = true, -- Stop at <EOF> when scrolling downwards
-        use_local_scrolloff = false, -- Use the local scope of scrolloff instead of the global scope
-        respect_scrolloff = false, -- Stop scrolling when the cursor reaches the scrolloff margin of the file
-        cursor_scrolls_alone = true, -- The cursor will keep on scrolling even if the window cannot scroll further
-        easing_function = nil, -- Default easing function
-        pre_hook = nil, -- Function to run before the scrolling animation starts
-        post_hook = nil, -- Function to run after the scrolling animation ends
-      })
-    end
-  },
 }
+
+-- Autocommands (https://neovim.io/doc/user/autocmd.html)
+vim.api.nvim_create_autocmd("BufEnter", {
+  pattern = { "*.json", "*.jsonc" },
+  command = "setlocal wrap",
+})
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "zsh",
+  callback = function()
+    require("nvim-treesitter.highlight").attach(0, "bash")
+  end,
+})
