@@ -25,7 +25,6 @@ lvim.builtin.which_key.mappings["t"] = {
 
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
-lvim.builtin.notify.active = true
 lvim.builtin.project.active = true
 
 lvim.builtin.terminal.active = true
