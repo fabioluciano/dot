@@ -7,7 +7,6 @@ bat
 broot
 buildah
 cawbird
-cheese
 chezmoi
 compiz
 composer
@@ -21,6 +20,7 @@ dotnet-sdk
 dry-bin
 duf
 dust
+evince-no-gnome
 exa
 fd
 file-roller
