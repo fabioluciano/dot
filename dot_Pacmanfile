@@ -79,6 +79,7 @@ virtualbox
 virtualbox-ext-oracle
 visual-studio-code-bin
 vlc
+xdg-utils
 yarn
 zoxide
 zplug
