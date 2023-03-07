@@ -7,7 +7,7 @@ window:
   padding:
     x: 0
     y: 0
-  dynamic_padding: false
+  dynamic_padding: true
   decorations: full
   startup_mode: Windowed
 
@@ -29,7 +29,7 @@ font:
   bold_italic:
     family: CaskaydiaCove Nerd Font Mono
     style: Bold Italic
-  size: 14
+  size: 13
 {{- else if eq .chezmoi.os "darwin" }}
   normal:
     family: FiraCode Nerd Font Mono
@@ -46,7 +46,7 @@ font:
   size: 18
 {{- end }}
   offset:
-    y: 1
+    y: 0
     x: 0
 colors:
   primary:
