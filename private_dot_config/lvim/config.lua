@@ -1,12 +1,17 @@
 -- general
-lvim.log.level = "warn"
-lvim.format_on_save = true
-lvim.colorscheme = "tokyonight-night"
-vim.opt.wrap = true
+lvim.log.level                          = "warn"
+lvim.format_on_save                     = true
+lvim.colorscheme                        = "tokyonight-night"
+lvim.transparent_window                 = true
 
-vim.opt.list = true
+vim.opt.wrap                            = true
+vim.opt.list                            = true
+vim.opt.spell                           = true
+lvim.lsp.automatic_servers_installation = true
+
 vim.opt.listchars:append("space:⋅")
 vim.opt.listchars:append("eol:↴")
+
 
 -- keymappings
 lvim.leader = "space"
@@ -36,6 +41,10 @@ lvim.builtin.nvimtree.setup.actions.open_file.resize_window = true
 lvim.builtin.nvimtree.setup.actions.open_file.quit_on_open = true
 lvim.builtin.nvimtree.setup.view.width = 25
 lvim.builtin.nvimtree.setup.open_on_setup = true
+
+lvim.builtin.lualine.style = "lvim"
+lvim.builtin.lualine.sections.lualine_c = { "mode" }
+
 
 lvim.builtin.treesitter.ensure_installed = {
   "bash",
@@ -69,45 +78,6 @@ lvim.builtin.treesitter.ensure_installed = {
   "zig",
 }
 
-lvim.builtin.treesitter.ignore_install = { "haskell" }
-lvim.builtin.treesitter.highlight.enabled = true
-
--- generic LSP settings
-lvim.lsp.installer.setup.ensure_installed = {
-  "sumeko_lua",
-  "jsonls",
-  "angularls",
-  "ansiblels",
-}
-
--- formatters
-local formatters = require "lvim.lsp.null-ls.formatters"
-formatters.setup {
-  { command = "black", filetypes = { "python" } },
-  { command = "isort", filetypes = { "python" } },
-  {
-    command = "prettier",
-    extra_args = { "--print-with", "100" },
-    filetypes = { "typescript", "typescriptreact" },
-  },
-}
-
--- additional linters
-local linters = require "lvim.lsp.null-ls.linters"
-linters.setup {
-  { command = "flake8", filetypes = { "python" } },
-  {
-    command = "shellcheck",
-    extra_args = { "--severity", "warning" },
-  },
-  {
-    command = "codespell",
-    filetypes = { "javascript", "python" },
-  },
-}
-
-vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "rust_analyzer" })
-
 -- Additional Plugins
 lvim.plugins = {
   { "folke/tokyonight.nvim" },
@@ -116,41 +86,61 @@ lvim.plugins = {
     cmd = "TroubleToggle",
   },
   {
-    "ray-x/lsp_signature.nvim",
-    config = function() require "lsp_signature".on_attach() end,
-    event = "BufRead"
+    "phaazon/hop.nvim",
+    event = "BufRead",
+    config = function()
+      require("hop").setup()
+      vim.api.nvim_set_keymap("n", "s", ":HopChar2<cr>", { silent = true })
+      vim.api.nvim_set_keymap("n", "S", ":HopWord<cr>", { silent = true })
+    end,
   },
   {
-    "rmagatti/goto-preview",
+    "nacro90/numb.nvim",
+    event = "BufRead",
     config = function()
-      require('goto-preview').setup {
-        width = 120; -- Width of the floating window
-        height = 25; -- Height of the floating window
-        default_mappings = true; -- Bind default mappings
-        debug = false; -- Print debug information
-        opacity = nil; -- 0-100 opacity level of the floating window where 100 is fully transparent.
-        post_open_hook = nil -- A function taking two arguments, a buffer and a window to be ran as a hook.
+      require("numb").setup {
+        show_numbers = true,
+        show_cursorline = true,
+        centered_peeking = true,
       }
+    end,
+  },
+  {
+    "echasnovski/mini.map",
+    branch = "stable",
+    config = function()
+      require('mini.map').setup()
+      local map = require('mini.map')
+      map.setup({
+        integrations = {
+          map.gen_integration.builtin_search(),
+          map.gen_integration.diagnostic({
+            error = 'DiagnosticFloatingError',
+            warn  = 'DiagnosticFloatingWarn',
+            info  = 'DiagnosticFloatingInfo',
+            hint  = 'DiagnosticFloatingHint',
+          }),
+        },
+        symbols = {
+          encode = map.gen_encode_symbols.dot('4x2'),
+        },
+        window = {
+          side = 'right',
+          width = 15,
+          winblend = 15,
+          show_integration_count = true,
+        },
+      })
     end
   },
   {
-    "ggandor/lightspeed.nvim",
-    event = "BufRead",
-  },
-  {
-    "p00f/nvim-ts-rainbow",
-  },
-  {
-    "npxbr/glow.nvim",
-    ft = { "markdown" }
-  },
-  {
-    "metakirby5/codi.vim",
-    cmd = "Codi",
-  },
-
-  {
-    "matze/vim-move",
+    "kevinhwang91/rnvimr",
+    cmd = "RnvimrToggle",
+    config = function()
+      vim.g.rnvimr_draw_border = 1
+      vim.g.rnvimr_pick_enable = 1
+      vim.g.rnvimr_bw_enable = 1
+    end,
   },
   {
     "andymass/vim-matchup",
@@ -160,109 +150,86 @@ lvim.plugins = {
     end,
   },
   {
-    "pwntester/octo.nvim",
-    event = "BufRead",
-  },
-  {
-    "simrat39/symbols-outline.nvim",
-    cmd = "SymbolsOutline",
-  },
-  {
-    "lukas-reineke/indent-blankline.nvim",
-    event = "BufRead",
-    setup = function()
-      vim.g.indentLine_enabled = 1
-      vim.g.indent_blankline_char = "▏"
-      vim.g.indent_blankline_filetype_exclude = { "help", "terminal", "dashboard" }
-      vim.g.indent_blankline_buftype_exclude = { "terminal" }
-      vim.g.indent_blankline_show_trailing_blankline_indent = false
-      vim.g.indent_blankline_show_first_indent_level = false
-    end
-  },
-  {
-    "folke/todo-comments.nvim",
-    event = "BufRead",
+    "s1n7ax/nvim-window-picker",
+    tag = "1.*",
     config = function()
-      require("todo-comments").setup()
-    end,
-  },
-  {
-    "karb94/neoscroll.nvim",
-    event = "WinScrolled",
-    config = function()
-      require('neoscroll').setup({
-        -- All these keys will be mapped to their corresponding default scrolling animation
-        mappings = { '<C-u>', '<C-d>', '<C-b>', '<C-f>',
-          '<C-y>', '<C-e>', 'zt', 'zz', 'zb' },
-        hide_cursor = true, -- Hide cursor while scrolling
-        stop_eof = true, -- Stop at <EOF> when scrolling downwards
-        use_local_scrolloff = false, -- Use the local scope of scrolloff instead of the global scope
-        respect_scrolloff = false, -- Stop scrolling when the cursor reaches the scrolloff margin of the file
-        cursor_scrolls_alone = true, -- The cursor will keep on scrolling even if the window cannot scroll further
-        easing_function = nil, -- Default easing function
-        pre_hook = nil, -- Function to run before the scrolling animation starts
-        post_hook = nil, -- Function to run after the scrolling animation ends
+      require("window-picker").setup({
+        autoselect_one = true,
+        include_current = false,
+        filter_rules = {
+          bo = {
+            filetype = { "neo-tree", "neo-tree-popup", "notify", "quickfix" },
+            buftype = { "terminal" },
+          },
+        },
+        other_win_hl_color = "#e35e4f",
       })
-    end
+    end,
   },
   {
-    "simrat39/rust-tools.nvim",
-    -- ft = { "rust", "rs" }, -- IMPORTANT: re-enabling this seems to break inlay-hints
+    "sindrets/diffview.nvim",
+    event = "BufRead",
+  },
+  {
+    "f-person/git-blame.nvim",
+    event = "BufRead",
     config = function()
-      require("rust-tools").setup {
-        tools = {
-          executor = require("rust-tools/executors").termopen, -- can be quickfix or termopen
-          reload_workspace_from_cargo_toml = true,
-          inlay_hints = {
-            auto = true,
-            only_current_line = false,
-            show_parameter_hints = true,
-            parameter_hints_prefix = "<-",
-            other_hints_prefix = "=>",
-            max_len_align = false,
-            max_len_align_padding = 1,
-            right_align = false,
-            right_align_padding = 7,
-            highlight = "Comment",
-          },
-          hover_actions = {
-            border = {
-              { "╭", "FloatBorder" },
-              { "─", "FloatBorder" },
-              { "╮", "FloatBorder" },
-              { "│", "FloatBorder" },
-              { "╯", "FloatBorder" },
-              { "─", "FloatBorder" },
-              { "╰", "FloatBorder" },
-              { "│", "FloatBorder" },
-            },
-            auto_focus = true,
-          },
-        },
-        server = {
-          on_init = require("lvim.lsp").common_on_init,
-          on_attach = function(client, bufnr)
-            require("lvim.lsp").common_on_attach(client, bufnr)
-            local rt = require "rust-tools"
-            -- Hover actions
-            vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
-            -- Code action groups
-            vim.keymap.set("n", "<leader>lA", rt.code_action_group.code_action_group, { buffer = bufnr })
-          end,
-        },
-      }
+      vim.cmd "highlight default link gitblame SpecialComment"
+      vim.g.gitblame_enabled = 1
     end,
+  },
+  {
+    "mrjones2014/nvim-ts-rainbow",
   },
 }
 
--- Autocommands (https://neovim.io/doc/user/autocmd.html)
-vim.api.nvim_create_autocmd("BufEnter", {
-  pattern = { "*.json", "*.jsonc" },
-  command = "setlocal wrap",
-})
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "zsh",
-  callback = function()
-    require("nvim-treesitter.highlight").attach(0, "bash")
-  end,
-})
+lvim.autocommands = {
+  {
+    { "BufEnter", "Filetype" },
+    {
+      desc = "Open mini.map and exclude some filetypes",
+      pattern = { "*" },
+      callback = function()
+        local exclude_ft = {
+          "qf",
+          "NvimTree",
+          "toggleterm",
+          "TelescopePrompt",
+          "alpha",
+          "netrw",
+        }
+
+        local map = require('mini.map')
+        if vim.tbl_contains(exclude_ft, vim.o.filetype) then
+          vim.b.minimap_disable = true
+          map.close()
+        elseif vim.o.buftype == "" then
+          map.open()
+        end
+      end,
+    },
+  },
+}
+
+local picker = require('window-picker')
+
+vim.keymap.set("n", ",w", function()
+  local picked_window_id = picker.pick_window({
+        include_current_win = true
+      }) or vim.api.nvim_get_current_win()
+  vim.api.nvim_set_current_win(picked_window_id)
+end, { desc = "Pick a window" })
+
+-- Swap two windows using the awesome window picker
+local function swap_windows()
+  local window = picker.pick_window({
+    include_current_win = false
+  })
+  local target_buffer = vim.fn.winbufnr(window)
+  -- Set the target window to contain current buffer
+  vim.api.nvim_win_set_buf(window, 0)
+  -- Set current window to contain target buffer
+  vim.api.nvim_win_set_buf(0, target_buffer)
+end
+
+vim.keymap.set('n', ',W', swap_windows, { desc = 'Swap windows' })
