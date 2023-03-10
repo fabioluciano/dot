@@ -1,2 +1,4 @@
+Include /Users/fabioluciano/.colima/ssh_config
+
 Host *
     UseKeychain yes

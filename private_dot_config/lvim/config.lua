@@ -233,3 +233,4 @@ local function swap_windows()
 end
 
 vim.keymap.set('n', ',W', swap_windows, { desc = 'Swap windows' })
+
