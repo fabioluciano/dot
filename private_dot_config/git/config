@@ -3,7 +3,7 @@
   name = Fábio Luciano
 	signingkey = E1053F29DA92E5BE52361305AE0DCAEFE06C4439
 
-[includeIf "gitdir/i:/mnt/srv/matera/"]
+[includeIf "gitdir/i:/mnt/srv/work/"]
   path = ~/.config/git/work
 
 [core]
