@@ -1,7 +1,7 @@
 [user]
   email = fabio@naoimporta.com
   name = Fábio Luciano
-	signingkey = E1053F29DA92E5BE52361305AE0DCAEFE06C4439
+	signingkey = 60619FC8F3C870D638957DADBF358FF86AE09DCE
 
 [includeIf "gitdir/i:/mnt/srv/work/"]
   path = ~/.config/git/work
