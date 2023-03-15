@@ -1,0 +1,6 @@
+[kubernetes]
+# format = 'on [⛵ ($user on )($cluster in )$context \($namespace\)](dimmed green) '
+disabled = false
+[kubernetes.context_aliases]
+'arn:.*?cluster/(?P<cluster_name>[\w-]+)' = 'aws-$cluster_name'
+
