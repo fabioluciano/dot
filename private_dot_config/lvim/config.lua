@@ -8,6 +8,7 @@ vim.opt.wrap                            = true
 vim.opt.list                            = true
 vim.opt.spell                           = true
 lvim.lsp.automatic_servers_installation = true
+lvim.format_on_save                     = true
 
 vim.opt.listchars:append("space:⋅")
 vim.opt.listchars:append("eol:↴")
@@ -41,46 +42,14 @@ lvim.builtin.nvimtree.setup.actions.open_file.resize_window = true
 lvim.builtin.nvimtree.setup.actions.open_file.quit_on_open = true
 lvim.builtin.nvimtree.setup.view.width = 25
 lvim.builtin.nvimtree.setup.open_on_setup = true
+lvim.builtin.treesitter.rainbow.enable = true
 
 lvim.builtin.lualine.style = "lvim"
 lvim.builtin.lualine.sections.lualine_c = { "mode" }
 
-
-lvim.builtin.treesitter.ensure_installed = {
-  "bash",
-  "c",
-  "css",
-  "dockerfile",
-  "go",
-  "graphql",
-  "hcl",
-  "html",
-  "java",
-  "javascript",
-  "json",
-  "json",
-  "lua",
-  "make",
-  "markdown",
-  "php",
-  "pug",
-  "python",
-  "query",
-  "regex",
-  "rust",
-  "scss",
-  "sql",
-  "toml",
-  "tsx",
-  "typescript",
-  "vue",
-  "yaml",
-  "zig",
-}
-
 -- Additional Plugins
 lvim.plugins = {
-  { "folke/tokyonight.nvim" },
+  -- { "folke/tokyonight.nvim" },
   {
     "folke/trouble.nvim",
     cmd = "TroubleToggle",
@@ -181,35 +150,104 @@ lvim.plugins = {
   {
     "mrjones2014/nvim-ts-rainbow",
   },
-}
-
-lvim.autocommands = {
   {
-    { "BufEnter", "Filetype" },
-    {
-      desc = "Open mini.map and exclude some filetypes",
-      pattern = { "*" },
-      callback = function()
-        local exclude_ft = {
-          "qf",
-          "NvimTree",
-          "toggleterm",
-          "TelescopePrompt",
-          "alpha",
-          "netrw",
-        }
-
-        local map = require('mini.map')
-        if vim.tbl_contains(exclude_ft, vim.o.filetype) then
-          vim.b.minimap_disable = true
-          map.close()
-        elseif vim.o.buftype == "" then
-          map.open()
-        end
-      end,
-    },
+    "rmagatti/goto-preview",
+    config = function()
+      require('goto-preview').setup {
+        width = 120,             -- Width of the floating window
+        height = 25,             -- Height of the floating window
+        default_mappings = true, -- Bind default mappings
+        debug = false,           -- Print debug information
+        opacity = nil,           -- 0-100 opacity level of the floating window where 100 is fully transparent.
+      }
+    end
+  },
+  {
+    "ray-x/lsp_signature.nvim",
+    event = "BufRead",
+    config = function() require "lsp_signature".on_attach() end,
+  },
+  {
+    "simrat39/symbols-outline.nvim",
+    config = function()
+      require('symbols-outline').setup {
+        auto_close = true,
+      }
+    end
+  },
+  {
+    "karb94/neoscroll.nvim",
+    event = "WinScrolled",
+    config = function()
+      require('neoscroll').setup({
+        -- All these keys will be mapped to their corresponding default scrolling animation
+        mappings = { '<C-u>', '<C-d>', '<C-b>', '<C-f>',
+          '<C-y>', '<C-e>', 'zt', 'zz', 'zb' },
+        hide_cursor = true,          -- Hide cursor while scrolling
+        stop_eof = true,             -- Stop at <EOF> when scrolling downwards
+        use_local_scrolloff = false, -- Use the local scope of scrolloff instead of the global scope
+        respect_scrolloff = false,   -- Stop scrolling when the cursor reaches the scrolloff margin of the file
+        cursor_scrolls_alone = true, -- The cursor will keep on scrolling even if the window cannot scroll further
+        easing_function = nil,       -- Default easing function
+        pre_hook = nil,              -- Function to run before the scrolling animation starts
+        post_hook = nil,             -- Function to run after the scrolling animation ends
+      })
+    end
+  },
+  {
+    "folke/todo-comments.nvim",
+    event = "BufRead",
+    config = function()
+      require("todo-comments").setup {
+        keywords = {
+          FIX = {
+            icon = " ",
+            color = "error",
+            alt = { "FIXME", "BUG", "FIXIT", "ISSUE" },
+          },
+          TODO = { icon = " ", color = "info" },
+          HACK = { icon = " ", color = "warning" },
+          WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX" } },
+          PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
+          NOTE = { icon = " ", color = "hint", alt = { "INFO" } },
+          TEST = { icon = "⏲ ", color = "test", alt = { "TESTING", "PASSED", "FAILED" } },
+        },
+        gui_style = {
+          fg = "NONE", -- The gui style to use for the fg highlight group.
+          bg = "BOLD", -- The gui style to use for the bg highlight group.
+        },
+      }
+    end,
+  },
+  -- TODO: How to add characters to a string
+  {
+    "itchyny/vim-cursorword",
+    event = { "BufEnter", "BufNewFile" },
+    config = function()
+      vim.api.nvim_command("augroup user_plugin_cursorword")
+      vim.api.nvim_command("autocmd!")
+      vim.api.nvim_command("autocmd FileType NvimTree,lspsagafinder,dashboard,vista let b:cursorword = 0")
+      vim.api.nvim_command("autocmd WinEnter * if &diff || &pvw | let b:cursorword = 0 | endif")
+      vim.api.nvim_command("autocmd InsertEnter * let b:cursorword = 0")
+      vim.api.nvim_command("autocmd InsertLeave * let b:cursorword = 1")
+      vim.api.nvim_command("augroup END")
+    end
+  },
+  {
+    "Pocco81/auto-save.nvim",
+    config = function()
+      require("auto-save").setup()
+    end,
+  },
+  {
+    "tpope/vim-surround",
+  },
+  {
+    "mrjones2014/nvim-ts-rainbow",
   },
 }
+
+lvim.autocommands = {}
 
 local picker = require('window-picker')
 
@@ -220,17 +258,13 @@ vim.keymap.set("n", ",w", function()
   vim.api.nvim_set_current_win(picked_window_id)
 end, { desc = "Pick a window" })
 
--- Swap two windows using the awesome window picker
 local function swap_windows()
   local window = picker.pick_window({
     include_current_win = false
   })
   local target_buffer = vim.fn.winbufnr(window)
-  -- Set the target window to contain current buffer
   vim.api.nvim_win_set_buf(window, 0)
-  -- Set current window to contain target buffer
   vim.api.nvim_win_set_buf(0, target_buffer)
 end
 
 vim.keymap.set('n', ',W', swap_windows, { desc = 'Swap windows' })
-
