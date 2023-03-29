@@ -46,10 +46,14 @@ lvim.builtin.treesitter.rainbow.enable = true
 
 lvim.builtin.lualine.style = "lvim"
 lvim.builtin.lualine.sections.lualine_c = { "mode" }
+lvim.builtin.luasnip.sources = {
+  friendly_snippets = true,
+  ultisnips = true,
+}
 
 -- Additional Plugins
 lvim.plugins = {
-  -- { "folke/tokyonight.nvim" },
+  { "folke/tokyonight.nvim" },
   {
     "folke/trouble.nvim",
     cmd = "TroubleToggle",
@@ -244,6 +248,20 @@ lvim.plugins = {
   },
   {
     "mrjones2014/nvim-ts-rainbow",
+  },
+  {
+    "NoahTheDuke/vim-just",
+  },
+  {
+    "SirVer/ultisnips",
+    requires = {
+      "sebosp/vim-snippets-terraform",
+    },
+    config = function()
+      vim.api.nvim_command("let g:UltiSnipsExpandTrigger='<tab>'")
+      vim.api.nvim_command("let g:UltiSnipsJumpForwardTrigger='<c-b>'")
+      vim.api.nvim_command("let g:UltiSnipsJumpBackwardTrigger='<c-z>'")
+    end
   },
 }
 

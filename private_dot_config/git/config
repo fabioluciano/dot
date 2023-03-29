@@ -1,13 +1,13 @@
 [user]
   email = fabio@naoimporta.com
   name = Fábio Luciano
-	signingkey = 60619FC8F3C870D638957DADBF358FF86AE09DCE
+	signingkey = 5E62F5CCFD894AC7A0685AA5C981CCE8678EF824
 
 [includeIf "gitdir/i:/mnt/srv/work/"]
   path = ~/.config/git/work
 
 [core]
-  editor = nvim
+  editor = lvim
   pager = delta
   whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
   excludesfile = ~/.gitignore
@@ -68,3 +68,5 @@
 	defaultBranch = main
 [commit]
 	gpgsign = true
+[gpg]
+	program = gpg

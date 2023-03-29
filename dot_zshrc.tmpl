@@ -75,5 +75,9 @@ alias k='kubectl'
 alias kn='kubectl ns'
 alias kx='kubectl ctx'
 alias vim='lvim'
+alias pbcopy='xsel --clipboard --input'
+alias pbpaste='xsel --clipboard --output'
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+gpgconf --launch gpg-agent
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
