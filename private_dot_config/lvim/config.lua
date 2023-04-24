@@ -1,14 +1,14 @@
 -- general
-lvim.log.level                          = "warn"
-lvim.format_on_save                     = true
-lvim.colorscheme                        = "tokyonight-night"
-lvim.transparent_window                 = true
+lvim.log.level                                  = "warn"
+lvim.format_on_save                             = true
+lvim.colorscheme                                = "tokyonight-night"
+lvim.transparent_window                         = true
 
-vim.opt.wrap                            = true
-vim.opt.list                            = true
-vim.opt.spell                           = true
-lvim.lsp.automatic_servers_installation = true
-lvim.format_on_save                     = true
+vim.opt.wrap                                    = true
+vim.opt.list                                    = true
+vim.opt.spell                                   = true
+lvim.lsp.installer.setup.automatic_installation = true
+lvim.format_on_save                             = true
 
 vim.opt.listchars:append("space:⋅")
 vim.opt.listchars:append("eol:↴")
@@ -124,7 +124,7 @@ lvim.plugins = {
   },
   {
     "s1n7ax/nvim-window-picker",
-    tag = "1.*",
+    version = "1.*",
     config = function()
       require("window-picker").setup({
         autoselect_one = true,
