@@ -1,0 +1,6 @@
+session: main
+root: ~
+windows:
+  - name: system
+  - name: work
+  - name: monitoring

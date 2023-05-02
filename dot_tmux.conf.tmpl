@@ -38,39 +38,21 @@ bind-key -T root DoubleClick1Pane  select-pane \; copy-mode \; send-keys -X sele
 ### Plugins
 set -g @plugin 'tmux-plugins/tpm'
 
-set -g @plugin 'b0o/tmux-autoreload'
-set -g @plugin 'sainnhe/tmux-fzf'
 set -g @plugin 'tmux-plugins/tmux-pain-control'
 set -g @plugin 'tmux-plugins/tmux-sensible'
-set -g @plugin 'Alkindi42/tmux-bitwarden'
+set -g @plugin 'tmux-plugins/tmux-logging'
+
+set -g @plugin 'sainnhe/tmux-fzf'
 set -g @plugin 'laktak/extrakto'
 set -g @plugin 'roosta/tmux-pop'
 set -g @plugin 'nhdaly/tmux-better-mouse-mode'
 
-set -g @plugin 'dracula/tmux'
-
+set -g @plugin 'fabioluciano/tmux-tokyo-night'
 
 ### Plugins Options
-
-#### Dracula Theme Options
-{{ if eq .chezmoi.os "linux" }}
-set -g @dracula-plugins "cpu-usage gpu-usage ram-usage"
-{{ else if eq .chezmoi.os "darwin" }}
-set -g @dracula-plugins "cpu-usage ram-usage"
-{{ end }}
-set -g @dracula-show-powerline true
-set -g @dracula-show-flags true
-set -g @dracula-show-left-icon session
-set -g @dracula-show-left-sep 
-set -g @dracula-show-right-sep 
-
-### Bitwarden Options
-set -g @bw-key 'T'
-set -g @bw-copy-to-clipboard 'on'
-
 set -g @extrakto_popup_size 70%
 
-
+############################
 {{ if eq .chezmoi.os "linux" }}
 run '/usr/share/tmux-plugin-manager/tpm'
 {{ else if eq .chezmoi.os "darwin" }}

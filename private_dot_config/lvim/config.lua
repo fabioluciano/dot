@@ -254,7 +254,7 @@ lvim.plugins = {
   },
   {
     "SirVer/ultisnips",
-    requires = {
+    dependencies = {
       "sebosp/vim-snippets-terraform",
     },
     config = function()

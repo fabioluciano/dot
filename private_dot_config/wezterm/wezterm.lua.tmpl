@@ -4,6 +4,16 @@ return {
   automatically_reload_config = true,
   hide_mouse_cursor_when_typing = true,
   font = wezterm.font('CaskaydiaCove Nerd Font Mono'),
+  font_rules = {
+    {
+      intensity = 'Bold',
+      italic = false,
+      font = wezterm.font {
+        family = 'CaskaydiaCove Nerd Font Mono',
+        weight = "Bold"
+      }
+    }
+  },
 {{- if eq .chezmoi.os "linux" }}
   font_size = 15.0,
   line_height = 1.2,
@@ -12,7 +22,9 @@ return {
   line_height = 1.3,
 {{- end }}
   window_background_opacity = 1.0,
-  default_prog = { 'tmuxp', 'load', '~/.tmuxp.yml' },
+{{- if eq .chezmoi.os "linux" }}
+  default_prog = { 'smug', 'main' },
+{{- end }}
   enable_tab_bar = false,
   color_scheme = "tokyonight",
   window_padding = {
