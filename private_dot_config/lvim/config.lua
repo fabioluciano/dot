@@ -1,14 +1,13 @@
 -- general
-lvim.log.level                                  = "warn"
-lvim.format_on_save                             = true
-lvim.colorscheme                                = "tokyonight-night"
-lvim.transparent_window                         = true
+lvim.log.level          = "warn"
+lvim.format_on_save     = true
+lvim.colorscheme        = "tokyonight-night"
+lvim.transparent_window = true
 
-vim.opt.wrap                                    = true
-vim.opt.list                                    = true
-vim.opt.spell                                   = true
-lvim.lsp.installer.setup.automatic_installation = true
-lvim.format_on_save                             = true
+vim.opt.wrap            = true
+vim.opt.list            = true
+vim.opt.spell           = true
+lvim.format_on_save     = true
 
 vim.opt.listchars:append("space:⋅")
 vim.opt.listchars:append("eol:↴")
@@ -41,7 +40,6 @@ lvim.builtin.nvimtree.setup.renderer.icons.show.git = true
 lvim.builtin.nvimtree.setup.actions.open_file.resize_window = true
 lvim.builtin.nvimtree.setup.actions.open_file.quit_on_open = true
 lvim.builtin.nvimtree.setup.view.width = 25
-lvim.builtin.nvimtree.setup.open_on_setup = true
 lvim.builtin.treesitter.rainbow.enable = true
 
 lvim.builtin.lualine.style = "lvim"
