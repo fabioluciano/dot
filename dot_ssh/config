@@ -1,4 +1,6 @@
-Include /Users/fabioluciano/.colima/ssh_config
+Include ~/.orbstack/ssh/config
 
-Host *
-    UseKeychain yes
+Include ~/.colima/ssh_config
+
+# Host *
+#     UseKeychain yes

@@ -27,6 +27,7 @@ lvim.builtin.which_key.mappings["t"] = {
   l = { "<cmd>Trouble loclist<cr>", "LocationList" },
   w = { "<cmd>Trouble workspace_diagnostics<cr>", "Workspace Diagnostics" },
 }
+lvim.builtin.which_key.mappings['e'] = { "<cmd>NeoTreeFocusToggle<CR>", "Explorer" }
 
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
@@ -39,6 +40,7 @@ lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = true
 lvim.builtin.nvimtree.setup.actions.open_file.resize_window = true
 lvim.builtin.nvimtree.setup.actions.open_file.quit_on_open = true
+lvim.builtin.nvimtree.active = false
 lvim.builtin.nvimtree.setup.view.width = 25
 lvim.builtin.treesitter.rainbow.enable = true
 
@@ -52,6 +54,48 @@ lvim.builtin.luasnip.sources = {
 -- Additional Plugins
 lvim.plugins = {
   { "folke/tokyonight.nvim" },
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v2.x",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons",
+      "MunifTanjim/nui.nvim",
+    },
+    config = function()
+      require("neo-tree").setup({
+        event_handlers = {
+          {
+            event = "file_opened",
+            handler = function(file_path)
+              require("neo-tree").close_all()
+            end
+          },
+        },
+        close_if_last_window = true,
+        window = {
+          width = 30,
+        },
+        buffers = {
+          follow_current_file = true,
+        },
+        filesystem = {
+          follow_current_file = true,
+          filtered_items = {
+            hide_dotfiles = false,
+            hide_gitignored = false,
+            hide_by_name = {
+              "node_modules"
+            },
+            never_show = {
+              ".DS_Store",
+              "thumbs.db"
+            },
+          },
+        },
+      })
+    end
+  },
   {
     "folke/trouble.nvim",
     cmd = "TroubleToggle",
@@ -77,32 +121,14 @@ lvim.plugins = {
     end,
   },
   {
-    "echasnovski/mini.map",
-    branch = "stable",
+    'wfxr/minimap.vim',
+    build = "cargo install --locked code-minimap",
+    cmd = { "Minimap", "MinimapClose", "MinimapToggle", "MinimapRefresh", "MinimapUpdateHighlight" },
     config = function()
-      require('mini.map').setup()
-      local map = require('mini.map')
-      map.setup({
-        integrations = {
-          map.gen_integration.builtin_search(),
-          map.gen_integration.diagnostic({
-            error = 'DiagnosticFloatingError',
-            warn  = 'DiagnosticFloatingWarn',
-            info  = 'DiagnosticFloatingInfo',
-            hint  = 'DiagnosticFloatingHint',
-          }),
-        },
-        symbols = {
-          encode = map.gen_encode_symbols.dot('4x2'),
-        },
-        window = {
-          side = 'right',
-          width = 15,
-          winblend = 15,
-          show_integration_count = true,
-        },
-      })
-    end
+      vim.cmd("let g:minimap_width = 10")
+      vim.cmd("let g:minimap_auto_start = 1")
+      vim.cmd("let g:minimap_auto_start_win_enter = 1")
+    end,
   },
   {
     "kevinhwang91/rnvimr",
@@ -111,13 +137,6 @@ lvim.plugins = {
       vim.g.rnvimr_draw_border = 1
       vim.g.rnvimr_pick_enable = 1
       vim.g.rnvimr_bw_enable = 1
-    end,
-  },
-  {
-    "andymass/vim-matchup",
-    event = "CursorMoved",
-    config = function()
-      vim.g.matchup_matchparen_offscreen = { method = "popup" }
     end,
   },
   {
@@ -236,12 +255,6 @@ lvim.plugins = {
     end
   },
   {
-    "Pocco81/auto-save.nvim",
-    config = function()
-      require("auto-save").setup()
-    end,
-  },
-  {
     "tpope/vim-surround",
   },
   {
@@ -269,8 +282,8 @@ local picker = require('window-picker')
 
 vim.keymap.set("n", ",w", function()
   local picked_window_id = picker.pick_window({
-        include_current_win = true
-      }) or vim.api.nvim_get_current_win()
+    include_current_win = true
+  }) or vim.api.nvim_get_current_win()
   vim.api.nvim_set_current_win(picked_window_id)
 end, { desc = "Pick a window" })
 
