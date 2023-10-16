@@ -54,6 +54,7 @@ lvim.builtin.luasnip.sources = {
 -- Additional Plugins
 lvim.plugins = {
   { "folke/tokyonight.nvim" },
+  { "sheerun/vim-polyglot" },
   {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v2.x",

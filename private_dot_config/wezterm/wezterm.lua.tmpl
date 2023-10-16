@@ -23,7 +23,7 @@ return {
 {{- end }}
   window_background_opacity = 1.0,
 {{- if eq .chezmoi.os "linux" }}
-  default_prog = { 'smug', 'main' },
+  default_prog = { 'chezmoi', 'load', '~/.config/tmuxp/tmuxp.yml' },
 {{- end }}
   enable_tab_bar = false,
   color_scheme = "tokyonight",
