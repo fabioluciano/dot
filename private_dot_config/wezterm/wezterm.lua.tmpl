@@ -3,28 +3,16 @@ local wezterm = require 'wezterm'
 return {
   automatically_reload_config = true,
   hide_mouse_cursor_when_typing = true,
-  font = wezterm.font('CaskaydiaCove Nerd Font Mono'),
-  font_rules = {
-    {
-      intensity = 'Bold',
-      italic = false,
-      font = wezterm.font {
-        family = 'CaskaydiaCove Nerd Font Mono',
-        weight = "Bold"
-      }
-    }
-  },
+  font = wezterm.font('Monaspace Radon Medium'),
 {{- if eq .chezmoi.os "linux" }}
+  default_prog = { 'tmuxp', 'load', '~/.config/tmuxp/tmuxp.yml' },
   font_size = 15.0,
-  line_height = 1.2,
 {{- else if eq .chezmoi.os "darwin" }}
-  font_size = 18.0,
+  default_prog = { '/bin/zsh', '--login', '-c', '/opt/homebrew/bin/tmuxp load ~/.config/tmuxp/tmuxp.yml' },
+  font_size = 17.0,
+{{- end }}
   line_height = 1.3,
-{{- end }}
   window_background_opacity = 1.0,
-{{- if eq .chezmoi.os "linux" }}
-  default_prog = { 'chezmoi', 'load', '~/.config/tmuxp/tmuxp.yml' },
-{{- end }}
   enable_tab_bar = false,
   color_scheme = "tokyonight",
   window_padding = {

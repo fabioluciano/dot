@@ -1,21 +1,15 @@
--- general
-lvim.log.level          = "warn"
-lvim.format_on_save     = true
-lvim.colorscheme        = "tokyonight-night"
-lvim.transparent_window = true
+vim.opt.wrap  = true
+vim.opt.list  = true
+vim.opt.spell = true
 
-vim.opt.wrap            = true
-vim.opt.list            = true
-vim.opt.spell           = true
-lvim.format_on_save     = true
-
-vim.opt.listchars:append("space:⋅")
+-- vim.opt.listchars:append("space:⋅")
 vim.opt.listchars:append("eol:↴")
 
+lvim.transparent_window      = true
+lvim.colorscheme             = "tokyonight-night"
+lvim.builtin.nvimtree.active = false
+lvim.format_on_save.enabled  = true
 
--- keymappings
-lvim.leader = "space"
-lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 
 lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
 lvim.builtin.which_key.mappings["t"] = {
@@ -29,30 +23,90 @@ lvim.builtin.which_key.mappings["t"] = {
 }
 lvim.builtin.which_key.mappings['e'] = { "<cmd>NeoTreeFocusToggle<CR>", "Explorer" }
 
-lvim.builtin.alpha.active = true
-lvim.builtin.alpha.mode = "dashboard"
+
+lvim.builtin.alpha.active   = true
+lvim.builtin.alpha.mode     = "dashboard"
 lvim.builtin.project.active = true
 
-lvim.builtin.terminal.active = true
+
+lvim.builtin.terminal.active    = true
 lvim.builtin.terminal.direction = "horizontal"
 
-lvim.builtin.nvimtree.setup.view.side = "left"
-lvim.builtin.nvimtree.setup.renderer.icons.show.git = true
-lvim.builtin.nvimtree.setup.actions.open_file.resize_window = true
-lvim.builtin.nvimtree.setup.actions.open_file.quit_on_open = true
-lvim.builtin.nvimtree.active = false
-lvim.builtin.nvimtree.setup.view.width = 25
-lvim.builtin.treesitter.rainbow.enable = true
 
-lvim.builtin.lualine.style = "lvim"
+lvim.builtin.lualine.style              = "lvim"
 lvim.builtin.lualine.sections.lualine_c = { "mode" }
-lvim.builtin.luasnip.sources = {
+lvim.builtin.luasnip.sources            = {
   friendly_snippets = true,
   ultisnips = true,
 }
 
--- Additional Plugins
-lvim.plugins = {
+
+local formatters = require "lvim.lsp.null-ls.formatters"
+formatters.setup {
+  { name = "black" },
+  {
+    name = "prettier",
+    args = { "--print-width", "100" },
+    filetypes = { "typescript", "typescriptreact" },
+  },
+}
+
+local linters = require "lvim.lsp.null-ls.linters"
+linters.setup {
+  { name = "flake8" },
+}
+
+local code_actions = require "lvim.lsp.null-ls.code_actions"
+code_actions.setup {
+  {
+    name = "proselint",
+  },
+}
+
+-- keymappings
+lvim.leader                    = "space"
+lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
+
+lvim.plugins                   = {
+  {
+    "ellisonleao/glow.nvim",
+    config = true,
+    cmd = "Glow"
+  },
+  {
+    "shellRaining/hlchunk.nvim",
+    event = { "UIEnter" },
+    config = function()
+      require("hlchunk").setup({
+        chunk = {
+          chars = {
+            horizontal_line = "┅",
+            left_top = "┏",
+            vertical_line = "┇",
+            left_bottom = "┗",
+            right_arrow = "┅",
+          },
+        },
+        indent = {
+          enable = true,
+          use_treesitter = true,
+        }
+      })
+    end
+  },
+  {
+    "karb94/neoscroll.nvim",
+    config = function()
+      require('neoscroll').setup {}
+    end
+  },
+  {
+    "NvChad/nvim-colorizer.lua",
+    config = function()
+      require('colorizer').setup()
+    end
+  },
+  { "mg979/vim-visual-multi" },
   { "folke/tokyonight.nvim" },
   { "sheerun/vim-polyglot" },
   {
@@ -176,11 +230,11 @@ lvim.plugins = {
     "rmagatti/goto-preview",
     config = function()
       require('goto-preview').setup {
-        width = 120,             -- Width of the floating window
-        height = 25,             -- Height of the floating window
-        default_mappings = true, -- Bind default mappings
-        debug = false,           -- Print debug information
-        opacity = nil,           -- 0-100 opacity level of the floating window where 100 is fully transparent.
+        width = 120,
+        height = 25,
+        default_mappings = true,
+        debug = false,
+        opacity = nil,
       }
     end
   },
@@ -202,17 +256,16 @@ lvim.plugins = {
     event = "WinScrolled",
     config = function()
       require('neoscroll').setup({
-        -- All these keys will be mapped to their corresponding default scrolling animation
         mappings = { '<C-u>', '<C-d>', '<C-b>', '<C-f>',
           '<C-y>', '<C-e>', 'zt', 'zz', 'zb' },
-        hide_cursor = true,          -- Hide cursor while scrolling
-        stop_eof = true,             -- Stop at <EOF> when scrolling downwards
-        use_local_scrolloff = false, -- Use the local scope of scrolloff instead of the global scope
-        respect_scrolloff = false,   -- Stop scrolling when the cursor reaches the scrolloff margin of the file
-        cursor_scrolls_alone = true, -- The cursor will keep on scrolling even if the window cannot scroll further
-        easing_function = nil,       -- Default easing function
-        pre_hook = nil,              -- Function to run before the scrolling animation starts
-        post_hook = nil,             -- Function to run after the scrolling animation ends
+        hide_cursor = true,
+        stop_eof = true,
+        use_local_scrolloff = false,
+        respect_scrolloff = false,
+        cursor_scrolls_alone = true,
+        easing_function = nil,
+        pre_hook = nil,
+        post_hook = nil,
       })
     end
   },
@@ -235,13 +288,12 @@ lvim.plugins = {
           TEST = { icon = "⏲ ", color = "test", alt = { "TESTING", "PASSED", "FAILED" } },
         },
         gui_style = {
-          fg = "NONE", -- The gui style to use for the fg highlight group.
-          bg = "BOLD", -- The gui style to use for the bg highlight group.
+          fg = "NONE",
+          bg = "BOLD",
         },
       }
     end,
   },
-  -- TODO: How to add characters to a string
   {
     "itchyny/vim-cursorword",
     event = { "BufEnter", "BufNewFile" },
@@ -275,9 +327,12 @@ lvim.plugins = {
       vim.api.nvim_command("let g:UltiSnipsJumpBackwardTrigger='<c-z>'")
     end
   },
+  {
+    "TimUntersberger/neogit",
+    dependencies = { "nvim-lua/plenary.nvim" }
+  }
 }
 
-lvim.autocommands = {}
 
 local picker = require('window-picker')
 
