@@ -67,7 +67,12 @@ code_actions.setup {
 lvim.leader                    = "space"
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 
-lvim.plugins                   = {
+
+lvim.plugins = {
+  {
+    'Exafunction/codeium.vim',
+    event = 'BufEnter'
+  },
   {
     "ellisonleao/glow.nvim",
     config = true,
@@ -328,8 +333,16 @@ lvim.plugins                   = {
     end
   },
   {
-    "TimUntersberger/neogit",
-    dependencies = { "nvim-lua/plenary.nvim" }
+    "NeogitOrg/neogit",
+    dependencies = {
+      "nvim-lua/plenary.nvim", -- required
+      "sindrets/diffview.nvim", -- optional - Diff integration
+
+      -- Only one of these is needed, not both.
+      "nvim-telescope/telescope.nvim", -- optional
+      "ibhagwan/fzf-lua",            -- optional
+    },
+    config = true
   }
 }
 
