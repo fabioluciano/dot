@@ -1,8 +1,13 @@
-vim.opt.wrap  = true
-vim.opt.list  = true
-vim.opt.spell = true
-
--- vim.opt.listchars:append("space:⋅")
+vim.opt.wrap           = true
+vim.opt.list           = true
+vim.opt.spell          = true
+vim.opt.spelllang      = { 'en_us' }
+vim.opt.relativenumber = true
+vim.opt.tabstop        = 2
+vim.opt.shiftwidth     = 2
+vim.opt.softtabstop    = 2
+vim.opt.expandtab      = true
+vim.opt.listchars:append("space:⋅")
 vim.opt.listchars:append("eol:↴")
 
 lvim.transparent_window      = true
@@ -11,8 +16,8 @@ lvim.builtin.nvimtree.active = false
 lvim.format_on_save.enabled  = true
 
 
-lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
-lvim.builtin.which_key.mappings["t"] = {
+lvim.builtin.which_key.mappings["P"]      = { "<cmd>Telescope projects<CR>", "Projects" }
+lvim.builtin.which_key.mappings["t"]      = {
   name = "+Trouble",
   r = { "<cmd>Trouble lsp_references<cr>", "References" },
   f = { "<cmd>Trouble lsp_definitions<cr>", "Definitions" },
@@ -21,16 +26,54 @@ lvim.builtin.which_key.mappings["t"] = {
   l = { "<cmd>Trouble loclist<cr>", "LocationList" },
   w = { "<cmd>Trouble workspace_diagnostics<cr>", "Workspace Diagnostics" },
 }
-lvim.builtin.which_key.mappings['e'] = { "<cmd>NeoTreeFocusToggle<CR>", "Explorer" }
+lvim.builtin.which_key.mappings['e']      = { "<cmd>NeoTreeFocusToggle<CR>", "Explorer" }
 
+lvim.builtin.alpha.active                 = true
+lvim.builtin.alpha.mode                   = "dashboard"
+lvim.builtin.project.active               = true
 
-lvim.builtin.alpha.active   = true
-lvim.builtin.alpha.mode     = "dashboard"
-lvim.builtin.project.active = true
+lvim.lsp.installer.setup.ensure_installed = {
+  "angularls",
+  "ansiblels",
+  "bashls",
+  "cssls",
+  "cssmodules_ls",
+  "cucumber_language_server",
+  "denols",
+  "docker_compose_language_service",
+  "dockerls",
+  "emmet_ls",
+  "eslint",
+  "gradle_ls",
+  "grammarly",
+  "groovyls",
+  "graphql",
+  "helm_ls",
+  "html",
+  "jdtls",
+  "jsonls",
+  "lua_ls",
+  "lemminx",
+  "psalm",
+  "pylsp",
+  "pyright",
+  "remark_ls",
+  "rome",
+  "rust_analyzer",
+  "sqlls",
+  "stylelint_lsp",
+  "taplo",
+  "terraformls",
+  "tflint",
+  "tsserver",
+  "vuels",
+  "volar",
+  "vimls",
+  "yamlls"
+}
 
-
-lvim.builtin.terminal.active    = true
-lvim.builtin.terminal.direction = "horizontal"
+lvim.builtin.terminal.active              = true
+lvim.builtin.terminal.direction           = "horizontal"
 
 
 lvim.builtin.lualine.style              = "lvim"
@@ -335,12 +378,12 @@ lvim.plugins = {
   {
     "NeogitOrg/neogit",
     dependencies = {
-      "nvim-lua/plenary.nvim", -- required
+      "nvim-lua/plenary.nvim",  -- required
       "sindrets/diffview.nvim", -- optional - Diff integration
 
       -- Only one of these is needed, not both.
       "nvim-telescope/telescope.nvim", -- optional
-      "ibhagwan/fzf-lua",            -- optional
+      "ibhagwan/fzf-lua",              -- optional
     },
     config = true
   }
