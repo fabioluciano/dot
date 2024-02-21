@@ -81,9 +81,9 @@
 	defaultBranch = main
 
 {{- if eq .chezmoi.os "linux" }}
-[commit]
+## [commit]
+## 	gpgsign = true
 
-	gpgsign = true
-[gpg]
-	program = gpg
+## [gpg]
+## 	program = gpg
 {{- end }}
