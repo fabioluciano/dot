@@ -36,7 +36,6 @@ SAVEHIST=1000000
 fpath+=~/.zfunc
 
 {{- if eq .chezmoi.os "linux" }}
-source /usr/share/nvm/init-nvm.sh
 source /usr/share/fzf/completion.zsh
 source /usr/share/fzf/key-bindings.zsh
 {{- end }}
@@ -55,6 +54,7 @@ export FZF_CTRL_R_OPTS="--reverse --preview 'echo {}' --preview-window down:30:h
 eval "$(direnv hook zsh)"
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
+eval "$(mise activate zsh)"
 
 if type brew &>/dev/null
 then

@@ -46,7 +46,6 @@ lvim.lsp.installer.setup.ensure_installed = {
   "eslint",
   "gradle_ls",
   "grammarly",
-  "groovyls",
   "graphql",
   "helm_ls",
   "html",
@@ -112,6 +111,19 @@ lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 
 
 lvim.plugins = {
+  {
+    "aserowy/tmux.nvim",
+    config = function()
+      return require("tmux").setup()
+    end
+  },
+  {
+    'preservim/tagbar',
+    event = 'BufEnter',
+    config = function()
+      vim.cmd("let g:tagbar_width = max([25, winwidth(0) / 5])")
+    end
+  },
   {
     'Exafunction/codeium.vim',
     event = 'BufEnter'

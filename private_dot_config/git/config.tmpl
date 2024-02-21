@@ -15,16 +15,13 @@
   excludesfile = ~/.gitignore
 
 [web]
-  browser = google-chrome
+  browser = firefox
 
 [push]
   default = matching
 
 [color]
   ui = true
-
-[diff]
-  tool = vimdiff
 
 [alias]
   l = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
@@ -51,25 +48,41 @@
   develop = development
 
 [interactive]
-    diffFilter = delta --color-only
+    diffFilter = delta --color-only --features=interactive
 
 [delta]
     features = side-by-side line-numbers decorations
     whitespace-error-style = 22 reverse
 
+[merge]
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default
+[delta "interactive"]
+    keep-plus-minus-markers = false
+
 [delta "decorations"]
-    commit-decoration-style = bold yellow box ul
-    file-style = bold yellow ul
-    file-decoration-style = none
+    commit-decoration-style = blue ol
+    commit-style = raw
+    file-style = omit
+    hunk-header-decoration-style = blue box
+    hunk-header-file-style = red
+    hunk-header-line-number-style = "#067a00"
+    hunk-header-style = file line-number syntax
+
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+
 [init]
 	defaultBranch = main
+
 {{- if eq .chezmoi.os "linux" }}
 [commit]
+
 	gpgsign = true
 [gpg]
 	program = gpg

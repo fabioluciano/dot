@@ -1,6 +1,7 @@
 local wezterm = require "wezterm"
 
 return {
+  warn_about_missing_glyphs = false,
   automatically_reload_config = true,
   hide_mouse_cursor_when_typing = true,
   font = wezterm.font {
@@ -12,7 +13,7 @@ return {
   },
 {{- if eq .chezmoi.os "linux" }}
   default_prog = { "tmuxp", "load", "~/.config/tmuxp/tmuxp.yml" },
-  font_size = 15.0,
+  font_size = 16.0,
 {{- else if eq .chezmoi.os "darwin" }}
   default_prog = { "/bin/zsh", "--login", "-c", "/opt/homebrew/bin/tmuxp load ~/.config/tmuxp/tmuxp.yml" },
   font_size = 18.0,
