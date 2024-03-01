@@ -1,0 +1,12 @@
+[tools]
+terraform = "latest"
+terragrunt = "latest"
+go = "latest"
+java = "latest"
+node = "latest"
+python = "latest"
+ruby = "latest"
+gradle = "latest"
+php = "latest"
+maven = "latest"
+groovy = "latest"
