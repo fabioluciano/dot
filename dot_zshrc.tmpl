@@ -6,17 +6,28 @@ source /opt/homebrew/opt/zplug/init.zsh
 
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 
-zplug "Aloxaf/fzf-tab"
-zplug 'zsh-users/zsh-syntax-highlighting', defer:2
-zplug 'zsh-users/zsh-history-substring-search', defer:3
-zplug 'zsh-users/zsh-autosuggestions' 
-zplug 'zsh-users/zsh-completions', depth:1
+zplug "chrissicool/zsh-256color"
+
+zplug "modules/completion", from:prezto
+
 
 zplug "ohmyzsh/ohmyzsh", use:"lib/key-bindings.zsh"
-zplug "ohmyzsh/ohmyzsh", use:"lib/directories.zsh"
+zplug "ohmyzsh/ohmyzsh", use:"lib/clipboard.zsh"
 
-zplug 'Valiev/almostontop' 
-zplug 'wfxr/forgit'
+
+
+zplug "Aloxaf/fzf-tab"
+zplug 'zsh-users/zsh-autosuggestions' 
+zplug 'zsh-users/zsh-syntax-highlighting', defer:3
+zplug 'zsh-users/zsh-history-substring-search', defer:3
+zplug 'zsh-users/zsh-completions', depth:1
+
+zplug "plugins/aws",   from:oh-my-zsh
+zplug "plugins/git",   from:oh-my-zsh
+zplug "MichaelAquilina/zsh-you-should-use"
+zplug "junegunn/fzf", use:shell/key-bindings.zsh
+
+zplug "mafredri/zsh-async", from:github
 
 if ! zplug check --verbose; then
     printf "Install? [y/N]: "
@@ -44,7 +55,13 @@ export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+
+zstyle ':completion:*:git-checkout:*' sort false
+zstyle ':completion:*:descriptions' format '[%d]'
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' menu no
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
+zstyle ':fzf-tab:*' switch-group '<' '>'
 zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
 
 export PATH="${PATH}:${HOME}/.krew/bin:${HOME}/.local/bin"
