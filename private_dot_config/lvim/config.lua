@@ -134,6 +134,10 @@ lvim.plugins = {
     cmd = "Glow"
   },
   {
+    "NoahTheDuke/vim-just",
+    event = "BufEnter"
+  },
+  {
     "shellRaining/hlchunk.nvim",
     event = { "UIEnter" },
     config = function()
