@@ -1,16 +1,13 @@
-vim.opt.wrap           = true
-vim.opt.list           = true
-vim.opt.spell          = true
-vim.opt.spelllang      = { 'en_us' }
-vim.opt.relativenumber = true
-vim.opt.tabstop        = 2
-vim.opt.shiftwidth     = 2
-vim.opt.softtabstop    = 2
-vim.opt.expandtab      = true
+vim.opt.wrap        = true
+vim.opt.list        = true
+vim.opt.spell       = true
+vim.opt.spelllang   = { 'en_us', 'pt_br' }
+vim.opt.tabstop     = 2
+vim.opt.shiftwidth  = 2
+vim.opt.softtabstop = 2
+vim.opt.expandtab   = true
 vim.opt.listchars:append("space:⋅")
 vim.opt.listchars:append("eol:↴")
--- set t_TI=^[[4?h
--- set t_TE=^[[4?l
 
 lvim.transparent_window      = true
 lvim.colorscheme             = "tokyonight-night"
@@ -134,7 +131,7 @@ lvim.plugins = {
           },
         },
         presets = {
-          bottom_search = false,        -- use a classic bottom cmdline for search
+          bottom_search = true,         -- use a classic bottom cmdline for search
           command_palette = true,       -- position the cmdline and popupmenu together
           long_message_to_split = true, -- long messages will be sent to a split
           inc_rename = true,            -- enables an input dialog for inc-rename.nvim
