@@ -14,8 +14,6 @@ zplug "modules/completion", from:prezto
 zplug "ohmyzsh/ohmyzsh", use:"lib/key-bindings.zsh"
 zplug "ohmyzsh/ohmyzsh", use:"lib/clipboard.zsh"
 
-
-
 zplug "Aloxaf/fzf-tab"
 zplug 'zsh-users/zsh-autosuggestions' 
 zplug 'zsh-users/zsh-syntax-highlighting', defer:3
@@ -39,7 +37,7 @@ if ! zplug check --verbose; then
 fi
 zplug load
 
-EDITOR=lvim
+EDITOR=nvim
 HISTFILE=~/.zsh_history
 HISTSIZE=1000000
 SAVEHIST=1000000
@@ -91,7 +89,7 @@ alias df='duf'
 alias k='kubectl'
 alias kn='kubectl ns'
 alias kx='kubectl ctx'
-alias vim='lvim'
+alias vim='nvim'
 alias pbcopy='xsel --clipboard --input'
 alias pbpaste='xsel --clipboard --output'
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)

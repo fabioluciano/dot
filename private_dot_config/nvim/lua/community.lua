@@ -10,11 +10,13 @@ return {
 
   { import = "astrocommunity.colorscheme.tokyonight-nvim" },
 
+  { import = "astrocommunity.completion.codeium-vim" },
+
   { import = "astrocommunity.debugging.nvim-dap-virtual-text" },
   { import = "astrocommunity.debugging.telescope-dap-nvim" },
 
   { import = "astrocommunity.diagnostics.trouble-nvim" },
-  --
+
   { import = "astrocommunity.editing-support.auto-save-nvim" },
   { import = "astrocommunity.editing-support.comment-box-nvim" },
   { import = "astrocommunity.editing-support.conform-nvim" },
