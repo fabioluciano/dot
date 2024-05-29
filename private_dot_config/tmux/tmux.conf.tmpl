@@ -56,6 +56,9 @@ set -g @extrakto_popup_size 70%
 {{ if eq .chezmoi.os "linux" }}
 run '/usr/share/tmux-plugin-manager/tpm'
 {{ else if eq .chezmoi.os "darwin" }}
+### Tokyo Night Theme configuration
+set -g @theme-plugins 'datetime,weather'
+
 run "$HOMEBREW_PREFIX/opt/tpm/share/tpm/tpm"
 {{ end }}
 
