@@ -9,7 +9,7 @@
   path = ~/.config/git/work
 
 [core]
-  editor = lvim
+  editor = nvim
   pager = delta
   whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
   excludesfile = ~/.gitignore
@@ -38,7 +38,8 @@
   dc = diff --cached
 
   s = status -s
-  co = checkout
+  co =
+  checkout
   cob = checkout -b
   b = "!git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)' refs/heads | sed -e 's-refs/heads/--'"
 
