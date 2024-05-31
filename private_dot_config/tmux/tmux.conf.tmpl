@@ -52,12 +52,17 @@ set -g @plugin 'fabioluciano/tmux-tokyo-night'
 ### Plugins Options
 set -g @extrakto_popup_size 70%
 
-############################
-{{ if eq .chezmoi.os "linux" }}
-set -g @theme_plugins "datetime,weather,playerctl"
-run '/usr/share/tmux-plugin-manager/tpm'
-{{ else if eq .chezmoi.os "darwin" }}
-set -g @theme_plugins "datetime,weather,spt"
-run '~/.tmux/plugins/tpm/tpm'
+### Tokyo Night Theme configuration
+
+{{- if eq .chezmoi.os "linux" }}
+set -g @theme-plugins 'datetime,weather,playerctl'
+{{- else if eq .chezmoi.os "darwin" }}
+set -g @theme-plugins 'datetime,weather,spt'
 {{ end }}
 
+
+{{- if eq .chezmoi.os "linux" }}
+run '/usr/share/tmux-plugin-manager/tpm'
+{{- else if eq .chezmoi.os "darwin" }}
+run "$HOMEBREW_PREFIX/opt/tpm/share/tpm/tpm"
+{{ end }}
