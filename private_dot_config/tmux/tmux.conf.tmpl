@@ -55,8 +55,10 @@ set -g @extrakto_popup_size 70%
 ### Tokyo Night Theme configuration
 
 {{- if eq .chezmoi.os "linux" }}
+set -g @theme_session_icon ''
 set -g @theme-plugins 'datetime,weather,playerctl'
 {{- else if eq .chezmoi.os "darwin" }}
+set -g @theme_session_icon ''
 set -g @theme-plugins 'datetime,weather,spt'
 {{ end }}
 
