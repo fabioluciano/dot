@@ -54,8 +54,10 @@ set -g @extrakto_popup_size 70%
 
 ############################
 {{ if eq .chezmoi.os "linux" }}
+set -g @theme_plugins "datetime,weather,playerctl"
 run '/usr/share/tmux-plugin-manager/tpm'
 {{ else if eq .chezmoi.os "darwin" }}
+set -g @theme_plugins "datetime,weather,spt"
 run '~/.tmux/plugins/tpm/tpm'
 {{ end }}
 
