@@ -56,10 +56,10 @@ set -g @extrakto_popup_size 70%
 
 {{- if eq .chezmoi.os "linux" }}
 set -g @theme_session_icon ''
-set -g @theme-plugins 'datetime,weather,playerctl'
+set -g @theme_plugins 'datetime,weather,playerctl'
 {{- else if eq .chezmoi.os "darwin" }}
 set -g @theme_session_icon ''
-set -g @theme-plugins 'datetime,weather,spt'
+set -g @theme_plugins 'datetime,weather,spt'
 {{ end }}
 
 
