@@ -4,28 +4,45 @@ source /usr/share/zsh/scripts/zplug/init.zsh
 source /opt/homebrew/opt/zplug/init.zsh
 {{- end }}
 
+export EDITOR=nvim
+
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
+zplug "mafredri/zsh-async", from:github
 
 zplug "chrissicool/zsh-256color"
 
-zplug "modules/completion", from:prezto
-
-
 zplug "ohmyzsh/ohmyzsh", use:"lib/key-bindings.zsh"
 zplug "ohmyzsh/ohmyzsh", use:"lib/clipboard.zsh"
-
-zplug "Aloxaf/fzf-tab"
-zplug 'zsh-users/zsh-autosuggestions' 
-zplug 'zsh-users/zsh-syntax-highlighting', defer:3
-zplug 'zsh-users/zsh-history-substring-search', defer:3
-zplug 'zsh-users/zsh-completions', depth:1
+zplug "ohmyzsh/ohmyzsh", use:"lib/completion.zsh"
 
 zplug "plugins/aws",   from:oh-my-zsh
 zplug "plugins/git",   from:oh-my-zsh
+zplug "plugins/sudo",   from:oh-my-zsh
+zplug "plugins/terraform",   from:oh-my-zsh
+zplug "plugins/command-not-found",   from:oh-my-zsh
+zplug "plugins/docker",   from:oh-my-zsh
+zplug "Aloxaf/fzf-tab"
+
+if [[ $OSTYPE = (linux)* ]]; then
+    zplug "plugins/archlinux",     from:oh-my-zsh, if:"(( $+commands[pacman] ))"
+fi
+
+if [[ $OSTYPE = (darwin)* ]]; then
+    zplug "lib/clipboard",         from:oh-my-zsh
+    zplug "plugins/osx",           from:oh-my-zsh
+    zplug "plugins/brew",          from:oh-my-zsh, if:"(( $+commands[brew] ))"
+fi
+
+zplug "hlissner/zsh-autopair", defer:2
+zplug 'zsh-users/zsh-autosuggestions' 
+zplug 'zsh-users/zsh-syntax-highlighting', defer:2
+zplug 'zsh-users/zsh-history-substring-search', defer:3
+zplug 'zsh-users/zsh-completions', depth:1
+
 zplug "MichaelAquilina/zsh-you-should-use"
 zplug "junegunn/fzf", use:shell/key-bindings.zsh
 
-zplug "mafredri/zsh-async", from:github
+autoload -U compinit; compinit
 
 if ! zplug check --verbose; then
     printf "Install? [y/N]: "
@@ -68,6 +85,7 @@ export LANG=en_US.UTF-8
 
 zstyle ':completion:*:git-checkout:*' sort false
 zstyle ':completion:*:descriptions' format '[%d]'
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' menu no
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 zstyle ':fzf-tab:*' switch-group '<' '>'

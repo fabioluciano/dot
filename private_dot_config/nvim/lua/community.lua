@@ -34,12 +34,14 @@ return {
 
   { import = "astrocommunity.lsp.nvim-lint" },
   { import = "astrocommunity.lsp.lsp-signature-nvim" },
+  { import = "astrocommunity.lsp.lspsaga-nvim" },
 
   { import = "astrocommunity.markdown-and-latex.glow-nvim" },
   { import = "astrocommunity.markdown-and-latex.markdown-preview-nvim" },
 
   { import = "astrocommunity.motion.flash-nvim" },
   { import = "astrocommunity.motion.nvim-surround" },
+  { import = "astrocommunity.motion.harpoon" },
 
   { import = "astrocommunity.pack.angular" },
   { import = "astrocommunity.pack.ansible" },
