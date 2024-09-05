@@ -16,6 +16,7 @@ return {
     options = {
       opt = {
         updatetime = 100,
+        conceallevel = 2,
         title = true,
         splitbelow = true,
         splitright = true,

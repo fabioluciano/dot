@@ -1,5 +1,6 @@
 return {
-  "andweeb/presence.nvim",
+  { "NoahTheDuke/vim-just" },
+  { "andweeb/presence.nvim" },
   {
     "ray-x/lsp_signature.nvim",
     event = "BufRead",
@@ -12,5 +13,29 @@ return {
       local luasnip = require "luasnip"
       luasnip.filetype_extend("javascript", { "javascriptreact" })
     end,
+  },
+  {
+    "epwalsh/obsidian.nvim",
+    version = "*",
+    lazy = true,
+    ft = "markdown",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    opts = {
+      ui = {
+        conceallevel = 2,
+      },
+      workspaces = {
+        {
+          name = "study",
+          path = "~/Documents/study/",
+        },
+        {
+          name = "work",
+          path = "~/Documents/work/",
+        },
+      },
+    },
   },
 }
