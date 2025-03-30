@@ -3,4 +3,8 @@ Include ~/.orbstack/ssh/config
 Include ~/.colima/ssh_config
 
 # Host *
-#     UseKeychain yes
+#ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICBpaPPAEAbQ1ioeQC0qxwnYExuoBpiWNJMacKpC/rFX fabio.gois@matera.com     UseKeychain yes
+Host github.com
+  AddKeysToAgent yes
+  UseKeychain yes
+  IdentityFile ~/.ssh/id_ed25519_sk

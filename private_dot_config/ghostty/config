@@ -1,0 +1,11 @@
+command = /bin/zsh
+theme = tokyonight
+click-repeat-interval = 500
+auto-update-channel = stable
+font-family = CaskaydiaCove Nerd Font 
+font-size = 17
+font-thicken = false
+font-style = Regular
+adjust-cell-height = 5
+shell-integration = zsh
+command = /bin/zsh -l -c "if tmux has-session 2>/dev/null; then tmux attach; else tmuxp load ~/.config/tmuxp/tmuxp.yml; fi"

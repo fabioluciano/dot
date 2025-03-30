@@ -14,28 +14,4 @@ return {
       luasnip.filetype_extend("javascript", { "javascriptreact" })
     end,
   },
-  {
-    "epwalsh/obsidian.nvim",
-    version = "*",
-    lazy = true,
-    ft = "markdown",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
-    opts = {
-      ui = {
-        conceallevel = 2,
-      },
-      workspaces = {
-        {
-          name = "study",
-          path = "~/Documents/study/",
-        },
-        {
-          name = "work",
-          path = "~/Documents/work/",
-        },
-      },
-    },
-  },
 }
