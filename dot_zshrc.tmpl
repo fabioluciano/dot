@@ -99,6 +99,7 @@ eval "$(direnv hook zsh)"
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 eval "$(mise activate zsh)"
+source <(kubectl completion zsh)
 
 if type brew &>/dev/null
 then
@@ -121,6 +122,10 @@ alias kx='kubectl ctx'
 alias vim='nvim'
 alias pbcopy='xsel --clipboard --input'
 alias pbpaste='xsel --clipboard --output'
+alias kubectl=kubecolor
+
+compdef kubecolor=kubect
+
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 gpgconf --launch gpg-agent
 
