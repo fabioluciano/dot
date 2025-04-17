@@ -7,6 +7,7 @@ return {
   { import = "astrocommunity.colorscheme.tokyonight-nvim" },
 
   { import = "astrocommunity.completion.codeium-vim" },
+  { import = "astrocommunity.completion.copilot-lua-cmp" },
 
   { import = "astrocommunity.code-runner.overseer-nvim" },
 
@@ -83,5 +84,4 @@ return {
   { import = "astrocommunity.utility.noice-nvim" },
 
   { import = "astrocommunity.workflow.precognition-nvim" },
-  { import = "astrocommunity.workflow.hardtime-nvim" },
 }

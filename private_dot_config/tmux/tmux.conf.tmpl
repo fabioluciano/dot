@@ -66,5 +66,5 @@ set -g @theme_plugins 'datetime,weather,homebrew'
 {{- if eq .chezmoi.os "linux" }}
 run '/usr/share/tmux-plugin-manager/tpm'
 {{- else if eq .chezmoi.os "darwin" }}
-run "$HOMEBREW_PREFIX/opt/tpm/share/tpm/tpm"
+run "/opt/homebrew/opt/tpm/share/tpm/tpm"
 {{ end }}
