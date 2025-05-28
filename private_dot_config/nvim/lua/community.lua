@@ -5,9 +5,7 @@ return {
   { import = "astrocommunity.color.twilight-nvim" },
 
   { import = "astrocommunity.colorscheme.tokyonight-nvim" },
-
   { import = "astrocommunity.completion.codeium-vim" },
-  { import = "astrocommunity.completion.copilot-lua-cmp" },
 
   { import = "astrocommunity.code-runner.overseer-nvim" },
 
@@ -44,7 +42,6 @@ return {
 
   { import = "astrocommunity.motion.flash-nvim" },
   { import = "astrocommunity.motion.nvim-surround" },
-  { import = "astrocommunity.motion.harpoon" },
 
   { import = "astrocommunity.pack.angular" },
   { import = "astrocommunity.pack.bash" },

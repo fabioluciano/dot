@@ -12,7 +12,7 @@ require("lazy").setup {
   },
   { import = "community" },
   { import = "plugins" },
-  install = { colorscheme = { "tokyonight" } },
+  install = { colorscheme = { "tokyonight-night" } },
   ui = { backdrop = 100 },
   performance = {
     rtp = {
