@@ -173,5 +173,4 @@ return {
   -- │                    Workflow                            │
   -- ╰────────────────────────────────────────────────────────╯
   { import = "astrocommunity.workflow.precognition-nvim" },
-  { import = "astrocommunity.workflow.hardtime-nvim" },
 }
