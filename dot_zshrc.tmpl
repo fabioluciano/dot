@@ -1,10 +1,17 @@
+# Performance optimizations
+zmodload zsh/zprof  # Enable profiling if needed
+skip_global_compinit=1
+
 {{- if eq .chezmoi.os "linux" }}
 source /usr/share/zsh/scripts/zplug/init.zsh
 {{- else if eq .chezmoi.os "darwin" }}
 source /opt/homebrew/opt/zplug/init.zsh
 {{- end }}
 
+# Environment variables
 export EDITOR=nvim
+export VISUAL=nvim
+export PAGER=less
 
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 zplug "mafredri/zsh-async", from:github
@@ -54,11 +61,11 @@ if ! zplug check --verbose; then
 fi
 zplug load
 
-EDITOR=nvim
+# History configuration
 HISTFILE=~/.zsh_history
 HISTSIZE=1000000
 SAVEHIST=1000000
-HISTORY_IGNORE="(ls|cd|pwd|exit|cd)*"
+HISTORY_IGNORE="(ls|cd|pwd|exit|cd|clear|history)*"
 setopt EXTENDED_HISTORY      # Write the history file in the ':start:elapsed;command' format.
 setopt INC_APPEND_HISTORY    # Write to the history file immediately, not when the shell exits.
 setopt SHARE_HISTORY         # Share history between all sessions.
@@ -99,7 +106,16 @@ eval "$(direnv hook zsh)"
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 eval "$(mise activate zsh)"
-source <(kubectl completion zsh)
+
+# Lazy load kubectl completion for better performance
+if command -v kubectl &> /dev/null; then
+  kubectl() {
+    if ! type __start_kubectl &> /dev/null; then
+      source <(command kubectl completion zsh)
+    fi
+    command kubectl "$@"
+  }
+fi
 
 if type brew &>/dev/null
 then
@@ -109,24 +125,68 @@ then
   compinit
 fi
 
+# Better defaults
 alias du="ncdu --color dark"
 alias ls='eza --icons --git'
 alias ll='eza -l --icons --git'
+alias la='eza -la --icons --git'
+alias lt='eza --tree --icons --git'
 alias l='ll'
 alias cd='z'
 alias cat='bat'
 alias df='duf'
+
+# Git shortcuts
+alias g='git'
+alias gs='git status'
+alias ga='git add'
+alias gc='git commit'
+alias gp='git push'
+alias gl='git pull'
+alias gd='git diff'
+alias gco='git checkout'
+alias gb='git branch'
+alias glog='git log --oneline --graph --decorate'
+
+# Kubernetes shortcuts
 alias k='kubectl'
 alias kn='kubectl ns'
 alias kx='kubectl ctx'
-alias vim='nvim'
-alias pbcopy='xsel --clipboard --input'
-alias pbpaste='xsel --clipboard --output'
+alias kgp='kubectl get pods'
+alias kgs='kubectl get svc'
+alias kgd='kubectl get deployments'
+alias kdp='kubectl describe pod'
+alias kl='kubectl logs'
+alias kaf='kubectl apply -f'
+alias kdel='kubectl delete'
 alias kubectl=kubecolor
+compdef kubecolor=kubectl
 
-compdef kubecolor=kubect
+# Editor
+alias vim='nvim'
+alias vi='nvim'
+alias v='nvim'
 
-export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-gpgconf --launch gpg-agent
+# Clipboard (Linux only)
+{{- if eq .chezmoi.os "linux" }}
+if command -v xsel &> /dev/null; then
+  alias pbcopy='xsel --clipboard --input'
+  alias pbpaste='xsel --clipboard --output'
+elif command -v xclip &> /dev/null; then
+  alias pbcopy='xclip -selection clipboard'
+  alias pbpaste='xclip -selection clipboard -o'
+fi
+{{- end }}
+
+# System shortcuts
+alias reload='source ~/.zshrc'
+alias zshconfig='nvim ~/.zshrc'
+alias cls='clear'
+
+# GPG and SSH configuration
+if command -v gpgconf &> /dev/null; then
+  export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+  gpgconf --launch gpg-agent
+fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

@@ -1,27 +1,66 @@
--- AstroUI provides the basis for configuring the AstroNvim User Interface
--- Configuration documentation can be found with `:h astroui`
--- NOTE: We highly recommend setting up the Lua Language Server (`:LspInstall lua_ls`)
---       as this provides autocomplete and documentation while editing
+-- ╭──────────────────────────────────────────────────────────╮
+-- │                    AstroUI Configuration                  │
+-- │              Tokyo Night theme + Transparency             │
+-- ╰──────────────────────────────────────────────────────────╯
 
 ---@type LazySpec
 return {
   "AstroNvim/astroui",
   ---@type AstroUIOpts
   opts = {
-    -- change colorscheme
+    -- Tokyo Night colorscheme
     colorscheme = "tokyonight-night",
-    -- AstroUI allows you to easily modify highlight groups easily for any and all colorschemes
+
+    -- Transparent background for terminal integration
     highlights = {
-      init = { -- this table overrides highlights in all themes
-        -- Normal = { bg = "#000000" },
-      },
-      astrotheme = { -- a table of overrides/changes when applying the astrotheme theme
-        -- Normal = { bg = "#000000" },
+      init = {
+        -- Transparent backgrounds
+        Normal = { bg = "NONE" },
+        NormalNC = { bg = "NONE" },
+        NormalFloat = { bg = "NONE" },
+        FloatBorder = { bg = "NONE" },
+        FloatTitle = { bg = "NONE" },
+        SignColumn = { bg = "NONE" },
+        EndOfBuffer = { bg = "NONE" },
+        MsgArea = { bg = "NONE" },
+        NeoTreeNormal = { bg = "NONE" },
+        NeoTreeNormalNC = { bg = "NONE" },
+        NeoTreeEndOfBuffer = { bg = "NONE" },
+        TelescopeNormal = { bg = "NONE" },
+        TelescopeBorder = { bg = "NONE" },
+        WhichKeyFloat = { bg = "NONE" },
+        -- Cursorline subtle highlight
+        CursorLine = { bg = "#1a1b26" },
+        CursorLineNr = { fg = "#7aa2f7", bold = true },
+        -- Better visual selection
+        Visual = { bg = "#33467c" },
+        VisualNOS = { bg = "#33467c" },
       },
     },
-    -- Icons can be configured throughout the interface
+
+    -- Status configuration
+    status = {
+      separators = {
+        left = { "", " " },
+        right = { " ", "" },
+      },
+      colors = function(hl)
+        local get_hlgroup = require("astroui").get_hlgroup
+        hl.git_branch_fg = get_hlgroup("Conditional").fg
+        hl.git_added = get_hlgroup("String").fg
+        hl.git_changed = get_hlgroup("Special").fg
+        hl.git_removed = get_hlgroup("Error").fg
+        hl.blank_bg = "NONE"
+        hl.file_info_bg = "NONE"
+        hl.nav_icon_bg = "NONE"
+        hl.folder_icon_bg = "NONE"
+        return hl
+      end,
+    },
+
+    -- Icons
     icons = {
-      -- configure the loading of the lsp in the status line
+      -- LSP loading spinner
       LSPLoading1 = "⠋",
       LSPLoading2 = "⠙",
       LSPLoading3 = "⠹",
@@ -32,6 +71,25 @@ return {
       LSPLoading8 = "⠧",
       LSPLoading9 = "⠇",
       LSPLoading10 = "⠏",
+      -- Git icons
+      GitAdd = "",
+      GitChange = "",
+      GitDelete = "",
+      -- Diagnostic icons
+      DiagnosticError = "",
+      DiagnosticHint = "󰌵",
+      DiagnosticInfo = "󰋼",
+      DiagnosticWarn = "",
+      -- File icons
+      FolderClosed = "",
+      FolderOpen = "",
+      FolderEmpty = "",
+      -- Misc
+      ActiveLSP = "",
+      ActiveTS = "",
+      BufferClose = "󰅖",
+      Search = "",
+      Selected = "❯",
     },
   },
 }

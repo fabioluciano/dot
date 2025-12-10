@@ -1,10 +1,13 @@
 session_name: main
+start_directory: "~"
 windows:
   - window_name: system
-  - window_name: work
-  - window_name: monitoring
+    layout: main-vertical
     panes:
-      - htop
-{{- if eq .chezmoi.os "linux" }}
+      - shell_command:
+          - clear
+  - window_name: monitoring
+    layout: even-horizontal
+    panes:
+      - btop
       - nvtop
-{{- end }}

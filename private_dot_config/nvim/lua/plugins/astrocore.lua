@@ -37,14 +37,20 @@ return {
         relativenumber = false,
         number = true,
         spell = true,
-        spelllang = { "en_us", "pt_br" },
+        spelllang = { "en", "pt" },
         signcolumn = "auto",
         wrap = true,
         tabstop = 2,
+        -- Mouse support
+        mouse = "a",
+        mousescroll = "ver:3,hor:3",
+        -- Scrolling
+        scrolloff = 8,
+        sidescrolloff = 8,
       },
       g = {},
     },
     mappings = {},
-    autocmd = {},
+    autocmds = {},
   },
 }

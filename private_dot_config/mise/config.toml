@@ -1,4 +1,5 @@
 [tools]
+# Runtime versions - use 'latest' for automatic updates
 terraform = "latest"
 terragrunt = "latest"
 go = "latest"
@@ -7,7 +8,22 @@ node = "latest"
 ruby = "latest"
 maven = "latest"
 groovy = "latest"
+python = "latest"
+
+# CLI tools
 yq = "latest"
 pandoc = "latest"
 deno = "latest"
 usage = "latest"
+kubectl = "latest"
+
+[settings]
+# Enable version files for better compatibility
+idiomatic_version_file_enable_tools = ["node", "python", "ruby", "java"]
+experimental = true
+verbose = false
+asdf_compat = false
+jobs = 4
+
+[plugins]
+# Add any custom plugins here

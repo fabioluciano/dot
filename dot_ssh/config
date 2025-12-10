@@ -1,8 +1,2 @@
-#Include ~/.orbstack/ssh/config
-
-#Include ~/.colima/ssh_config
-
 # Host *
-Host github.com
-  AddKeysToAgent yes
-  IdentityFile ~/.ssh/id_ed25519_sk
+Host github.com AddKeysToAgent yes IdentityFile ~/.ssh/id_ed25519_sk

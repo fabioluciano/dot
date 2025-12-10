@@ -6,11 +6,10 @@ return {
       codelens = true,
       inlay_hints = true,
       semantic_tokens = true,
+      signature_help = true,
     },
     formatting = {
-      format_on_save = {
-        enabled = true,
-      },
+      format_on_save = true,
       timeout_ms = 1000,
     },
     config = {},

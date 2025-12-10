@@ -1,84 +1,204 @@
+# Starship Configuration
+# https://starship.rs/config/
+
+# Global settings
+format = """
+$os\
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_status\
+$git_state\
+$git_commit\
+$terraform\
+$kubernetes\
+$docker_context\
+$aws\
+$python\
+$nodejs\
+$rust\
+$golang\
+$java\
+$helm\
+$package
+$character"""
+
 add_newline = true
+command_timeout = 1000
+scan_timeout = 10
 
-[aws]
-format = 'on [$symbol($profile )(\($region\) )]($style)'
-style = 'bold blue'
-symbol = '󰸏 '
-
-[character]
-success_symbol = '[➜](bold green) '
-error_symbol = '[✗](bold red) '
-
-[cmd_duration]
-min_time = 10_000
-format = " took [$duration]($style)"
-
-[direnv]
+# OS symbol
+[os]
 disabled = false
+format = "[$symbol](bold white) "
 
-[directory]
-truncation_length = 5
-format = "[$path]($style)[$lock_symbol]($lock_style) "
+[os.symbols]
+Macos = "󰀵"
+Linux = "󰌽"
 
-[git_branch]
-format = " [$symbol$branch]($style) "
-symbol = "🍣 "
-style = "bold yellow"
-
-[git_commit]
-commit_hash_length = 8
-style = "bold white"
-
-[git_state]
-format = '[\($state( $progress_current of $progress_total)\)]($style) '
-
-[git_status]
-conflicted = "⚔️ "
-ahead = "🏎️ 💨 ×${count}"
-behind = "🐢 ×${count}"
-diverged = "🔱 🏎️ 💨 ×${ahead_count} 🐢 ×${behind_count}"
-untracked = "🛤️  ×${count}"
-stashed = "📦 "
-modified = "📝 ×${count}"
-staged = "🗃️  ×${count}"
-renamed = "📛 ×${count}"
-deleted = "🗑️  ×${count}"
-style = "bright-white"
-format = "$all_status$ahead_behind"
-
-[helm]
-format = 'via [⎈ $version](bold white) '
-
-[hostname]
-ssh_only = false
-format = "<[$hostname]($style)>"
-trim_at = "-"
-style = "bold dimmed white"
-disabled = true
-
-[kubernetes]
-symbol = "⛵ "
-disabled = false
-[kubernetes.context_aliases]
-'arn:.*?cluster/(?P<cluster_name>[\w-]+)' = 'aws-$cluster_name'
-
-[package]
-disabled = false
-
-[python]
-format = "[$symbol$version]($style) "
-style = "bold green"
-
-[rust]
-format = "[$symbol$version]($style) "
-style = "bold green"
-
-[nodejs]
-format = "via [🤖 $version](bold green) "
-
+# Username
 [username]
 style_user = "green bold"
 style_root = "red bold"
 format = "[$user]($style) "
 disabled = false
 show_always = true
+
+# Hostname
+[hostname]
+ssh_only = false
+format = "on [$hostname](bold dimmed white) "
+trim_at = "."
+disabled = false
+
+# Directory
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+format = "at [$path]($style)[$read_only]($read_only_style) "
+style = "bold cyan"
+read_only = " 󰌾"
+read_only_style = "red"
+home_symbol = "~"
+
+# Character
+[character]
+success_symbol = "[➜](bold green)"
+error_symbol = "[✗](bold red)"
+vimcmd_symbol = "[←](bold green)"
+
+# Git Branch
+[git_branch]
+format = "on [$symbol$branch(:$remote_branch)]($style) "
+symbol = " "
+style = "bold yellow"
+truncation_length = 20
+truncation_symbol = "…"
+
+# Git Status
+[git_status]
+format = "([\\[$all_status$ahead_behind\\]]($style) )"
+style = "bold red"
+conflicted = "⚔️ "
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+up_to_date = "✓"
+untracked = "?${count}"
+stashed = "📦"
+modified = "!${count}"
+staged = "+${count}"
+renamed = "»${count}"
+deleted = "✘${count}"
+
+# Git State
+[git_state]
+format = "[\\($state( $progress_current of $progress_total)\\)]($style) "
+style = "bright-black"
+
+# Git Commit
+[git_commit]
+commit_hash_length = 7
+format = "[\\($hash$tag\\)]($style) "
+style = "bold green"
+only_detached = true
+tag_disabled = false
+tag_symbol = " 🏷 "
+
+# Command Duration
+[cmd_duration]
+min_time = 2_000
+format = "took [$duration]($style) "
+style = "bold yellow"
+show_milliseconds = false
+
+# AWS
+[aws]
+format = "on [$symbol($profile )(\\($region\\) )]($style)"
+style = "bold yellow"
+symbol = "☁️ "
+disabled = false
+
+[aws.region_aliases]
+us-east-1 = "use1"
+us-east-2 = "use2"
+us-west-1 = "usw1"
+us-west-2 = "usw2"
+
+# Kubernetes
+[kubernetes]
+format = "on [$symbol$context( \\($namespace\\))]($style) "
+style = "bold blue"
+symbol = "⛵ "
+disabled = false
+
+[kubernetes.context_aliases]
+'arn:.*?cluster/(?P<cluster_name>[\w-]+)' = 'aws-$cluster_name'
+
+# Docker
+[docker_context]
+format = "via [$symbol$context]($style) "
+symbol = "🐋 "
+style = "bold blue"
+disabled = false
+only_with_files = true
+
+# Languages
+[python]
+format = "via [$symbol($version )(\\($virtualenv\\) )]($style)"
+symbol = "🐍 "
+style = "bold green"
+pyenv_version_name = false
+python_binary = ["python3", "python"]
+
+[nodejs]
+format = "via [$symbol($version )]($style)"
+symbol = "⬢ "
+style = "bold green"
+
+[rust]
+format = "via [$symbol($version )]($style)"
+symbol = "🦀 "
+style = "bold red"
+
+[golang]
+format = "via [$symbol($version )]($style)"
+symbol = "🐹 "
+style = "bold cyan"
+
+[java]
+format = "via [$symbol($version )]($style)"
+symbol = "☕ "
+style = "bold red"
+
+# DevOps Tools
+[terraform]
+format = "via [$symbol$workspace]($style) "
+symbol = "💠 "
+style = "bold purple"
+disabled = false
+
+[helm]
+format = "via [$symbol($version )]($style)"
+symbol = "⎈ "
+style = "bold white"
+
+[package]
+format = "via [$symbol$version]($style) "
+symbol = "📦 "
+style = "bold 208"
+disabled = false
+
+# Other
+[direnv]
+format = "[$symbol$loaded/$allowed]($style) "
+symbol = "direnv "
+disabled = false
+detect_extensions = []
+detect_files = [".envrc"]
+detect_folders = []
+allowed_msg = "allowed"
+denied_msg = "denied"
+loaded_msg = "loaded"
+unloaded_msg = "not loaded"

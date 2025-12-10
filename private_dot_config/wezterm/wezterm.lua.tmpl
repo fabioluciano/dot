@@ -1,51 +1,176 @@
-local wezterm = require 'wezterm'
+-- WezTerm Configuration
+-- https://wezfurlong.org/wezterm/config/files.html
+-- Minimal config - tmux handles window/pane management
+
+local wezterm = require("wezterm")
+local act = wezterm.action
 local config = wezterm.config_builder()
 
-config.color_scheme = "Tokyo Night"
-config.warn_about_missing_glyphs = false
-config.automatically_reload_config = true
-config.hide_mouse_cursor_when_typing = false
-config.enable_tab_bar = false
+-- ╭──────────────────────────────────────────────────────────╮
+-- │                    General Settings                       │
+-- ╰──────────────────────────────────────────────────────────╯
 
-config.font = wezterm.font({
-	family = "CaskaydiaCove Nerd Font",
-	weight = "Regular",
-	harfbuzz_features = {
-		"ss01",
-		"cv05",
-		"calt",
-		"ss01",
-		"ss02",
-		"ss03",
-		"ss04",
-		"ss05",
-		"ss06",
-		"zero",
-		"onum",
-		"ss20",
-		"dlig",
-	},
+config.automatically_reload_config = true
+config.check_for_updates = true
+config.check_for_updates_interval_seconds = 86400
+config.warn_about_missing_glyphs = false
+config.enable_scroll_bar = false
+config.scrollback_lines = 10000
+config.hyperlink_rules = wezterm.default_hyperlink_rules()
+
+-- ╭──────────────────────────────────────────────────────────╮
+-- │                      Color Scheme                         │
+-- ╰──────────────────────────────────────────────────────────╯
+
+config.color_scheme = "Tokyo Night"
+
+config.colors = {
+  cursor_bg = "#c0caf5",
+  cursor_fg = "#1a1b26",
+  cursor_border = "#c0caf5",
+  selection_fg = "#c0caf5",
+  selection_bg = "#33467c",
+}
+
+-- ╭──────────────────────────────────────────────────────────╮
+-- │                         Fonts                             │
+-- ╰──────────────────────────────────────────────────────────╯
+
+config.font = wezterm.font_with_fallback({
+  {
+    family = "CaskaydiaCove Nerd Font",
+    weight = "Regular",
+    harfbuzz_features = {
+      "calt",
+      "liga",
+      "dlig",
+      "ss01",
+      "ss02",
+      "ss03",
+      "ss04",
+      "ss05",
+      "ss06",
+      "ss20",
+      "zero",
+      "onum",
+    },
+  },
+  { family = "Symbols Nerd Font Mono", scale = 0.9 },
+  "Apple Color Emoji",
+  "Noto Color Emoji",
 })
 
-
 {{- if eq .chezmoi.os "linux" }}
-config.default_prog = { "tmuxp", "load", "~/.config/tmuxp/tmuxp.yml" }
-config.font_size = 14.3
-config.line_height = 1.3
+config.font_size = 14.0
+config.line_height = 1.2
 {{- else if eq .chezmoi.os "darwin" }}
-config.default_prog = { "/bin/zsh", "--login", "-c", "/opt/homebrew/bin/tmuxp load ~/.config/tmuxp/tmuxp.yml" }
-config.font_size = 20.0
-config.line_height = 1.4
+config.font_size = 17.0
+config.line_height = 1.3
 {{- end }}
 
-config.window_background_opacity = 1
-config.macos_window_background_blur = 30
+config.bold_brightens_ansi_colors = "BrightAndBold"
+
+-- ╭──────────────────────────────────────────────────────────╮
+-- │                    Window Settings                        │
+-- ╰──────────────────────────────────────────────────────────╯
+
+config.window_decorations = "TITLE | RESIZE"
+config.window_close_confirmation = "NeverPrompt"
+config.window_background_opacity = 0.97
+config.adjust_window_size_when_changing_font_size = false
 
 config.window_padding = {
-	left = 0,
-	right = 0,
-	top = 0,
-	bottom = 0,
+  left = 0,
+  right = 0,
+  top = 0,
+  bottom = 0,
 }
+
+config.initial_cols = 140
+config.initial_rows = 40
+
+{{- if eq .chezmoi.os "darwin" }}
+config.macos_window_background_blur = 30
+config.native_macos_fullscreen_mode = false
+{{- end }}
+
+-- Disable tab bar (using tmux)
+config.enable_tab_bar = false
+
+-- ╭──────────────────────────────────────────────────────────╮
+-- │                    Cursor Settings                        │
+-- ╰──────────────────────────────────────────────────────────╯
+
+config.default_cursor_style = "BlinkingBlock"
+config.cursor_blink_rate = 500
+config.hide_mouse_cursor_when_typing = true
+
+-- ╭──────────────────────────────────────────────────────────╮
+-- │                    Shell / Command                        │
+-- ╰──────────────────────────────────────────────────────────╯
+
+{{- if eq .chezmoi.os "linux" }}
+config.default_prog = {
+  "/usr/bin/zsh",
+  "-l",
+  "-c",
+  [[if tmux has-session 2>/dev/null; then tmux attach; else tmuxp load ~/.config/tmuxp/tmuxp.yml 2>/dev/null; fi]],
+}
+{{- else if eq .chezmoi.os "darwin" }}
+config.default_prog = {
+  "/bin/zsh",
+  "-l",
+  "-c",
+  [[if tmux has-session 2>/dev/null; then tmux attach; else tmuxp load ~/.config/tmuxp/tmuxp.yml 2>/dev/null; fi]],
+}
+{{- end }}
+
+-- ╭──────────────────────────────────────────────────────────╮
+-- │                    Key Bindings                           │
+-- │         (Minimal - tmux handles most things)              │
+-- ╰──────────────────────────────────────────────────────────╯
+
+-- No leader key - let tmux handle it
+config.disable_default_key_bindings = false
+
+config.keys = {
+  -- Only essential macOS shortcuts
+  { key = "c", mods = "SUPER", action = act.CopyTo("Clipboard") },
+  { key = "v", mods = "SUPER", action = act.PasteFrom("Clipboard") },
+  { key = "n", mods = "SUPER", action = act.SpawnWindow },
+  { key = "q", mods = "SUPER", action = act.QuitApplication },
+  
+  -- Font size
+  { key = "+", mods = "SUPER|SHIFT", action = act.IncreaseFontSize },
+  { key = "-", mods = "SUPER", action = act.DecreaseFontSize },
+  { key = "0", mods = "SUPER", action = act.ResetFontSize },
+  
+  -- Fullscreen
+  { key = "Enter", mods = "SUPER", action = act.ToggleFullScreen },
+}
+
+-- ╭──────────────────────────────────────────────────────────╮
+-- │                    Mouse Bindings                         │
+-- ╰──────────────────────────────────────────────────────────╯
+
+config.mouse_bindings = {
+  -- Ctrl+Click to open links
+  {
+    event = { Up = { streak = 1, button = "Left" } },
+    mods = "SUPER",
+    action = act.OpenLinkAtMouseCursor,
+  },
+}
+
+-- ╭──────────────────────────────────────────────────────────╮
+-- │                  Platform Specific                        │
+-- ╰──────────────────────────────────────────────────────────╯
+
+{{- if eq .chezmoi.os "darwin" }}
+config.send_composed_key_when_left_alt_is_pressed = true
+config.send_composed_key_when_right_alt_is_pressed = false
+{{- else if eq .chezmoi.os "linux" }}
+config.enable_wayland = true
+{{- end }}
 
 return config

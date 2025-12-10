@@ -1,8 +1,37 @@
+# GPG Agent Configuration
+# https://www.gnupg.org/documentation/manuals/gnupg/Agent-Options.html
+
+# Enable SSH support
 enable-ssh-support
+
+# Write environment file
 write-env-file
+
+# Use standard socket
 use-standard-socket
+
+# Cache TTL (time-to-live) in seconds
+# Default cache TTL: 10 minutes
 default-cache-ttl 600
+
+# Maximum cache TTL: 2 hours
 max-cache-ttl 7200
+
+# SSH cache TTL: 10 minutes  
+default-cache-ttl-ssh 600
+
+# Maximum SSH cache TTL: 2 hours
+max-cache-ttl-ssh 7200
+
+# Pinentry program for password prompts
 {{- if eq .chezmoi.os "darwin" }}
 pinentry-program /opt/homebrew/bin/pinentry-mac
+{{- else if eq .chezmoi.os "linux" }}
+pinentry-program /usr/bin/pinentry-gnome3
 {{- end }}
+
+# Disable grab (allows for better integration with some DEs)
+no-grab
+
+# Allow preset passphrases
+allow-preset-passphrase

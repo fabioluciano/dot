@@ -1,11 +1,136 @@
-command = /bin/zsh
+# ╭──────────────────────────────────────────────────────────╮
+# │                    Ghostty Configuration                  │
+# │            Aligned with WezTerm settings                  │
+# ╰──────────────────────────────────────────────────────────╯
+
+# ╭──────────────────────────────────────────────────────────╮
+# │                      Color Scheme                         │
+# ╰──────────────────────────────────────────────────────────╯
+
 theme = tokyonight
-click-repeat-interval = 500
-auto-update-channel = stable
-font-family = CaskaydiaCove Nerd Font 
+background-opacity = 0.97
+cursor-color = #c0caf5
+cursor-text = #1a1b26
+selection-foreground = #c0caf5
+selection-background = #33467c
+
+# ╭──────────────────────────────────────────────────────────╮
+# │                         Fonts                             │
+# ╰──────────────────────────────────────────────────────────╯
+
+font-family = CaskaydiaCove Nerd Font
+font-family-bold = CaskaydiaCove Nerd Font
+font-family-italic = CaskaydiaCove Nerd Font
+font-family-bold-italic = CaskaydiaCove Nerd Font
 font-size = 17
 font-thicken = false
 font-style = Regular
-adjust-cell-height = 5
+font-style-bold = Bold
+font-style-italic = Italic
+font-style-bold-italic = Bold Italic
+adjust-cell-height = 30%
+font-feature = calt
+font-feature = liga
+font-feature = dlig
+font-feature = ss01
+font-feature = ss02
+font-feature = ss03
+font-feature = ss04
+font-feature = ss05
+font-feature = ss06
+font-feature = ss20
+font-feature = zero
+font-feature = onum
+bold-is-bright = true
+
+# ╭──────────────────────────────────────────────────────────╮
+# │                    Window Settings                        │
+# ╰──────────────────────────────────────────────────────────╯
+
+window-padding-x = 0
+window-padding-y = 0
+window-padding-balance = true
+window-inherit-working-directory = true
+window-inherit-font-size = true
+window-decoration = true
+window-save-state = always
+confirm-close-surface = false
+resize-overlay = never
+
+# Initial size (columns x rows)
+window-width = 140
+window-height = 40
+
+# macOS specific
+macos-titlebar-style = native
+macos-window-shadow = true
+
+# ╭──────────────────────────────────────────────────────────╮
+# │                    Cursor Settings                        │
+# ╰──────────────────────────────────────────────────────────╯
+
+cursor-style = block
+cursor-style-blink = true
+cursor-click-to-move = true
+mouse-hide-while-typing = true
+
+# ╭──────────────────────────────────────────────────────────╮
+# │                    Shell / Command                        │
+# ╰──────────────────────────────────────────────────────────╯
+
 shell-integration = zsh
-command = /bin/zsh -l -c "if tmux has-session 2>/dev/null; then tmux attach; else tmuxp load ~/.config/tmuxp/tmuxp.yml; fi"
+shell-integration-features = cursor,sudo,title
+command = /bin/zsh -l -c "if tmux has-session 2>/dev/null; then tmux attach; else tmuxp load ~/.config/tmuxp/tmuxp.yml 2>/dev/null; fi"
+
+# ╭──────────────────────────────────────────────────────────╮
+# │                    Scrollback                             │
+# ╰──────────────────────────────────────────────────────────╯
+
+scrollback-limit = 10000
+
+# ╭──────────────────────────────────────────────────────────╮
+# │                    Links / URLs                           │
+# ╰──────────────────────────────────────────────────────────╯
+
+link-url = true
+
+# ╭──────────────────────────────────────────────────────────╮
+# │                    Key Bindings                           │
+# │         (Minimal - tmux handles most things)              │
+# ╰──────────────────────────────────────────────────────────╯
+
+# Copy/Paste (macOS)
+keybind = super+c=copy_to_clipboard
+keybind = super+v=paste_from_clipboard
+
+# New window
+keybind = super+n=new_window
+
+# Quit
+keybind = super+q=quit
+
+# Font size
+keybind = super+plus=increase_font_size:1
+keybind = super+minus=decrease_font_size:1
+keybind = super+zero=reset_font_size
+
+# Fullscreen
+keybind = super+enter=toggle_fullscreen
+
+# ╭──────────────────────────────────────────────────────────╮
+# │                    Clipboard                              │
+# ╰──────────────────────────────────────────────────────────╯
+
+clipboard-read = allow
+clipboard-write = allow
+clipboard-trim-trailing-spaces = true
+copy-on-select = false
+
+# ╭──────────────────────────────────────────────────────────╮
+# │                    Behavior                               │
+# ╰──────────────────────────────────────────────────────────╯
+
+click-repeat-interval = 500
+auto-update = check
+auto-update-channel = stable
+quit-after-last-window-closed = true
