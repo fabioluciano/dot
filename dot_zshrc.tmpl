@@ -3,7 +3,11 @@ zmodload zsh/zprof  # Enable profiling if needed
 skip_global_compinit=1
 
 {{- if eq .chezmoi.os "linux" }}
+{{-   if eq .chezmoi.osRelease.id "arch" }}
 source /usr/share/zsh/scripts/zplug/init.zsh
+{{-   else }}
+source ~/.zplug/init.zsh
+{{-   end }}
 {{- else if eq .chezmoi.os "darwin" }}
 source /opt/homebrew/opt/zplug/init.zsh
 {{- end }}
@@ -80,8 +84,13 @@ setopt HIST_REDUCE_BLANKS    # Remove superfluous blanks from each command line 
 fpath+=~/.zfunc
 
 {{- if eq .chezmoi.os "linux" }}
+{{-   if eq .chezmoi.osRelease.id "arch" }}
 source /usr/share/fzf/completion.zsh
 source /usr/share/fzf/key-bindings.zsh
+{{-   else }}
+[ -f /usr/share/doc/fzf/examples/completion.zsh ] && source /usr/share/doc/fzf/examples/completion.zsh
+[ -f /usr/share/doc/fzf/examples/key-bindings.zsh ] && source /usr/share/doc/fzf/examples/key-bindings.zsh
+{{-   end }}
 {{- end }}
 
 export LC_CTYPE=en_US.UTF-8
