@@ -22,7 +22,11 @@ font-family = CaskaydiaCove Nerd Font
 font-family-bold = CaskaydiaCove Nerd Font
 font-family-italic = CaskaydiaCove Nerd Font
 font-family-bold-italic = CaskaydiaCove Nerd Font
+{{- if eq .chezmoi.os "darwin" }}
+font-size = 15
+{{- else }}
 font-size = 13
+{{- end }}
 font-thicken = false
 font-style = Regular
 font-style-bold = Bold

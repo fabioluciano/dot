@@ -46,7 +46,6 @@ zplug 'zsh-users/zsh-syntax-highlighting', defer:2
 zplug 'zsh-users/zsh-history-substring-search', defer:3
 zplug 'zsh-users/zsh-completions', depth:1
 
-zplug "MichaelAquilina/zsh-you-should-use"
 zplug "junegunn/fzf", use:shell/key-bindings.zsh
 
 autoload -U compinit; compinit
@@ -89,7 +88,6 @@ export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
-
 zstyle ':completion:*:git-checkout:*' sort false
 zstyle ':completion:*:descriptions' format '[%d]'
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
@@ -106,16 +104,6 @@ eval "$(direnv hook zsh)"
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 eval "$(mise activate zsh)"
-
-# Lazy load kubectl completion for better performance
-if command -v kubectl &> /dev/null; then
-  kubectl() {
-    if ! type __start_kubectl &> /dev/null; then
-      source <(command kubectl completion zsh)
-    fi
-    command kubectl "$@"
-  }
-fi
 
 if type brew &>/dev/null
 then
@@ -159,8 +147,12 @@ alias kdp='kubectl describe pod'
 alias kl='kubectl logs'
 alias kaf='kubectl apply -f'
 alias kdel='kubectl delete'
-alias kubectl=kubecolor
-compdef kubecolor=kubectl
+
+# Use kubecolor with kubectl completion
+if command -v kubecolor &> /dev/null; then
+  alias kubectl=kubecolor
+  compdef kubecolor=kubectl
+fi
 
 # Editor
 alias vim='nvim'
