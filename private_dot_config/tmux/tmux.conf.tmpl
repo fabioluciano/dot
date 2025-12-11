@@ -61,7 +61,7 @@ set -g @plugin 'fabioluciano/tmux-powerkit'
 ### Plugins Options
 set -g @extrakto_popup_size 70%
 
-set -g @powerkit_plugins 'weather,battery,cpu,memory,network,git,kubernetes,nowplaying,packages,volume,wifi,bluetooth,vpn,temperature,brightness,audiodevices,camera,microphone,smartkey'
+set -g @powerkit_plugins 'weather,battery,cpu,memory,gpu,fan,ping,network,git,kubernetes,terraform,nowplaying,packages,volume,wifi,bluetooth,vpn,temperature,brightness,audiodevices,camera,microphone,smartkey,ssh,cloudstatus'
 
 set -g @powerkit_theme 'tokyo-night'
 set -g @powerkit_transparent 'true'
@@ -73,7 +73,11 @@ set -g @powerkit_plugin_wifi_hide_when_connected "true"
 set -g @powerkit_plugin_temperature_hide_below_threshold "85"
 
 {{- if eq .chezmoi.os "linux" }}
+{{-   if eq .chezmoi.osRelease.id "arch" }}
 run '/usr/share/tmux-plugin-manager/tpm'
+{{-   else }}
+run '~/.tmux/plugins/tpm/tpm'
+{{-   end }}
 {{- else if eq .chezmoi.os "darwin" }}
 run "/opt/homebrew/opt/tpm/share/tpm/tpm"
-{{ end }}
+{{- end }}

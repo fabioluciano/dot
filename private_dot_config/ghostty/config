@@ -7,8 +7,8 @@
 # │                      Color Scheme                         │
 # ╰──────────────────────────────────────────────────────────╯
 
-theme = tokyonight
-background-opacity = 0.97
+theme = TokyoNight
+background-opacity = 1
 cursor-color = #c0caf5
 cursor-text = #1a1b26
 selection-foreground = #c0caf5
@@ -22,13 +22,13 @@ font-family = CaskaydiaCove Nerd Font
 font-family-bold = CaskaydiaCove Nerd Font
 font-family-italic = CaskaydiaCove Nerd Font
 font-family-bold-italic = CaskaydiaCove Nerd Font
-font-size = 17
+font-size = 13
 font-thicken = false
 font-style = Regular
 font-style-bold = Bold
 font-style-italic = Italic
 font-style-bold-italic = Bold Italic
-adjust-cell-height = 30%
+adjust-cell-height = 50%
 font-feature = calt
 font-feature = liga
 font-feature = dlig
@@ -49,10 +49,10 @@ bold-is-bright = true
 
 window-padding-x = 0
 window-padding-y = 0
-window-padding-balance = true
+window-padding-balance = false
 window-inherit-working-directory = true
 window-inherit-font-size = true
-window-decoration = true
+window-decoration = server
 window-save-state = always
 confirm-close-surface = false
 resize-overlay = never
