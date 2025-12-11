@@ -45,14 +45,12 @@ set -g @plugin 'tmux-plugins/tpm'
 
 set -g @plugin 'tmux-plugins/tmux-pain-control'
 set -g @plugin 'tmux-plugins/tmux-sensible'
-set -g @plugin 'tmux-plugins/tmux-logging'
 
 set -g @plugin 'sainnhe/tmux-fzf'
 set -g @plugin 'laktak/extrakto'
 set -g @plugin 'roosta/tmux-pop'
 set -g @plugin 'nhdaly/tmux-better-mouse-mode'
 
-# Better mouse mode options - send scroll to applications like nvim
 set -g @scroll-without-changing-pane 'on'
 set -g @scroll-in-moused-over-pane 'on'
 set -g @emulate-scroll-for-no-mouse-alternate-buffer 'on'
@@ -71,6 +69,8 @@ set -g @powerkit_transparent 'true'
 set -g @powerkit_plugin_battery_hide_when_full_and_charging 'true'
 set -g @powerkit_plugin_audiodevices_show "off"
 set -g @powerkit_plugin_weather_location "Brasilia,Brazil"
+set -g @powerkit_plugin_wifi_hide_when_connected "true"
+set -g @powerkit_plugin_temperature_hide_below_threshold "85"
 
 {{- if eq .chezmoi.os "linux" }}
 run '/usr/share/tmux-plugin-manager/tpm'
