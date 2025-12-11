@@ -1,9 +1,7 @@
 [user]
   email = fabio@naoimporta.com
   name = Fábio Luciano
-{{- if eq .chezmoi.os "linux" }}
   signingkey = ~/.ssh/yubikey.pub
-{{- end }}
 
 [includeIf "gitdir/i:/mnt/srv/work/"]
   path = ~/.config/git/work
@@ -142,7 +140,6 @@
 [receive]
   fsckObjects = true
 
-{{- if eq .chezmoi.os "linux" }}
 [commit]
   gpgsign = true
 
@@ -154,4 +151,3 @@
 
 [gpg "ssh"]
   allowedSignersFile = ~/.ssh/allowed_signers
-{{- end }}

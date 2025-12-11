@@ -1,0 +1,15 @@
+#!/bin/bash
+# Cria o arquivo yubikey.pub a partir da YubiKey conectada
+
+YUBIKEY_PUB="$HOME/.ssh/yubikey.pub"
+
+# Verifica se a YubiKey está conectada
+if ssh-add -L 2>/dev/null | grep -q "cardno:"; then
+    echo "YubiKey detectada. Criando $YUBIKEY_PUB..."
+    mkdir -p "$HOME/.ssh"
+    ssh-add -L | grep "cardno:" > "$YUBIKEY_PUB"
+    chmod 644 "$YUBIKEY_PUB"
+    echo "Arquivo $YUBIKEY_PUB criado com sucesso!"
+else
+    echo "AVISO: YubiKey não detectada. Conecte a YubiKey e execute 'chezmoi apply' novamente."
+fi

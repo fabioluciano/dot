@@ -1,0 +1,18 @@
+#!/bin/bash
+# Cria o arquivo allowed_signers para verificação de assinaturas SSH
+
+ALLOWED_SIGNERS="$HOME/.ssh/allowed_signers"
+YUBIKEY_PUB="$HOME/.ssh/yubikey.pub"
+
+if [ -f "$YUBIKEY_PUB" ]; then
+    echo "Criando $ALLOWED_SIGNERS..."
+    mkdir -p "$HOME/.ssh"
+    
+    # Adiciona os e-mails com a chave da YubiKey
+    echo "fabio@naoimporta.com $(cat "$YUBIKEY_PUB")" > "$ALLOWED_SIGNERS"
+    
+    chmod 644 "$ALLOWED_SIGNERS"
+    echo "Arquivo $ALLOWED_SIGNERS criado com sucesso!"
+else
+    echo "AVISO: $YUBIKEY_PUB não encontrado. Execute 'chezmoi apply' com a YubiKey conectada."
+fi
