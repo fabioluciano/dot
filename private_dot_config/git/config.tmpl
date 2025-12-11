@@ -2,7 +2,7 @@
   email = fabio@naoimporta.com
   name = Fábio Luciano
 {{- if eq .chezmoi.os "linux" }}
-	signingkey = 5E62F5CCFD894AC7A0685AA5C981CCE8678EF824
+  signingkey = ~/.ssh/id_ed25519.pub
 {{- end }}
 
 [includeIf "gitdir/i:/mnt/srv/work/"]
@@ -143,9 +143,15 @@
   fsckObjects = true
 
 {{- if eq .chezmoi.os "linux" }}
-## [commit]
-## 	gpgsign = true
+[commit]
+  gpgsign = true
 
-## [gpg]
-## 	program = gpg
+[tag]
+  gpgsign = true
+
+[gpg]
+  format = ssh
+
+[gpg "ssh"]
+  allowedSignersFile = ~/.ssh/allowed_signers
 {{- end }}
