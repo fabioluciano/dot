@@ -2,7 +2,7 @@
   email = fabio@naoimporta.com
   name = Fábio Luciano
 {{- if eq .chezmoi.os "linux" }}
-  signingkey = ~/.ssh/id_ed25519.pub
+  signingkey = ~/.ssh/yubikey.pub
 {{- end }}
 
 [includeIf "gitdir/i:/mnt/srv/work/"]
