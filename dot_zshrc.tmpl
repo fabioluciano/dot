@@ -190,4 +190,9 @@ if command -v gpgconf &> /dev/null; then
   gpgconf --launch gpg-agent
 fi
 
+if command -v ngrok &>/dev/null; then
+  eval "$(ngrok completion)"
+fi
+
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
