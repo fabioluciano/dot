@@ -73,8 +73,11 @@ set -g @powerkit_plugin_weather_location "Brasilia,Brazil"
 set -g @powerkit_plugin_wifi_hide_when_connected "true"
 set -g @powerkit_plugin_temperature_hide_below_threshold "85"
 set -g @powerkit_plugin_github_warning_threshold "1"
+set -g @powerkit_plugin_github_repos "fabioluciano/tmux-powerkit"
+set -g @powerkit_plugin_github_token "$GITHUB_TOKEN"
 
-{{- if eq .chezmoi.os "linux" }}
+
+{{ if eq .chezmoi.os "linux" }}
 {{-   if eq .chezmoi.osRelease.id "arch" }}
 run '/usr/share/tmux-plugin-manager/tpm'
 {{-   else }}
