@@ -107,7 +107,6 @@ return {
   -- ╰────────────────────────────────────────────────────────╯
   { import = "astrocommunity.pack.angular" },
   { import = "astrocommunity.pack.bash" },
-  -- { import = "astrocommunity.pack.docker" }, -- DISABLED: docker-language-server not available in mason
   { import = "astrocommunity.pack.go" },
   { import = "astrocommunity.pack.helm" },
   { import = "astrocommunity.pack.html-css" },
@@ -173,4 +172,5 @@ return {
   -- │                    Workflow                            │
   -- ╰────────────────────────────────────────────────────────╯
   { import = "astrocommunity.workflow.precognition-nvim" },
+
 }

@@ -19,6 +19,8 @@ opacity = 1
 columns = 100
 lines = 30
 
+
+
 [window.padding]
 x = 0
 y = 0
@@ -30,25 +32,55 @@ multiplier = 3
 [font]
 {{- if eq .chezmoi.os "linux" }}
 size = 13.0
+
+# Ghostty: Ajuste de altura da célula (não suportado diretamente no Alacritty)
 {{- else if eq .chezmoi.os "darwin" }}
+
+# Ghostty: Font features (não suportado diretamente, mas pode ser configurado via fontconfig)
 size = 18.0
+
+# Ghostty: bold-is-bright = true (Alacritty já trata cores bright)
+
+# Ghostty: Window padding balance, inherit working directory/font size, window decoration/save state
 {{- end }}
 
 [font.normal]
 {{- if eq .chezmoi.os "linux" }}
 family = "CaskaydiaCove Nerd Font Mono"
+
+# Ghostty: Confirm close, resize overlay
 {{- else if eq .chezmoi.os "darwin" }}
 family = "CaskaydiaCove Nerd Font Mono"
+
+# Ghostty: macOS titlebar style e sombra (não suportado diretamente)
 {{- end }}
 style = "Regular"
 
+# Ghostty: Cursor click to move (não suportado)
+
+
+# Ghostty: mouse-hide-while-typing
 [font.bold]
 {{- if eq .chezmoi.os "linux" }}
+
+# Ghostty: shell-integration (não há integração direta, mas shell customizado já está configurado)
+
+# Ghostty: link-url (Alacritty já detecta links por padrão)
+
+# Ghostty: clipboard-trim-trailing-spaces (não suportado)
 family = "CaskaydiaCove Nerd Font Mono"
+
+# Ghostty: copy-on-select
 {{- else if eq .chezmoi.os "darwin" }}
+
+# Ghostty: click-repeat-interval (não suportado)
 family = "CaskaydiaCove Nerd Font Mono"
+
+# Ghostty: auto-update (não aplicável)
 {{- end }}
 style = "Bold"
+
+# Ghostty: quit-after-last-window-closed (não suportado)
 
 [font.italic]
 {{- if eq .chezmoi.os "linux" }}
@@ -68,7 +100,11 @@ style = "Bold Italic"
 
 [font.offset]
 x = 0
-y = 0
+y = 10
+
+[font.glyph_offset]
+x = 0
+y = 10
 
 # Tokyo Night theme colors
 [colors.primary]
