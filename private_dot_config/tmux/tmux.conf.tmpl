@@ -72,6 +72,7 @@ set -g @powerkit_plugin_audiodevices_show "off"
 set -g @powerkit_plugin_weather_location "Brasilia,Brazil"
 set -g @powerkit_plugin_wifi_hide_when_connected "true"
 set -g @powerkit_plugin_temperature_hide_below_threshold "85"
+set -g @powerkit_plugin_github_warning_threshold "1"
 
 {{- if eq .chezmoi.os "linux" }}
 {{-   if eq .chezmoi.osRelease.id "arch" }}
