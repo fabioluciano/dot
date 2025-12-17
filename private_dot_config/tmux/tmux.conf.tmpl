@@ -62,12 +62,11 @@ set -g @plugin 'fabioluciano/tmux-powerkit'
 ### Plugins Options
 set -g @extrakto_popup_size 70%
 
-#set -g @powerkit_plugins 'datetime,hostname,uptime,weather,github,gitlab,bitbucket,battery,bitwarden,cpu,memory,gpu,loadavg,disk,fan,ping,network,external_ip,git,kubernetes,terraform,cloud,cloudstatus,nowplaying,packages,wifi,bluetooth,vpn,temperature,brightness,audiodevices,camera,microphone,smartkey,ssh,timezones'
+#### PowerKit
 
 set -g @powerkit_plugins 'weather,github,battery,cpu,memory,gpu,fan,ping,network,git,kubernetes,terraform,nowplaying,packages,volume,wifi,bluetooth,vpn,temperature,brightness,audiodevices,camera,microphone,smartkey,ssh'
 
 set -g @powerkit_theme 'tokyo-night'
-set -g @powerkit_transparent 'false'
 
 set -g @powerkit_plugin_battery_hide_when_full_and_charging 'true'
 
@@ -87,6 +86,9 @@ set -g @powerkit_plugin_github_token "$GITHUB_TOKEN"
 
 set -g @powerkit_plugin_bitwarden_show_when_locked "false"
 set -g @powerkit_plugin_bitwarden_totp_selector_key 'C-t'
+
+set -g @powerkit_plugin_fan_selection "all"
+set -g @powerkit_plugin_fan_hide_when_idle "true"
 
 
 {{ if eq .chezmoi.os "linux" }}
