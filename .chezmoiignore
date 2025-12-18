@@ -8,7 +8,6 @@ docs/
 
 # Version control
 .git/
-.gitignore
 
 # Brewfile is only used to track installed packages
 Brewfile
