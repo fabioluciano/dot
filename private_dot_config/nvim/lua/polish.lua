@@ -3,6 +3,14 @@
 -- │              Final setup after all plugins loaded         │
 -- ╰──────────────────────────────────────────────────────────╯
 
+-- Enable undercurl support in terminal
+vim.opt.termguicolors = true
+-- Undercurl support for terminals that support it (kitty, wezterm, ghostty, etc.)
+vim.cmd [[
+  let &t_Cs = "\e[4:3m"
+  let &t_Ce = "\e[4:0m"
+]]
+
 -- Custom filetypes
 vim.filetype.add {
   extension = {
@@ -80,6 +88,22 @@ vim.defer_fn(function()
     vim.cmd "doautocmd ColorScheme " .. vim.g.colors_name
   end
 end, 100)
+
+-- Spell highlight - apply after everything else loads
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function()
+    vim.defer_fn(function()
+      -- Red background + red text for spelling errors
+      vim.cmd [[
+        highlight SpellBad guibg=#3d2026 guifg=#f7768e gui=underline
+        highlight SpellCap guibg=#3d3520 guifg=#e0af68 gui=underline
+        highlight SpellLocal guibg=#203040 guifg=#7aa2f7 gui=underline
+        highlight SpellRare guibg=#302040 guifg=#bb9af7 gui=underline
+      ]]
+    end, 500)
+  end,
+  desc = "Setup spell highlights after startup",
+})
 
 -- ╭──────────────────────────────────────────────────────────╮
 -- │                    Spellcheck Setup                       │

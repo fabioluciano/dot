@@ -36,8 +36,9 @@ return {
         },
         relativenumber = false,
         number = true,
-        spell = true,
+        spell = false, -- Disabled globally, enabled per filetype
         spelllang = { "en", "pt" },
+        spelloptions = "camel", -- Check camelCase words separately
         signcolumn = "auto",
         wrap = true,
         tabstop = 2,
@@ -50,7 +51,39 @@ return {
       },
       g = {},
     },
-    mappings = {},
-    autocmds = {},
+    mappings = {
+      n = {
+        ["<Leader>C"] = { desc = " Claude" },
+      },
+    },
+    autocmds = {
+      -- Enable spell only for text files (markdown, text, gitcommit, etc.)
+      spell_text_files = {
+        {
+          event = "FileType",
+          pattern = { "markdown", "text", "gitcommit", "plaintex", "tex", "rst", "asciidoc" },
+          callback = function()
+            vim.opt_local.spell = true
+          end,
+          desc = "Enable spell checking for text files",
+        },
+      },
+      -- Enable spell only in comments for code files using Treesitter
+      spell_comments = {
+        {
+          event = "FileType",
+          pattern = {
+            "lua", "python", "javascript", "typescript", "typescriptreact", "javascriptreact",
+            "go", "rust", "c", "cpp", "java", "php", "ruby", "sh", "bash", "zsh", "yaml", "toml",
+          },
+          callback = function()
+            vim.opt_local.spell = true
+            -- Only check spelling in comments and strings via treesitter
+            vim.opt_local.spelloptions:append("noplainbuffer")
+          end,
+          desc = "Enable spell checking only in comments for code files",
+        },
+      },
+    },
   },
 }

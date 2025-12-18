@@ -83,7 +83,7 @@ return {
       -- File icons
       FolderClosed = "",
       FolderOpen = "",
-      FolderEmpty = "",
+      FolderEmpty = "󰜌",
       -- Misc
       ActiveLSP = "",
       ActiveTS = "",

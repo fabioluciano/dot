@@ -145,4 +145,18 @@ return {
       intervals = 35,
     },
   },
+
+  -- Claude Code integration
+  {
+    "greggh/claude-code.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    keys = {
+      { "<leader>C", group = "Claude" },
+      { "<leader>Cc", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude Code" },
+      { "<leader>Cs", "<cmd>ClaudeCodeSend<cr>", desc = "Send to Claude", mode = { "n", "v" } },
+    },
+    opts = {},
+  },
 }
