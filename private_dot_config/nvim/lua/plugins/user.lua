@@ -157,6 +157,11 @@ return {
       { "<leader>Cc", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude Code" },
       { "<leader>Cs", "<cmd>ClaudeCodeSend<cr>", desc = "Send to Claude", mode = { "n", "v" } },
     },
-    opts = {},
+    opts = {
+      window = {
+        position = "float", -- Janela flutuante
+        enter_insert = true,
+      },
+    },
   },
 }

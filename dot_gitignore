@@ -1,0 +1,63 @@
+# IDEs and Editors
+.vscode/
+.claude/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Backup files
+*.bak
+*.backup
+*.old
+*.orig
+*.tmp
+
+# Log files
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment and secrets
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# Dependency directories (local overrides)
+node_modules/
+.pnp
+.pnp.js
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+.venv/
+venv/
+ENV/
+env/
+
+# Testing
+.coverage
+.pytest_cache/
+coverage/
+
+# Personal notes
+TODO.md
+NOTES.md
+notes.txt
