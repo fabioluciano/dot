@@ -1,6 +1,5 @@
 ### General Options
-set-option -gq utf8
-set-option -g visual-activity on
+set-option -g visual-activity off
 set-option -g status-position top
 set-option -g base-index 1
 set-option -g pane-base-index 1
@@ -9,15 +8,13 @@ set-option -g focus-events on
 {{- if eq .chezmoi.os "linux" }}
 set-option -g default-terminal "tmux-256color"
 {{- else if eq .chezmoi.os "darwin" }}
-set-option -g default-terminal "xterm-256color"
+set-option -g default-terminal "tmux-256color"
 {{- end }}
-set-option -ag terminal-overrides ",xterm-256color:RGB"
-set-option -sg escape-time 0
-set-option -sg repeat-time 0
-set-option -gq mouse-utf8 on
+set-option -ag terminal-overrides ",*256col*:Tc"
+set-option -sg escape-time 10
+set-option -sg repeat-time 300
 set-option -g mouse on
 set-option -g prefix C-a
-set-option -g visual-activity off
 set-option -g set-titles on
 set-option -g history-limit 50000
 set-option -g display-time 4000
@@ -27,7 +24,6 @@ set-window-option -g monitor-activity on
 set-window-option -g automatic-rename on
 set-window-option -g pane-base-index 1
 set-window-option -g mouse on
-set-window-option -gq utf8 on
 set-window-option -g mode-keys vi
 
 ### Key Bindings 
@@ -51,22 +47,25 @@ set -g @plugin 'laktak/extrakto'
 set -g @plugin 'roosta/tmux-pop'
 set -g @plugin 'nhdaly/tmux-better-mouse-mode'
 set -g @plugin 'azorng/tmux-smooth-scroll'
+set -g @plugin 'fabioluciano/tmux-powerkit'
+
+
+set -g @tpm-install "C-i"
+set -g @tpm-update "C-u"
 
 set -g @scroll-without-changing-pane 'on'
 set -g @scroll-in-moused-over-pane 'on'
 set -g @emulate-scroll-for-no-mouse-alternate-buffer 'on'
 set -g @scroll-speed-num-lines-per-scroll '3'
 
-set -g @plugin 'fabioluciano/tmux-powerkit'
-
-### Plugins Options
-set -g @extrakto_popup_size 70%
-
 #### PowerKit
-
-set -g @powerkit_plugins 'weather,github,battery,cpu,memory,gpu,fan,ping,network,git,kubernetes,terraform,nowplaying,packages,volume,wifi,bluetooth,vpn,temperature,brightness,audiodevices,camera,microphone,smartkey,ssh'
+set -g @powerkit_plugins 'weather,github,battery,bitwarden,cpu,memory,gpu,fan,ping,network,git,kubernetes,terraform,nowplaying,packages,volume,wifi,bluetooth,vpn,temperature,brightness,audiodevices,camera,microphone,smartkey,ssh'
 
 set -g @powerkit_theme 'tokyo-night'
+set -g @powerkit_theme_variant 'night'
+
+set -g @powerkit_transparent "true"
+set -g @powerkit_elements_spacing "false"
 
 set -g @powerkit_plugin_battery_hide_when_full_and_charging 'true'
 
@@ -84,11 +83,30 @@ set -g @powerkit_plugin_github_warning_threshold "1"
 set -g @powerkit_plugin_github_repos "fabioluciano/tmux-powerkit"
 set -g @powerkit_plugin_github_token "$GITHUB_TOKEN"
 
-set -g @powerkit_plugin_bitwarden_show_when_locked "false"
-set -g @powerkit_plugin_bitwarden_totp_selector_key 'C-t'
-
 set -g @powerkit_plugin_fan_selection "all"
 set -g @powerkit_plugin_fan_hide_when_idle "true"
+
+set -g @powerkit_plugin_bitwarden_show_when_locked "false"
+
+
+### Keybindings for PowerKit Plugins
+set -g @powerkit_options_key 'H'
+set -g @powerkit_keybindings_key 'Q'
+set -g @powerkit_theme_selector_key 'C-r'
+set -g @powerkit_plugin_cache_clear_key 'C-x'
+
+set -g @powerkit_plugin_bitwarden_lock_key "L"
+set -g @powerkit_plugin_bitwarden_unlock_key 'U'
+set -g @powerkit_plugin_bitwarden_password_selector_key 'C-v'
+set -g @powerkit_plugin_bitwarden_totp_selector_key "P"
+
+set -g @powerkit_plugin_audiodevices_input_key 'O'
+set -g @powerkit_plugin_audiodevices_output_key 'I'
+
+set -g @powerkit_plugin_kubernetes_context_selector_key 'K'
+set -g @powerkit_plugin_kubernetes_namespace_selector_key 'J'
+
+set -g @powerkit_plugin_terraform_workspace_key 'C-w'
 
 
 {{ if eq .chezmoi.os "linux" }}
