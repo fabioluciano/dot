@@ -58,6 +58,10 @@ set -g @scroll-in-moused-over-pane 'on'
 set -g @emulate-scroll-for-no-mouse-alternate-buffer 'on'
 set -g @scroll-speed-num-lines-per-scroll '3'
 
+# All 42 plugins enabled:
+# set -g @powerkit_plugins 'audiodevices,battery,bitbucket,bitwarden,bluetooth,brightness,camera,cloud,cloudstatus,cpu,crypto,datetime,disk,externalip,fan,git,github,gitlab,gpu,hostname,iops,jira,kubernetes,loadavg,memory,microphone,netspeed,nowplaying,packages,ping,pomodoro,smartkey,ssh,stocks,temperature,terraform,timezones,uptime,volume,vpn,weather,wifi'
+
+
 #### PowerKit
 set -g @powerkit_plugins 'weather,github,battery,bitwarden,cpu,memory,gpu,fan,ping,network,git,kubernetes,terraform,nowplaying,packages,volume,wifi,bluetooth,vpn,temperature,brightness,audiodevices,camera,microphone,smartkey,ssh'
 
@@ -82,6 +86,18 @@ set -g @powerkit_plugin_temperature_hide_below_threshold "85"
 set -g @powerkit_plugin_github_warning_threshold "1"
 set -g @powerkit_plugin_github_repos "fabioluciano/tmux-powerkit"
 set -g @powerkit_plugin_github_token "$GITHUB_TOKEN"
+
+set -g @powerkit_plugin_gitlab_token "$GITLAB_TOKEN"
+set -g @powerkit_plugin_gitlab_repos "integr8/ansible/gitlab"
+
+set -g @powerkit_plugin_bitbucket_type "cloud"
+set -g @powerkit_plugin_bitbucket_repos "fabioluciano/testea"
+set -g @powerkit_plugin_bitbucket_email "fabio@naoimporta.com"
+set -g @powerkit_plugin_bitbucket_token "$BITBUCKET_TOKEN"
+
+set -g @powerkit_plugin_jira_domain "$JIRA_DOMAIN"
+set -g @powerkit_plugin_jira_email "$JIRA_EMAIL"
+set -g @powerkit_plugin_jira_token "$JIRA_TOKEN"
 
 set -g @powerkit_plugin_fan_selection "all"
 set -g @powerkit_plugin_fan_hide_when_idle "true"

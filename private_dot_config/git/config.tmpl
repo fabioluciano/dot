@@ -84,6 +84,8 @@
   undo = reset --soft HEAD~1
   unstage = reset HEAD --
   contributors = shortlog --summary --numbered
+
+  fix-fetch = "!git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'"
   
 [gitflow "branch"]
   develop = development
