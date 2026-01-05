@@ -7,10 +7,9 @@ return {
 	-- Justfile syntax
 	{ "NoahTheDuke/vim-just", ft = "just" },
 
-	-- Discord presence
+	-- Discord presence config (plugin from astrocommunity.media.presence-nvim)
 	{
 		"andweeb/presence.nvim",
-		event = "VeryLazy",
 		opts = {
 			neovim_image_text = "The One True Text Editor",
 			main_image = "neovim",

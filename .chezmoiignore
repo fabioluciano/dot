@@ -32,6 +32,8 @@ Brewfile
 {{- if ne .chezmoi.os "linux" }}
 # Ignore Linux-specific files when not on Linux
 .config/compiz-1
+.config/cortile
+.config/xfce4
 dot_Pacmanfile
 logid.cfg
 {{- end }}
@@ -39,6 +41,5 @@ logid.cfg
 {{- if ne .chezmoi.os "darwin" }}
 # Ignore macOS-specific files when not on macOS
 .Brewfile
-.ssh/config
 {{- end }}
 

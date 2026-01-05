@@ -77,11 +77,10 @@ return {
 	-- ╭────────────────────────────────────────────────────────╮
 	-- │                    Git                                 │
 	-- ╰────────────────────────────────────────────────────────╯
-	{ import = "astrocommunity.git.blame-nvim" },
 	{ import = "astrocommunity.git.octo-nvim" },
 	{ import = "astrocommunity.git.neogit" },
 	{ import = "astrocommunity.git.diffview-nvim" },
-	{ import = "astrocommunity.git.git-blame-nvim" },
+	{ import = "astrocommunity.git.git-blame-nvim" }, -- kept this one (more features than blame-nvim)
 
 	-- ╭────────────────────────────────────────────────────────╮
 	-- │                    Indent                              │
@@ -106,10 +105,9 @@ return {
 	-- ╭────────────────────────────────────────────────────────╮
 	-- │                    Motion                              │
 	-- ╰────────────────────────────────────────────────────────╯
-	{ import = "astrocommunity.motion.flash-nvim" },
+	{ import = "astrocommunity.motion.flash-nvim" }, -- modern hop alternative
 	{ import = "astrocommunity.motion.nvim-surround" },
-	{ import = "astrocommunity.motion.mini-move" },
-	{ import = "astrocommunity.motion.hop-nvim" },
+	-- removed mini-move (using vim-move from editing-support instead)
 
 	-- ╭────────────────────────────────────────────────────────╮
 	-- │                    Language Packs                      │
@@ -137,6 +135,59 @@ return {
 	{ import = "astrocommunity.pack.chezmoi" },
 	{ import = "astrocommunity.pack.cmake" },
 	{ import = "astrocommunity.pack.nix" },
+
+	-- ╭────────────────────────────────────────────────────────╮
+	-- │                    Note-taking                         │
+	-- ╰────────────────────────────────────────────────────────╯
+	{ import = "astrocommunity.note-taking.obsidian-nvim" },
+	{
+		"epwalsh/obsidian.nvim",
+		opts = {
+			workspaces = {
+				{ name = "study", path = "~/Obsidian/study" },
+				{ name = "work", path = "~/Obsidian/work" },
+			},
+			notes_subdir = "notes",
+			new_notes_location = "notes_subdir",
+			completion = { nvim_cmp = true, min_chars = 1 },
+			follow_url_func = function(url)
+				local cmd = vim.fn.has("mac") == 1 and "open" or "xdg-open"
+				vim.fn.jobstart({ cmd, url })
+			end,
+			daily_notes = { folder = "daily", date_format = "%Y-%m-%d" },
+			templates = { folder = "templates", date_format = "%Y-%m-%d", time_format = "%H:%M" },
+			note_id_func = function(title)
+				local suffix = title and title:gsub(" ", "-"):gsub("[^A-Za-z0-9-]", ""):lower()
+					or string.char(math.random(65, 90)):rep(4)
+				return os.date("%Y%m%d%H%M") .. "-" .. suffix
+			end,
+			ui = {
+				enable = true,
+				checkboxes = {
+					[" "] = { char = "󰄱", hl_group = "ObsidianTodo" },
+					["x"] = { char = "", hl_group = "ObsidianDone" },
+					[">"] = { char = "", hl_group = "ObsidianRightArrow" },
+					["~"] = { char = "󰰱", hl_group = "ObsidianTilde" },
+				},
+			},
+		},
+	},
+
+	-- ╭────────────────────────────────────────────────────────╮
+	-- │                    Docker                              │
+	-- ╰────────────────────────────────────────────────────────╯
+	{ import = "astrocommunity.docker.lazydocker" },
+
+	-- ╭────────────────────────────────────────────────────────╮
+	-- │                    Test                                │
+	-- ╰────────────────────────────────────────────────────────╯
+	{ import = "astrocommunity.test.neotest" },
+	{ import = "astrocommunity.test.nvim-coverage" },
+
+	-- ╭────────────────────────────────────────────────────────╮
+	-- │                    Media                               │
+	-- ╰────────────────────────────────────────────────────────╯
+	{ import = "astrocommunity.media.presence-nvim" },
 
 	-- ╭────────────────────────────────────────────────────────╮
 	-- │                    Project                             │
