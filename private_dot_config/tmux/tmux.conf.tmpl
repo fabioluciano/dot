@@ -18,7 +18,6 @@ set-option -g prefix C-a
 set-option -g set-titles on
 set-option -g history-limit 50000
 set-option -g display-time 4000
-
 ### Window Options
 set-window-option -g monitor-activity on
 set-window-option -g automatic-rename on
@@ -29,12 +28,6 @@ set-window-option -g mode-keys vi
 ### Key Bindings 
 unbind-key C-b
 bind C-a send-prefix
-bind r source-file ~/.config/tmux/tmux.conf \; display "TMUX configuration is reloaded!"
-bind c new-window -c '#{pane_current_path}'
-bind T swap-window -t 1
-
-bind "Escape" copy-mode
-bind-key -T root DoubleClick1Pane  select-pane \; copy-mode \; send-keys -X select-word
 
 ### Plugins
 set -g @plugin 'tmux-plugins/tpm'
@@ -62,11 +55,18 @@ set -g @scroll-speed-num-lines-per-scroll '3'
 # All 42 plugins enabled:
 #set -g @powerkit_plugins 'audiodevices,battery,bitbucket,bitwarden,bluetooth,brightness,camera,cloud,cloudstatus,cpu,crypto,datetime,disk,externalip,fan,git,github,gitlab,gpu,hostname,iops,jira,kubernetes,loadavg,memory,microphone,netspeed,nowplaying,packages,ping,pomodoro,smartkey,ssh,stocks,temperature,terraform,timezones,uptime,volume,vpn,weather,wifi'
 
-set -g @powerkit_plugins "weather,battery,audiodevices,bitbucket,bitwarden,cloudstatus,cpu,disk,fan,git,github,gpu,iops,jira,kubernetes,memory,netspeed,nowplaying,packages,ssh,temperature,terraform,vpn,wifi,bluetooth,camera,microphone,smartkey"
+# Plugins organizados em grupos por categoria:
+#   Grupo 1 (azul):     Sistema - cpu,memory,disk,gpu,temperature,fan,iops
+#   Grupo 2 (roxo):     Rede - netspeed,wifi,vpn,ssh
+#   Grupo 3 (verde):    VCS - git,github,bitbucket
+#   Grupo 4 (amarelo):  DevOps - jira,kubernetes,terraform
+#   Grupo 5 (vermelho): Mídia - audiodevices,nowplaying,bluetooth
+#   Sem grupo:          weather,battery,camera,microphone,bitwarden,cloudstatus,packages,smartkey
+set -g @powerkit_plugins "weather,group(cpu,memory,disk,gpu,temperature,fan,iops),group(netspeed,wifi,vpn,ssh),group(git,github,bitbucket),group(jira,kubernetes,terraform),group(audiodevices,nowplaying,bluetooth),camera,microphone,battery,bitwarden,cloudstatus,packages,smartkey"
 
 set -g @powerkit_theme "tokyo-night"
 set -g @powerkit_theme_variant "night"
-set -g @powerkit_transparent "true"
+set -g @powerkit_transparent "false"
 set -g @powerkit_elements_spacing "false"
 set -g @powerkit_window_index_icons "true"
 set -g @powerkit_cache_clear_key "M-x"
@@ -75,6 +75,8 @@ set -g @powerkit_show_options_key "M-h"
 set -g @powerkit_show_keybindings_key "M-y"
 set -g @powerkit_status_order "session,plugins,windows"
 set -g @powerkit_keybinding_conflict_action "ignore"
+
+set -g @powerkit_window_index_style "box"
 
 ## Weather 
 set -g @powerkit_plugin_weather_location "Brasilia,Brazil"
