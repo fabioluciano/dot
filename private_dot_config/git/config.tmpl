@@ -67,7 +67,8 @@
   # Branch
   b = "!git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)' refs/heads | sed -e 's-refs/heads/--'"
   br = branch
-  
+  cleanup = "!git fetch -p && git branch -vv | grep ': gone]' | awk '{print $1}' | xargs -r git branch -d"
+
   # Remote
   pu = push
   puf = push --force-with-lease
