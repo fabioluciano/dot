@@ -158,11 +158,6 @@ window_ignore = [
 
     # Misc
     ["vicinae.*", ""],
-    ["firefox.*", ".*Mozilla Firefox"],
-    ["firefox.*", ".*Extension.*"],
-    ["firefox.*", ".*Picture-in-Picture.*"],
-    ["chromium.*", ".*DevTools.*"],
-    ["google-chrome.*", ".*DevTools.*"],
     ["vlc.*", ""],
     ["mpv.*", ""],
     ["steam.*", ""],
