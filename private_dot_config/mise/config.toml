@@ -9,6 +9,7 @@ ruby = "latest"
 maven = "latest"
 groovy = "latest"
 python = "latest"
+bun = "latest"
 
 # CLI tools
 yq = "latest"
