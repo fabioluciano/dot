@@ -87,7 +87,7 @@ mouse-hide-while-typing = true
 
 shell-integration = zsh
 shell-integration-features = cursor,sudo,title
-command = /bin/zsh -l -c "if tmux has-session 2>/dev/null; then tmux attach; else tmuxp load ~/.config/tmuxp/tmuxp.yml 2>/dev/null; fi"
+command = /bin/zsh -l -c "if tmux has-session 2>/dev/null; then tmux attach; else smug start main; fi"
 
 # ╭──────────────────────────────────────────────────────────╮
 # │                    Scrollback                             │

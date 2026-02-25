@@ -1,6 +1,27 @@
-# Performance optimizations
-zmodload zsh/zprof  # Enable profiling if needed
+# =============================================================================
+# Performance Optimizations
+# =============================================================================
+
+# Enable profiling (uncomment to debug startup time)
+# zmodload zsh/zprof
+
+# Skip global compinit
 skip_global_compinit=1
+
+# =============================================================================
+# Environment Variables (set early)
+# =============================================================================
+
+export EDITOR=nvim
+export VISUAL=nvim
+export PAGER=less
+export LC_CTYPE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+# =============================================================================
+# Plugin Manager - zplug
+# =============================================================================
 
 {{- if eq .chezmoi.os "linux" }}
 {{-   if eq .chezmoi.osRelease.id "arch" }}
@@ -12,20 +33,16 @@ source ~/.zplug/init.zsh
 source /opt/homebrew/opt/zplug/init.zsh
 {{- end }}
 
-# Environment variables
-export EDITOR=nvim
-export VISUAL=nvim
-export PAGER=less
-
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 zplug "mafredri/zsh-async", from:github
-
 zplug "chrissicool/zsh-256color"
 
+# Essential oh-my-zsh libraries
 zplug "ohmyzsh/ohmyzsh", use:"lib/key-bindings.zsh"
 zplug "ohmyzsh/ohmyzsh", use:"lib/clipboard.zsh"
 zplug "ohmyzsh/ohmyzsh", use:"lib/completion.zsh"
 
+# Plugins
 zplug "plugins/aws",   from:oh-my-zsh
 zplug "plugins/git",   from:oh-my-zsh
 zplug "plugins/sudo",   from:oh-my-zsh
@@ -34,6 +51,7 @@ zplug "plugins/command-not-found",   from:oh-my-zsh
 zplug "plugins/docker",   from:oh-my-zsh
 zplug "Aloxaf/fzf-tab"
 
+# Platform-specific plugins
 if [[ $OSTYPE = (linux)* ]]; then
     zplug "plugins/archlinux",     from:oh-my-zsh, if:"(( $+commands[pacman] ))"
 fi
@@ -44,16 +62,16 @@ if [[ $OSTYPE = (darwin)* ]]; then
     zplug "plugins/brew",          from:oh-my-zsh, if:"(( $+commands[brew] ))"
 fi
 
+# Enhancement plugins (deferred loading)
 zplug "hlissner/zsh-autopair", defer:2
-zplug 'zsh-users/zsh-autosuggestions' 
+zplug 'zsh-users/zsh-autosuggestions'
 zplug 'zsh-users/zsh-syntax-highlighting', defer:2
 zplug 'zsh-users/zsh-history-substring-search', defer:3
 zplug 'zsh-users/zsh-completions', depth:1
 
 zplug "junegunn/fzf", use:shell/key-bindings.zsh
 
-autoload -U compinit; compinit
-
+# Install missing plugins
 if ! zplug check --verbose; then
     printf "Install? [y/N]: "
     if read -q; then
@@ -62,13 +80,39 @@ if ! zplug check --verbose; then
         echo
     fi
 fi
+
 zplug load
 
-# History configuration
+# =============================================================================
+# Completion System (ONLY ONCE - with 24h cache)
+# =============================================================================
+
+fpath+=~/.zfunc
+
+# Cache completions (24h TTL) - skips security checks on cached files
+autoload -Uz compinit
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
+    compinit
+else
+    compinit -C  # Skip security check on cached files
+fi
+
+# Homebrew completions (only if brew exists)
+{{- if eq .chezmoi.os "darwin" }}
+if command -v brew &>/dev/null; then
+    FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+fi
+{{- end }}
+
+# =============================================================================
+# History Configuration
+# =============================================================================
+
 HISTFILE=~/.zsh_history
 HISTSIZE=1000000
 SAVEHIST=1000000
 HISTORY_IGNORE="(ls|cd|pwd|exit|cd|clear|history)*"
+
 setopt EXTENDED_HISTORY      # Write the history file in the ':start:elapsed;command' format.
 setopt INC_APPEND_HISTORY    # Write to the history file immediately, not when the shell exits.
 setopt SHARE_HISTORY         # Share history between all sessions.
@@ -81,7 +125,27 @@ setopt APPEND_HISTORY        # append to history file (Default)
 setopt HIST_NO_STORE         # Don't store history commands
 setopt HIST_REDUCE_BLANKS    # Remove superfluous blanks from each command line being added to the history.
 
-fpath+=~/.zfunc
+# =============================================================================
+# Completion Styles
+# =============================================================================
+
+zstyle ':completion:*:git-checkout:*' sort false
+zstyle ':completion:*:descriptions' format '[%d]'
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' menu no
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
+zstyle ':fzf-tab:*' switch-group '<' '>'
+zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
+
+# =============================================================================
+# PATH
+# =============================================================================
+
+export PATH="${PATH}:${HOME}/.krew/bin:${HOME}/.local/bin"
+
+# =============================================================================
+# FZF Configuration
+# =============================================================================
 
 {{- if eq .chezmoi.os "linux" }}
 {{-   if eq .chezmoi.osRelease.id "arch" }}
@@ -93,35 +157,61 @@ source /usr/share/fzf/key-bindings.zsh
 {{-   end }}
 {{- end }}
 
-export LC_CTYPE=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
-
-zstyle ':completion:*:git-checkout:*' sort false
-zstyle ':completion:*:descriptions' format '[%d]'
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*' menu no
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
-zstyle ':fzf-tab:*' switch-group '<' '>'
-zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
-
-export PATH="${PATH}:${HOME}/.krew/bin:${HOME}/.local/bin"
 export FZF_TMUX_OPTS="-p"
 export FZF_CTRL_R_OPTS="--reverse --preview 'echo {}' --preview-window down:30:hidden:wrap --bind '?:toggle-preview'"
 
-eval "$(direnv hook zsh)"
-eval "$(zoxide init zsh)"
-eval "$(starship init zsh)"
-eval "$(mise activate zsh)"
-eval "$(bw completion --shell zsh)"
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-if type brew &>/dev/null
-then
-  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+# =============================================================================
+# Tool Integrations
+# =============================================================================
 
-  autoload -Uz compinit
-  compinit
+# Lazy load function
+_lazyload() {
+    local cmd="$1"
+    local init_code="$2"
+
+    # Create lazy wrapper function
+    eval "$cmd() {
+        unfunction $cmd  # Remove lazy wrapper
+        $init_code       # Initialize tool
+        $cmd \"\$@\"       # Call original command
+    }"
+}
+
+# Direnv - immediate (needed for directory changes)
+if command -v direnv &>/dev/null; then
+    eval "$(direnv hook zsh)"
 fi
+
+# Zoxide - immediate (needed for 'z' alias)
+if command -v zoxide &>/dev/null; then
+    eval "$(zoxide init zsh)"
+fi
+
+# Starship prompt - immediate (needed for prompt)
+if command -v starship &>/dev/null; then
+    eval "$(starship init zsh)"
+fi
+
+# Mise - immediate (needed for environment management)
+if command -v mise &>/dev/null; then
+    eval "$(mise activate zsh)"
+fi
+
+# Bitwarden - lazy load (only when first used)
+if command -v bw &>/dev/null; then
+    _lazyload bw 'eval "$(bw completion --shell zsh)"'
+fi
+
+# Ngrok - lazy load (only when first used)
+if command -v ngrok &>/dev/null; then
+    _lazyload ngrok 'eval "$(ngrok completion)"'
+fi
+
+# =============================================================================
+# Aliases
+# =============================================================================
 
 # Better defaults
 alias du="ncdu --color dark"
@@ -159,7 +249,7 @@ alias kaf='kubectl apply -f'
 alias kdel='kubectl delete'
 
 # Use kubecolor with kubectl completion
-if command -v kubecolor &> /dev/null; then
+if command -v kubecolor &>/dev/null; then
   alias kubectl=kubecolor
   compdef kubecolor=kubectl
 fi
@@ -171,10 +261,10 @@ alias v='nvim'
 
 # Clipboard (Linux only)
 {{- if eq .chezmoi.os "linux" }}
-if command -v xsel &> /dev/null; then
+if command -v xsel &>/dev/null; then
   alias pbcopy='xsel --clipboard --input'
   alias pbpaste='xsel --clipboard --output'
-elif command -v xclip &> /dev/null; then
+elif command -v xclip &>/dev/null; then
   alias pbcopy='xclip -selection clipboard'
   alias pbpaste='xclip -selection clipboard -o'
 fi
@@ -185,15 +275,17 @@ alias reload='source ~/.zshrc'
 alias zshconfig='nvim ~/.zshrc'
 alias cls='clear'
 
-# GPG and SSH configuration
-if command -v gpgconf &> /dev/null; then
+# =============================================================================
+# GPG/SSH Configuration
+# =============================================================================
+
+if command -v gpgconf &>/dev/null; then
   export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-  gpgconf --launch gpg-agent
+  gpgconf --launch gpg-agent 2>/dev/null
 fi
 
-if command -v ngrok &>/dev/null; then
-  eval "$(ngrok completion)"
-fi
+# =============================================================================
+# Profiling (uncomment to see startup time breakdown)
+# =============================================================================
 
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# zprof

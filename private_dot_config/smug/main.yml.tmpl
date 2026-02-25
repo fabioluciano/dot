@@ -1,0 +1,14 @@
+session: main
+root: ~/
+
+windows:
+  - name: system
+    layout: main-vertical
+
+  - name: monitoring
+    commands:
+      - btop
+    panes:
+      - type: horizontal
+        commands:
+          - nvtop
