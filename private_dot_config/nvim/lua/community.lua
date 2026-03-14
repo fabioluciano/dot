@@ -30,6 +30,7 @@ return {
 	-- │                    Completion                          │
 	-- ╰────────────────────────────────────────────────────────╯
 	{ import = "astrocommunity.completion.codeium-vim" },
+	{ import = "astrocommunity.recipes.ai" },
 	{ import = "astrocommunity.completion.copilot-lua-cmp" },
 
 	-- ╭────────────────────────────────────────────────────────╮
@@ -123,7 +124,7 @@ return {
 	{ import = "astrocommunity.pack.markdown" },
 	{ import = "astrocommunity.pack.php" },
 	{ import = "astrocommunity.pack.pkl" },
-	{ import = "astrocommunity.pack.python-ruff" },
+	{ import = "astrocommunity.pack.python" },
 	{ import = "astrocommunity.pack.rust" },
 	{ import = "astrocommunity.pack.sql" },
 	{ import = "astrocommunity.pack.terraform" },

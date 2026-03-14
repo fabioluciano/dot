@@ -58,7 +58,7 @@ fi
 
 if [[ $OSTYPE = (darwin)* ]]; then
     zplug "lib/clipboard",         from:oh-my-zsh
-    zplug "plugins/osx",           from:oh-my-zsh
+    zplug "plugins/macos",         from:oh-my-zsh
     zplug "plugins/brew",          from:oh-my-zsh, if:"(( $+commands[brew] ))"
 fi
 
@@ -202,6 +202,11 @@ fi
 # Bitwarden - lazy load (only when first used)
 if command -v bw &>/dev/null; then
     _lazyload bw 'eval "$(bw completion --shell zsh)"'
+fi
+
+# Jujutsu - lazy load (only when first used)
+if command -v jj &>/dev/null; then
+    _lazyload jj 'source <(jj util completion zsh)'
 fi
 
 # Ngrok - lazy load (only when first used)

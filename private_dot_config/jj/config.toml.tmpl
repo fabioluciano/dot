@@ -1,0 +1,26 @@
+[user]
+name = "Fábio Luciano"
+email = "fabio@naoimporta.com"
+
+[ui]
+editor = "nvim"
+pager = "delta"
+default-command = "log"
+
+[git]
+write-change-id-header = true
+
+[remotes.origin]
+auto-track-bookmarks = "*"
+
+[aliases]
+# View
+l = ["log"]
+ll = ["log", "-r", "all()"]
+
+# Status
+s = ["status"]
+st = ["status"]
+
+# Other
+b = ["bookmark", "list"]

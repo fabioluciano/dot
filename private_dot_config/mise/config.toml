@@ -15,6 +15,7 @@ bun = "latest"
 yq = "latest"
 pandoc = "latest"
 deno = "latest"
+uv = "latest"
 usage = "latest"
 kubectl = "latest"
 
