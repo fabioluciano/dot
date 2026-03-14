@@ -1,0 +1,22 @@
+#!/bin/bash
+# Gera ~/.ssh/allowed_signers para assinatura SSH do Git.
+
+set -euo pipefail
+
+ALLOWED_SIGNERS="$HOME/.ssh/allowed_signers"
+YUBIKEY_PUB="$HOME/.ssh/yubikey.pub"
+mkdir -p "$HOME/.ssh"
+
+if [[ ! -f "$YUBIKEY_PUB" ]]; then
+  echo "AVISO: $YUBIKEY_PUB nao encontrado. Execute 'chezmoi apply' com a YubiKey conectada."
+  exit 0
+fi
+
+signer_line="fabio@naoimporta.com $(cat "$YUBIKEY_PUB")"
+
+if [[ -f "$ALLOWED_SIGNERS" ]] && [[ "$(cat "$ALLOWED_SIGNERS")" == "$signer_line" ]]; then
+  exit 0
+fi
+
+printf '%s\n' "$signer_line" > "$ALLOWED_SIGNERS"
+chmod 644 "$ALLOWED_SIGNERS"

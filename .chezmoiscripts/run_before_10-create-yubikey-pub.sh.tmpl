@@ -1,0 +1,22 @@
+#!/bin/bash
+# Gera ~/.ssh/yubikey.pub a partir da chave da YubiKey presente no ssh-agent.
+
+set -euo pipefail
+
+YUBIKEY_PUB="$HOME/.ssh/yubikey.pub"
+mkdir -p "$HOME/.ssh"
+
+# Procura uma chave de smartcard no ssh-agent.
+agent_key="$(ssh-add -L 2>/dev/null | awk '/cardno:/ {print; exit}')"
+if [[ -z "$agent_key" ]]; then
+  echo "AVISO: YubiKey nao detectada no ssh-agent. Conecte a YubiKey e execute 'chezmoi apply' novamente."
+  exit 0
+fi
+
+# Atualiza apenas se o conteudo mudou.
+if [[ -f "$YUBIKEY_PUB" ]] && [[ "$(cat "$YUBIKEY_PUB")" == "$agent_key" ]]; then
+  exit 0
+fi
+
+printf '%s\n' "$agent_key" > "$YUBIKEY_PUB"
+chmod 644 "$YUBIKEY_PUB"
