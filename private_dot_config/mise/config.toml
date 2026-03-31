@@ -18,6 +18,7 @@ deno = "latest"
 uv = "latest"
 usage = "latest"
 kubectl = "latest"
+bazel = "latest"
 
 [settings]
 # Enable version files for better compatibility

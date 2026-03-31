@@ -7,6 +7,13 @@ return {
 	-- Justfile syntax
 	{ "NoahTheDuke/vim-just", ft = "just" },
 
+	-- Typst support
+	{
+		"kaarmu/typst.vim",
+		ft = "typst",
+		lazy = false,
+	},
+
 	-- Discord presence config (plugin from astrocommunity.media.presence-nvim)
 	{
 		"andweeb/presence.nvim",

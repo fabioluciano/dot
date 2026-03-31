@@ -15,6 +15,7 @@ return {
       "json",
       "markdown",
       "markdown_inline",
+      "typst",
     })
     -- Remove jsonc from ensure_installed if present (download issues)
     if opts.ensure_installed then

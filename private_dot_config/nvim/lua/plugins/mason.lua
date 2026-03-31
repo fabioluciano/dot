@@ -11,6 +11,7 @@ return {
         "lua_ls",
         "dockerls",           -- Dockerfile language server
         "docker_compose_language_service", -- Docker Compose
+        "tinymist",           -- Typst language server
       })
     end,
   },

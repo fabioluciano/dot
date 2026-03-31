@@ -7,8 +7,13 @@ YUBIKEY_PUB="$HOME/.ssh/yubikey.pub"
 mkdir -p "$HOME/.ssh"
 
 # Procura uma chave de smartcard no ssh-agent.
+# Desabilita errexit temporariamente para lidar com ssh-add falhando.
+set +e
 agent_key="$(ssh-add -L 2>/dev/null | awk '/cardno:/ {print; exit}')"
-if [[ -z "$agent_key" ]]; then
+ssh_add_status=$?
+set -e
+
+if [[ $ssh_add_status -ne 0 ]] || [[ -z "$agent_key" ]]; then
   echo "AVISO: YubiKey nao detectada no ssh-agent. Conecte a YubiKey e execute 'chezmoi apply' novamente."
   exit 0
 fi
