@@ -15,7 +15,7 @@ require("lazy").setup {
   install = { colorscheme = { "tokyonight-night" } },
   ui = { backdrop = 100 },
   -- Limita operações git paralelas para evitar "Failed to spawn process"
-  concurrency = 1, -- Forçar operações sequenciais
+  concurrency = 4,
   git = {
     cmd = "git", -- Força usar git do PATH
     timeout = 300,

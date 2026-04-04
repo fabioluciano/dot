@@ -1,6 +1,5 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │                    Ghostty Configuration                  │
-# │            Aligned with WezTerm settings                  │
 # ╰──────────────────────────────────────────────────────────╯
 
 # ╭──────────────────────────────────────────────────────────╮
@@ -23,13 +22,12 @@ font-family-bold = Maple Mono NF
 font-family-italic = Maple Mono NF
 font-family-bold-italic = Maple Mono NF
 {{- if eq .chezmoi.os "darwin" }}
-font-size = 15
+font-size = 14
 font-thicken = true
 font-thicken-strength = 150
 {{- else }}
 font-size = 11
 {{- end }}
-font-thicken = false
 font-style = Regular
 font-style-bold = Bold
 font-style-italic = Italic
@@ -68,9 +66,11 @@ window-width = 140
 window-height = 40
 
 # macOS specific
+{{- if eq .chezmoi.os "darwin" }}
 macos-titlebar-style = native
 macos-window-shadow = true
 macos-option-as-alt = true
+{{- end }}
 
 # ╭──────────────────────────────────────────────────────────╮
 # │                    Cursor Settings                        │
@@ -106,23 +106,26 @@ link-url = true
 # │         (Minimal - tmux handles most things)              │
 # ╰──────────────────────────────────────────────────────────╯
 
-# Copy/Paste (macOS)
+{{- if eq .chezmoi.os "darwin" }}
+# macOS keybindings (Cmd key)
 keybind = super+c=copy_to_clipboard
 keybind = super+v=paste_from_clipboard
-
-# New window
 keybind = super+n=new_window
-
-# Quit
 keybind = super+q=quit
-
-# Font size
 keybind = super+plus=increase_font_size:1
 keybind = super+minus=decrease_font_size:1
 keybind = super+zero=reset_font_size
-
-# Fullscreen
 keybind = super+enter=toggle_fullscreen
+{{- else }}
+# Linux keybindings (Ctrl+Shift)
+keybind = ctrl+shift+c=copy_to_clipboard
+keybind = ctrl+shift+v=paste_from_clipboard
+keybind = ctrl+shift+n=new_window
+keybind = ctrl+plus=increase_font_size:1
+keybind = ctrl+minus=decrease_font_size:1
+keybind = ctrl+zero=reset_font_size
+keybind = f11=toggle_fullscreen
+{{- end }}
 
 # ╭──────────────────────────────────────────────────────────╮
 # │                    Clipboard                              │

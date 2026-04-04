@@ -2,9 +2,23 @@
 # DO NOT EDIT MANUALLY - Edit dot_zshenv.tmpl instead
 
 # API Tokens
-export GITHUB_TOKEN="{{ (bitwardenFields "item" "dotfiles-tokens").github_token.value }}"
-export GITLAB_TOKEN="{{ (bitwardenFields "item" "dotfiles-tokens").gitlab_token.value }}"
-export BITBUCKET_TOKEN="{{ (bitwardenFields "item" "dotfiles-tokens").bitbucket_token.value }}"
-export JIRA_TOKEN="{{ (bitwardenFields "item" "dotfiles-tokens").jira_token.value }}"
-export JIRA_EMAIL="{{ (bitwardenFields "item" "dotfiles-tokens").jira_email.value }}"
-export JIRA_DOMAIN="{{ (bitwardenFields "item" "dotfiles-tokens").jira_domain.value }}"
+# Uses existing env vars when available, falls back to Bitwarden otherwise
+{{- $bw := false -}}
+{{- if not (env "GITHUB_TOKEN") }}{{ $bw = true }}{{ end }}
+
+{{- if $bw -}}
+{{- $fields := bitwardenFields "item" "dotfiles-tokens" }}
+export GITHUB_TOKEN="{{ $fields.github_token.value }}"
+export GITLAB_TOKEN="{{ $fields.gitlab_token.value }}"
+export BITBUCKET_TOKEN="{{ $fields.bitbucket_token.value }}"
+export JIRA_TOKEN="{{ $fields.jira_token.value }}"
+export JIRA_EMAIL="{{ $fields.jira_email.value }}"
+export JIRA_DOMAIN="{{ $fields.jira_domain.value }}"
+{{- else }}
+export GITHUB_TOKEN="{{ env "GITHUB_TOKEN" }}"
+export GITLAB_TOKEN="{{ env "GITLAB_TOKEN" }}"
+export BITBUCKET_TOKEN="{{ env "BITBUCKET_TOKEN" }}"
+export JIRA_TOKEN="{{ env "JIRA_TOKEN" }}"
+export JIRA_EMAIL="{{ env "JIRA_EMAIL" }}"
+export JIRA_DOMAIN="{{ env "JIRA_DOMAIN" }}"
+{{- end }}

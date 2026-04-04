@@ -1,6 +1,6 @@
 [user]
-  email = fabio@naoimporta.com
-  name = Fábio Luciano
+  email = {{ .email }}
+  name = {{ .name }}
   signingkey = ~/.ssh/yubikey.pub
 
 [includeIf "gitdir/i:/mnt/srv/work/"]
@@ -26,6 +26,7 @@
 [fetch]
   prune = true
   pruneTags = true
+  fsckobjects = true
 
 [color]
   ui = true
@@ -121,10 +122,10 @@
     hunk-header-style = file line-number syntax
 
 [filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
 
 [init]
   defaultBranch = main
@@ -140,9 +141,6 @@
   autocorrect = 20
 
 [transfer]
-  fsckobjects = true
-
-[fetch]
   fsckobjects = true
 
 [receive]

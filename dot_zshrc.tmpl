@@ -57,7 +57,6 @@ if [[ $OSTYPE = (linux)* ]]; then
 fi
 
 if [[ $OSTYPE = (darwin)* ]]; then
-    zplug "lib/clipboard",         from:oh-my-zsh
     zplug "plugins/macos",         from:oh-my-zsh
     zplug "plugins/brew",          from:oh-my-zsh, if:"(( $+commands[brew] ))"
 fi
@@ -71,14 +70,9 @@ zplug 'zsh-users/zsh-completions', depth:1
 
 zplug "junegunn/fzf", use:shell/key-bindings.zsh
 
-# Install missing plugins
-if ! zplug check --verbose; then
-    printf "Install? [y/N]: "
-    if read -q; then
-        echo; zplug install
-    else
-        echo
-    fi
+# Install missing plugins automatically (silent for non-interactive shells)
+if ! zplug check; then
+    zplug install
 fi
 
 zplug load
@@ -89,6 +83,13 @@ zplug load
 
 fpath+=~/.zfunc
 
+# Homebrew completions (must be before compinit)
+{{- if eq .chezmoi.os "darwin" }}
+if command -v brew &>/dev/null; then
+    FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+fi
+{{- end }}
+
 # Cache completions (24h TTL) - skips security checks on cached files
 autoload -Uz compinit
 if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
@@ -97,13 +98,6 @@ else
     compinit -C  # Skip security check on cached files
 fi
 
-# Homebrew completions (only if brew exists)
-{{- if eq .chezmoi.os "darwin" }}
-if command -v brew &>/dev/null; then
-    FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
-fi
-{{- end }}
-
 # =============================================================================
 # History Configuration
 # =============================================================================
@@ -111,7 +105,7 @@ fi
 HISTFILE=~/.zsh_history
 HISTSIZE=1000000
 SAVEHIST=1000000
-HISTORY_IGNORE="(ls|cd|pwd|exit|cd|clear|history)*"
+HISTORY_IGNORE="(ls|cd|pwd|exit|clear|history)*"
 
 setopt EXTENDED_HISTORY      # Write the history file in the ':start:elapsed;command' format.
 setopt INC_APPEND_HISTORY    # Write to the history file immediately, not when the shell exits.
@@ -225,7 +219,6 @@ alias ll='eza -l --icons --git'
 alias la='eza -la --icons --git'
 alias lt='eza --tree --icons --git'
 alias l='ll'
-alias cd='z'
 alias cat='bat'
 alias df='duf'
 

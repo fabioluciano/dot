@@ -4,55 +4,6 @@
 -- ╰──────────────────────────────────────────────────────────╯
 
 return {
-	-- Justfile syntax
-	{ "NoahTheDuke/vim-just", ft = "just" },
-
-	-- Typst support
-	{
-		"kaarmu/typst.vim",
-		ft = "typst",
-		lazy = false,
-	},
-
-	-- Discord presence config (plugin from astrocommunity.media.presence-nvim)
-	{
-		"andweeb/presence.nvim",
-		opts = {
-			neovim_image_text = "The One True Text Editor",
-			main_image = "neovim",
-			debounce_timeout = 10,
-			enable_line_number = false,
-			buttons = true,
-		},
-	},
-
-	-- LSP signature help
-	{
-		"ray-x/lsp_signature.nvim",
-		event = "LspAttach",
-		opts = {
-			bind = true,
-			handler_opts = { border = "rounded" },
-			floating_window = true,
-			hint_enable = true,
-			hint_prefix = "󰏫 ",
-			hi_parameter = "LspSignatureActiveParameter",
-		},
-	},
-
-	-- LuaSnip configuration
-	{
-		"L3MON4D3/LuaSnip",
-		config = function(plugin, opts)
-			require("astronvim.plugins.configs.luasnip")(plugin, opts)
-			local luasnip = require("luasnip")
-			luasnip.filetype_extend("javascript", { "javascriptreact" })
-			luasnip.filetype_extend("typescript", { "typescriptreact" })
-			-- Load friendly-snippets
-			require("luasnip.loaders.from_vscode").lazy_load()
-		end,
-	},
-
 	-- Better quick fix list
 	{
 		"kevinhwang91/nvim-bqf",
@@ -89,7 +40,12 @@ return {
 		"NvChad/nvim-colorizer.lua",
 		event = { "BufReadPost", "BufNewFile" },
 		opts = {
-			filetypes = { "*" },
+			filetypes = {
+				"css", "scss", "sass", "less",
+				"html", "vue", "svelte",
+				"javascript", "javascriptreact", "typescript", "typescriptreact",
+				"lua", "conf", "toml", "yaml",
+			},
 			user_default_options = {
 				RGB = true,
 				RRGGBB = true,
@@ -141,70 +97,6 @@ return {
 					require("ufo").peekFoldedLinesUnderCursor()
 				end,
 				desc = "Peek fold",
-			},
-		},
-	},
-
-	-- Session management
-	{
-		"folke/persistence.nvim",
-		event = "BufReadPre",
-		opts = { options = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp" } },
-		keys = {
-			{
-				"<leader>qs",
-				function()
-					require("persistence").load()
-				end,
-				desc = "Restore Session",
-			},
-			{
-				"<leader>ql",
-				function()
-					require("persistence").load({ last = true })
-				end,
-				desc = "Restore Last Session",
-			},
-			{
-				"<leader>qd",
-				function()
-					require("persistence").stop()
-				end,
-				desc = "Don't Save Session",
-			},
-		},
-	},
-
-	-- Smooth cursor
-	{
-		"gen740/SmoothCursor.nvim",
-		event = "VeryLazy",
-		opts = {
-			type = "default",
-			fancy = {
-				enable = true,
-				head = { cursor = "▷", texthl = "SmoothCursor", linehl = nil },
-			},
-			speed = 25,
-			intervals = 35,
-		},
-	},
-
-	-- Claude Code integration
-	{
-		"greggh/claude-code.nvim",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-		},
-		keys = {
-			{ "<leader>C", group = "Claude" },
-			{ "<leader>Cc", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude Code" },
-			{ "<leader>Cs", "<cmd>ClaudeCodeSend<cr>", desc = "Send to Claude", mode = { "n", "v" } },
-		},
-		opts = {
-			window = {
-				position = "float", -- Janela flutuante
-				enter_insert = true,
 			},
 		},
 	},

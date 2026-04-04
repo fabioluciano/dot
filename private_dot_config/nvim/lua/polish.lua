@@ -59,51 +59,7 @@ for type, icon in pairs(signs) do
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
 
--- Transparent background for tokyonight
-vim.api.nvim_create_autocmd("ColorScheme", {
-  pattern = "tokyonight*",
-  callback = function()
-    local groups = {
-      "Normal",
-      "NormalNC",
-      "NormalFloat",
-      "FloatBorder",
-      "SignColumn",
-      "EndOfBuffer",
-      "NeoTreeNormal",
-      "NeoTreeNormalNC",
-      "TelescopeNormal",
-      "TelescopeBorder",
-      "WhichKeyFloat",
-    }
-    for _, group in ipairs(groups) do
-      vim.api.nvim_set_hl(0, group, { bg = "NONE" })
-    end
-  end,
-})
 
--- Apply transparency on startup if tokyonight is active
-vim.defer_fn(function()
-  if vim.g.colors_name and vim.g.colors_name:match "^tokyonight" then
-    vim.cmd "doautocmd ColorScheme " .. vim.g.colors_name
-  end
-end, 100)
-
--- Spell highlight - apply after everything else loads
-vim.api.nvim_create_autocmd("VimEnter", {
-  callback = function()
-    vim.defer_fn(function()
-      -- Red background + red text for spelling errors
-      vim.cmd [[
-        highlight SpellBad guibg=#3d2026 guifg=#f7768e gui=underline
-        highlight SpellCap guibg=#3d3520 guifg=#e0af68 gui=underline
-        highlight SpellLocal guibg=#203040 guifg=#7aa2f7 gui=underline
-        highlight SpellRare guibg=#302040 guifg=#bb9af7 gui=underline
-      ]]
-    end, 500)
-  end,
-  desc = "Setup spell highlights after startup",
-})
 
 -- ╭──────────────────────────────────────────────────────────╮
 -- │                    Spellcheck Setup                       │
@@ -134,10 +90,4 @@ vim.defer_fn(function()
   vim.opt.spelllang = { "en", "pt" }
 end, 500)
 
--- Disable semantic tokens for performance (optional)
--- vim.api.nvim_create_autocmd("LspAttach", {
---   callback = function(args)
---     local client = vim.lsp.get_client_by_id(args.data.client_id)
---     if client then client.server_capabilities.semanticTokensProvider = nil end
---   end,
--- })
+

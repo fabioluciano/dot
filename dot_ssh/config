@@ -1,4 +1,9 @@
-# Host *
+Host *
+AddKeysToAgent yes
+IdentitiesOnly yes
+ServerAliveInterval 60
+ServerAliveCountMax 3
+HashKnownHosts yes
+
 Host github.com
-  AddKeysToAgent yes
-  IdentityFile ~/.ssh/yubikey.pub
+IdentityFile ~/.ssh/yubikey.pub

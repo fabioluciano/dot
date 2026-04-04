@@ -1,12 +1,10 @@
 act
-alacritty
 android-tools
 apachedirectorystudio
 asciidoc
 aspell
 aspell-en
 aspell-pt
-authy
 aws-cli-v2
 azure-cli
 bandwhich
@@ -17,7 +15,6 @@ bitwarden-cli
 broot
 buildah
 calendar-indicator
-cawbird
 cheese
 chezmoi
 chrony
@@ -25,8 +22,6 @@ cmake
 compiz
 composer
 cosign
-ctags
-ctop
 dasel
 dbeaver
 deezer
@@ -36,9 +31,7 @@ direnv
 discord
 dive
 docker-compose
-dog
 dropbox
-dry-bin
 duf
 dust
 evince
@@ -49,13 +42,11 @@ file-roller
 firefox
 firewalld
 flac
-flake8
 forticlient-vpn
 fzf
 garcon
 geary
 gimp
-git
 gitbutler-bin
 git-cliff
 git-delta
@@ -73,7 +64,6 @@ gum
 gvfs
 helm
 hexyl
-htop
 hugo
 hunspell
 hunspell-en_us
@@ -96,7 +86,6 @@ kustomize
 lazydocker-bin
 lazygit
 lens-bin
-less
 libfido2
 libopenraw
 libreoffice-still
@@ -114,7 +103,6 @@ mkcert
 mousepad
 mpv
 mugshot
-nano
 ncdu
 neovim
 numix-gtk-theme-git
@@ -134,7 +122,6 @@ pacmanfile
 papirus-icon-theme
 patat-bin
 pcmanfm
-peek
 plank
 plantuml
 plocate
@@ -161,8 +148,6 @@ rsync
 rustdesk-bin
 rustup
 shellcheck
-shutter
-skim
 sniffnet
 sof-firmware
 sox
@@ -183,7 +168,6 @@ thunderbird
 tldr
 tlp
 tmux
-tmuxp
 tmux-plugin-manager
 topgrade-bin
 transmission-gtk
@@ -202,14 +186,11 @@ virtualbox-ext-oracle
 virtualbox-guest-iso
 visual-studio-code-bin
 vlc
-wezterm
 whatsdesk-bin
 xdg-user-dirs
 xh
-yarn
 yazi
 yubikey-manager
-zenith
 zoxide
 zplug
 zsh

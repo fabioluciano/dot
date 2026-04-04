@@ -25,13 +25,15 @@ return {
 	},
 	{ import = "astrocommunity.bars-and-lines.dropbar-nvim" },
 	{ import = "astrocommunity.bars-and-lines.vim-illuminate" },
+	{ import = "astrocommunity.icon.mini-icons" },
 
 	-- ╭────────────────────────────────────────────────────────╮
 	-- │                    Completion                          │
 	-- ╰────────────────────────────────────────────────────────╯
+	{ import = "astrocommunity.completion.blink-cmp" },
+	{ import = "astrocommunity.completion.blink-cmp-git" },
 	{ import = "astrocommunity.completion.codeium-vim" },
 	{ import = "astrocommunity.recipes.ai" },
-	{ import = "astrocommunity.completion.copilot-lua-cmp" },
 
 	-- ╭────────────────────────────────────────────────────────╮
 	-- │                    Code Runner                         │
@@ -56,7 +58,9 @@ return {
 	-- │                    Editing Support                     │
 	-- ╰────────────────────────────────────────────────────────╯
 	{ import = "astrocommunity.editing-support.comment-box-nvim" },
+	{ import = "astrocommunity.editing-support.auto-save-nvim" },
 	{ import = "astrocommunity.editing-support.conform-nvim" },
+	{ import = "astrocommunity.editing-support.multicursors-nvim" },
 	{ import = "astrocommunity.editing-support.nvim-regexplainer" },
 	{ import = "astrocommunity.editing-support.todo-comments-nvim" },
 	{ import = "astrocommunity.editing-support.ultimate-autopair-nvim" },
@@ -67,12 +71,9 @@ return {
 	{ import = "astrocommunity.editing-support.zen-mode-nvim" },
 
 	-- ╭────────────────────────────────────────────────────────╮
-	-- │                    File Explorer                       │
-	-- ╰────────────────────────────────────────────────────────╯
-
-	-- ╭────────────────────────────────────────────────────────╮
 	-- │                    Fuzzy Finder                        │
 	-- ╰────────────────────────────────────────────────────────╯
+	{ import = "astrocommunity.search.grug-far-nvim" },
 	{ import = "astrocommunity.fuzzy-finder.telescope-zoxide" },
 
 	-- ╭────────────────────────────────────────────────────────╮
@@ -86,7 +87,7 @@ return {
 	-- ╭────────────────────────────────────────────────────────╮
 	-- │                    Indent                              │
 	-- ╰────────────────────────────────────────────────────────╯
-	{ import = "astrocommunity.indent.mini-indentscope" },
+	{ import = "astrocommunity.indent.indent-blankline-nvim" },
 
 	-- ╭────────────────────────────────────────────────────────╮
 	-- │                    LSP                                 │
@@ -101,14 +102,12 @@ return {
 	-- ╰────────────────────────────────────────────────────────╯
 	{ import = "astrocommunity.markdown-and-latex.glow-nvim" },
 	{ import = "astrocommunity.markdown-and-latex.markdown-preview-nvim" },
-	{ import = "astrocommunity.markdown-and-latex.render-markdown-nvim" },
 
 	-- ╭────────────────────────────────────────────────────────╮
 	-- │                    Motion                              │
 	-- ╰────────────────────────────────────────────────────────╯
-	{ import = "astrocommunity.motion.flash-nvim" }, -- modern hop alternative
+	{ import = "astrocommunity.motion.flash-nvim" },
 	{ import = "astrocommunity.motion.nvim-surround" },
-	-- removed mini-move (using vim-move from editing-support instead)
 
 	-- ╭────────────────────────────────────────────────────────╮
 	-- │                    Language Packs                      │
@@ -119,11 +118,11 @@ return {
 	{ import = "astrocommunity.pack.helm" },
 	{ import = "astrocommunity.pack.html-css" },
 	{ import = "astrocommunity.pack.java" },
+	{ import = "astrocommunity.pack.just" },
 	{ import = "astrocommunity.pack.json" },
 	{ import = "astrocommunity.pack.lua" },
 	{ import = "astrocommunity.pack.markdown" },
 	{ import = "astrocommunity.pack.php" },
-	{ import = "astrocommunity.pack.pkl" },
 	{ import = "astrocommunity.pack.python" },
 	{ import = "astrocommunity.pack.rust" },
 	{ import = "astrocommunity.pack.sql" },
@@ -135,6 +134,7 @@ return {
 	{ import = "astrocommunity.pack.yaml" },
 	{ import = "astrocommunity.pack.chezmoi" },
 	{ import = "astrocommunity.pack.cmake" },
+	{ import = "astrocommunity.pack.docker" },
 	{ import = "astrocommunity.pack.nix" },
 
 	-- ╭────────────────────────────────────────────────────────╮
@@ -150,7 +150,7 @@ return {
 			},
 			notes_subdir = "notes",
 			new_notes_location = "notes_subdir",
-			completion = { nvim_cmp = true, min_chars = 1 },
+			completion = { min_chars = 1 },
 			follow_url_func = function(url)
 				local cmd = vim.fn.has("mac") == 1 and "open" or "xdg-open"
 				vim.fn.jobstart({ cmd, url })
@@ -184,17 +184,10 @@ return {
 	-- ╰────────────────────────────────────────────────────────╯
 	{ import = "astrocommunity.test.neotest" },
 	{ import = "astrocommunity.test.nvim-coverage" },
-
-	-- ╭────────────────────────────────────────────────────────╮
-	-- │                    Media                               │
-	-- ╰────────────────────────────────────────────────────────╯
-	{ import = "astrocommunity.media.presence-nvim" },
-
 	-- ╭────────────────────────────────────────────────────────╮
 	-- │                    Project                             │
 	-- ╰────────────────────────────────────────────────────────╯
 	{ import = "astrocommunity.project.project-nvim" },
-	-- { import = "astrocommunity.project.nvim-spectre" }, -- DISABLED: module not found
 
 	-- ╭────────────────────────────────────────────────────────╮
 	-- │                    Recipes                             │
@@ -209,6 +202,7 @@ return {
 	-- ╰────────────────────────────────────────────────────────╯
 	{ import = "astrocommunity.scrolling.neoscroll-nvim" },
 	{ import = "astrocommunity.scrolling.mini-animate" },
+	{ import = "astrocommunity.split-and-window.neominimap-nvim" },
 
 	-- ╭────────────────────────────────────────────────────────╮
 	-- │                    Syntax                              │
@@ -233,14 +227,4 @@ return {
 	-- │                    Workflow                            │
 	-- ╰────────────────────────────────────────────────────────╯
 	{ import = "astrocommunity.workflow.precognition-nvim" },
-	{ import = "astrocommunity.split-and-window.minimap-vim" },
-	{
-		"wfxr/minimap.vim",
-		lazy = false,
-		config = function()
-			vim.g.minimap_width = 10
-			vim.g.minimap_auto_start = 1
-			vim.g.minimap_auto_start_win_enter = 1
-		end,
-	},
 }
