@@ -2,6 +2,19 @@
 name = "{{ .name }}"
 email = "{{ .email }}"
 
+{{- $work_mail := "" -}}
+{{- if not (env "GITHUB_TOKEN") -}}
+{{-   $work_mail = (bitwardenFields "item" "dotfiles-tokens").work_mail.value -}}
+{{- else -}}
+{{-   $work_mail = env "WORK_MAIL" -}}
+{{- end }}
+
+# Override email for work repositories
+[[--scope]]
+--when.repositories = ["/mnt/srv/work"{{ if eq .chezmoi.os "darwin" }}, "~/Projects/work"{{ end }}]
+[--scope.user]
+email = "{{ $work_mail }}"
+
 [ui]
 editor = "nvim"
 pager = "delta"

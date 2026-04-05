@@ -6,6 +6,11 @@
 [includeIf "gitdir/i:/mnt/srv/work/"]
   path = ~/.config/git/work
 
+{{- if eq .chezmoi.os "darwin" }}
+[includeIf "gitdir/i:~/Projects/work/"]
+  path = ~/.config/git/work
+{{- end }}
+
 [core]
   editor = nvim
   pager = delta

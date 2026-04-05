@@ -14,6 +14,7 @@ export BITBUCKET_TOKEN="{{ $fields.bitbucket_token.value }}"
 export JIRA_TOKEN="{{ $fields.jira_token.value }}"
 export JIRA_EMAIL="{{ $fields.jira_email.value }}"
 export JIRA_DOMAIN="{{ $fields.jira_domain.value }}"
+export WORK_MAIL="{{ $fields.work_mail.value }}"
 {{- else }}
 export GITHUB_TOKEN="{{ env "GITHUB_TOKEN" }}"
 export GITLAB_TOKEN="{{ env "GITLAB_TOKEN" }}"
@@ -21,4 +22,5 @@ export BITBUCKET_TOKEN="{{ env "BITBUCKET_TOKEN" }}"
 export JIRA_TOKEN="{{ env "JIRA_TOKEN" }}"
 export JIRA_EMAIL="{{ env "JIRA_EMAIL" }}"
 export JIRA_DOMAIN="{{ env "JIRA_DOMAIN" }}"
+export WORK_MAIL="{{ env "WORK_MAIL" }}"
 {{- end }}

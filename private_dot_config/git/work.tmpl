@@ -1,0 +1,8 @@
+{{- $work_mail := "" -}}
+{{- if not (env "GITHUB_TOKEN") -}}
+{{-   $work_mail = (bitwardenFields "item" "dotfiles-tokens").work_mail.value -}}
+{{- else -}}
+{{-   $work_mail = env "WORK_MAIL" -}}
+{{- end -}}
+[user]
+  email = {{ $work_mail }}

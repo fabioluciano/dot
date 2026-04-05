@@ -17,6 +17,13 @@ return {
         "lua_ls",
         "tinymist",           -- Typst language server
       })
+      -- Fix astrocommunity.pack.docker using invalid lspconfig name
+      for i, name in ipairs(opts.ensure_installed) do
+        if name == "docker-language-server" then
+          opts.ensure_installed[i] = "dockerls"
+          break
+        end
+      end
     end,
   },
   {
