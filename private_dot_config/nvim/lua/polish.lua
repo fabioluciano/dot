@@ -66,28 +66,26 @@ end
 -- │              Download spell files if missing              │
 -- ╰──────────────────────────────────────────────────────────╯
 
--- Auto-download spell files for pt_BR and en_US
+-- Auto-download spell files for configured languages
 local spell_dir = vim.fn.stdpath "data" .. "/site/spell"
-
--- Create spell directory if it doesn't exist
 vim.fn.mkdir(spell_dir, "p")
 
--- Function to download spell file if missing
 local function ensure_spell_file(lang)
-  local spell_file = spell_dir .. "/" .. lang .. ".utf-8.spl"
-  if vim.fn.filereadable(spell_file) == 0 then
-    vim.notify("Downloading spell file for " .. lang .. "...", vim.log.levels.INFO)
-    -- Neovim will auto-download when spell is enabled
-    vim.opt.spelllang = { lang }
+  local spl = spell_dir .. "/" .. lang .. ".utf-8.spl"
+  if vim.fn.filereadable(spl) == 0 then
+    local url = "https://ftp.nluug.nl/pub/vim/runtime/spell/" .. lang .. ".utf-8.spl"
+    vim.notify("Downloading " .. lang .. ".utf-8.spl…", vim.log.levels.INFO)
+    vim.fn.system { "curl", "-fsSLo", spl, url }
+    if vim.v.shell_error ~= 0 then
+      vim.notify("Failed to download " .. lang .. " spell file", vim.log.levels.WARN)
+    end
   end
 end
 
--- Ensure spell files exist
 vim.defer_fn(function()
-  ensure_spell_file "en"
-  ensure_spell_file "pt"
-  -- Set both languages
-  vim.opt.spelllang = { "en", "pt" }
+  for _, lang in ipairs { "en", "pt" } do
+    ensure_spell_file(lang)
+  end
 end, 500)
 
 

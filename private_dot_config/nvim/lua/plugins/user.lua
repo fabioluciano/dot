@@ -100,4 +100,10 @@ return {
 			},
 		},
 	},
+
+	-- Fix nvim-notify E937 on Neovim 0.12+
+	{
+		"rcarriga/nvim-notify",
+		opts = { stages = "static" },
+	},
 }

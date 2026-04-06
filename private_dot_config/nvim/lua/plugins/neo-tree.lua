@@ -45,6 +45,10 @@ return {
         hide_gitignored = false,
       },
       use_libuv_file_watcher = true,
+      group_empty_dirs = true,
+      ollow_current_file = {
+        enabled = false
+      },
     },
   },
 }
