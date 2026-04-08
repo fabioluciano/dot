@@ -178,9 +178,17 @@ if command -v direnv &>/dev/null; then
     eval "$(direnv hook zsh)"
 fi
 
-# Zoxide - immediate (needed for 'z' alias)
+# Zoxide - immediate (preserve builtin cd for normal paths, fallback to z)
 if command -v zoxide &>/dev/null; then
     eval "$(zoxide init zsh)"
+
+    cd() {
+        if [[ $# -eq 0 || -d "$1" || "$1" == "." || "$1" == ".." || "$1" == -* ]]; then
+            builtin cd "$@"
+        else
+            z "$@"
+        fi
+    }
 fi
 
 # Starship prompt - immediate (needed for prompt)

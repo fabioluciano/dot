@@ -19,6 +19,7 @@ uv = "latest"
 usage = "latest"
 kubectl = "latest"
 bazel = "latest"
+pre-commit = "latest"
 
 [settings]
 # Enable version files for better compatibility
