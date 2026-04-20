@@ -29,5 +29,17 @@ verbose = false
 asdf_compat = false
 jobs = 4
 
+[env]
+# Global environment variables
+_.python.venv = { path = ".venv", create = true }
+
+[tasks.update]
+run = "mise self-update && mise upgrade"
+description = "Update mise and all tools"
+
+[tasks.doctor]
+run = "mise doctor"
+description = "Run mise doctor"
+
 [plugins]
 # Add any custom plugins here

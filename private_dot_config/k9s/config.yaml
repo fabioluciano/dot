@@ -32,3 +32,12 @@ k9s:
     limits:
       cpu: 100m
       memory: 100Mi
+
+  # Resource thresholds
+  thresholds:
+    cpu:
+      critical: 90
+      warn: 70
+    memory:
+      critical: 90
+      warn: 70

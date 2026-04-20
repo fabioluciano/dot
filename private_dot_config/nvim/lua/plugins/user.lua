@@ -106,4 +106,28 @@ return {
 		"rcarriga/nvim-notify",
 		opts = { stages = "static" },
 	},
+
+	-- Markdown preview
+	{
+		"iamcco/markdown-preview.nvim",
+		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+		ft = { "markdown" },
+		build = function()
+			vim.fn["mkdp#util#install"]()
+		end,
+		keys = {
+			{ "<leader>mp", "<cmd>MarkdownPreview<cr>", desc = "Markdown Preview", ft = "markdown" },
+		},
+	},
+
+	-- GitHub Copilot
+	{
+		"github/copilot.vim",
+		event = "InsertEnter",
+		config = function()
+			vim.g.copilot_no_tab_map = true
+			vim.g.copilot_assume_mapped = true
+			vim.g.copilot_tab_fallback = ""
+		end,
+	},
 }

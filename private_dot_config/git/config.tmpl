@@ -3,12 +3,18 @@
   name = {{ .name }}
   signingkey = ~/.ssh/yubikey.pub
 
-[includeIf "gitdir/i:/mnt/srv/work/"]
+[includeIf "gitdir:/mnt/srv/work/"]
   path = ~/.config/git/work
 
+[includeIf "gitdir:/mnt/srv/work/"]
+  path = ~/.config/git/projects
+
 {{- if eq .chezmoi.os "darwin" }}
-[includeIf "gitdir/i:~/Projects/work/"]
+[includeIf "gitdir:{{ .chezmoi.homeDir }}/Projects/work/"]
   path = ~/.config/git/work
+
+[includeIf "gitdir:{{ .chezmoi.homeDir }}/Projects/"]
+  path = ~/.config/git/projects
 {{- end }}
 
 [core]
@@ -148,14 +154,21 @@
 [transfer]
   fsckobjects = true
 
-[receive]
-  fsckObjects = true
-
 [commit]
   gpgsign = true
 
 [tag]
   gpgsign = true
+
+[maintenance]
+  auto = true
+  strategy = incremental
+
+[feature]
+  manyFiles = true
+
+[receive]
+  fsckObjects = true
 
 [gpg]
   format = ssh

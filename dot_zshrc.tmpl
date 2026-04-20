@@ -34,7 +34,6 @@ source /opt/homebrew/opt/zplug/init.zsh
 {{- end }}
 
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
-zplug "mafredri/zsh-async", from:github
 zplug "chrissicool/zsh-256color"
 
 # Essential oh-my-zsh libraries
@@ -216,6 +215,45 @@ if command -v ngrok &>/dev/null; then
     _lazyload ngrok 'eval "$(ngrok completion)"'
 fi
 
+# Kubectl - lazy load (saves ~200ms on startup)
+if command -v kubectl &>/dev/null; then
+    kubectl() {
+        unalias kubectl 2>/dev/null
+        unfunction kubectl
+        source <(command kubectl completion zsh)
+        # Re-alias to kubecolor if available
+        if command -v kubecolor &>/dev/null; then
+            alias kubectl=kubecolor
+            compdef kubecolor=kubectl
+        fi
+        kubectl "$@"
+    }
+fi
+
+# Helm - lazy load
+if command -v helm &>/dev/null; then
+    helm() {
+        unfunction helm
+        source <(helm completion zsh)
+        helm "$@"
+    }
+fi
+
+# Terraform - lazy load
+if command -v terraform &>/dev/null; then
+    terraform() {
+        unfunction terraform
+        complete -o nospace -C $(which terraform) terraform
+        terraform "$@"
+    }
+fi
+
+# Semantic Versioning CLI - lazy load
+if command -v sem &>/dev/null; then
+    # Load completion immediately (it's lightweight)
+    eval "$(command sem completions zsh)"
+fi
+
 # =============================================================================
 # Aliases
 # =============================================================================
@@ -253,12 +291,6 @@ alias kdp='kubectl describe pod'
 alias kl='kubectl logs'
 alias kaf='kubectl apply -f'
 alias kdel='kubectl delete'
-
-# Use kubecolor with kubectl completion
-if command -v kubecolor &>/dev/null; then
-  alias kubectl=kubecolor
-  compdef kubecolor=kubectl
-fi
 
 # Editor
 alias vim='nvim'

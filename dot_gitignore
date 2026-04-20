@@ -7,6 +7,9 @@
 *~
 .DS_Store
 
+# Git config (use ~/.config/git/config instead)
+.gitconfig
+
 # OS Files
 .DS_Store?
 ._*
