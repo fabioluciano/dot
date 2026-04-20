@@ -1,0 +1,43 @@
+# espanso match file
+
+# yaml-language-server: $schema=https://raw.githubusercontent.com/espanso/espanso/dev/schemas/match.schema.json
+
+matches:
+  - trigger: ":dhoje"
+    replace: "{{today}}"
+    vars:
+      - name: today
+        type: date
+        params:
+          format: "%d/%m/%Y"
+
+  - trigger: ":agora"
+    replace: "{{now}}"
+    vars:
+      - name: now
+        type: date
+        params:
+          format: "%Y-%m-%d %H:%M"
+
+  - trigger: ":uuid"
+    replace: "{{output}}"
+    vars:
+      - name: output
+        type: shell
+        params:
+          cmd: "uuidgen | tr 'A-Z' 'a-z'"
+
+  - trigger: ":mail"
+    replace: "fabio@naoimporta.com"
+
+  - trigger: ":gh"
+    replace: "https://github.com/fabioluciano"
+
+  - trigger: ":sig"
+    replace: |
+      Fabio Luciano
+
+  - trigger: ":br"
+    replace: |
+      Best regards,
+      Fabio Luciano
