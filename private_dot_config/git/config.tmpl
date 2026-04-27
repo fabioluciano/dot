@@ -119,6 +119,13 @@
 [diff]
     submodule = log
     colorMoved = default
+    tool = delta
+
+[difftool "delta"]
+    cmd = delta "$LOCAL" "$REMOTE"
+
+[difftool]
+    prompt = false
 
 [delta "interactive"]
     keep-plus-minus-markers = false

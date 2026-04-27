@@ -121,7 +121,7 @@ return {
 	{ import = "astrocommunity.pack.just" },
 	{ import = "astrocommunity.pack.json" },
 	{ import = "astrocommunity.pack.lua" },
-	{ import = "astrocommunity.pack.markdown" },
+	{ import = "astrocommunity.pack.mdx" },
 	{ import = "astrocommunity.pack.php" },
 	{ import = "astrocommunity.pack.python" },
 	{ import = "astrocommunity.pack.rust" },
@@ -146,7 +146,7 @@ return {
 		opts = {
 			workspaces = {
 				{ name = "study", path = "~/Obsidian/study" },
-				{ name = "work", path = "~/Obsidian/work" },
+				{ name = "work",  path = "~/Obsidian/work" },
 			},
 			notes_subdir = "notes",
 			new_notes_location = "notes_subdir",
@@ -159,7 +159,7 @@ return {
 			templates = { folder = "templates", date_format = "%Y-%m-%d", time_format = "%H:%M" },
 			note_id_func = function(title)
 				local suffix = title and title:gsub(" ", "-"):gsub("[^A-Za-z0-9-]", ""):lower()
-					or string.char(math.random(65, 90)):rep(4)
+						or string.char(math.random(65, 90)):rep(4)
 				return os.date("%Y%m%d%H%M") .. "-" .. suffix
 			end,
 			ui = {
@@ -202,7 +202,6 @@ return {
 	-- ╰────────────────────────────────────────────────────────╯
 	{ import = "astrocommunity.scrolling.neoscroll-nvim" },
 	{ import = "astrocommunity.scrolling.mini-animate" },
-	{ import = "astrocommunity.split-and-window.neominimap-nvim" },
 
 	-- ╭────────────────────────────────────────────────────────╮
 	-- │                    Syntax                              │
@@ -214,7 +213,6 @@ return {
 	-- │                    Terminal Integration                │
 	-- ╰────────────────────────────────────────────────────────╯
 	{ import = "astrocommunity.terminal-integration.vim-tmux-yank" },
-	{ import = "astrocommunity.terminal-integration.vim-tmux-navigator" },
 	{ import = "astrocommunity.terminal-integration.flatten-nvim" },
 
 	-- ╭────────────────────────────────────────────────────────╮

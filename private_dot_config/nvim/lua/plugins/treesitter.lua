@@ -1,28 +1,75 @@
--- ╭──────────────────────────────────────────────────────────╮
--- │                    Treesitter Configuration               │
--- ╰──────────────────────────────────────────────────────────╯
+-- Customize Treesitter
+-- --------------------
+-- Treesitter customizations are handled with AstroCore
+-- as nvim-treesitter simply provides a download utility for parsers
 
 ---@type LazySpec
 return {
-  {
-    "nvim-treesitter/nvim-treesitter-textobjects",
-    lazy = true,
-  },
-  {
-    "nvim-treesitter/nvim-treesitter",
-    lazy = false,
-    config = function(_, opts)
-      require("nvim-treesitter").setup(opts)
-    end,
-    opts = function(_, opts)
-      opts.ensure_installed = require("astrocore").list_insert_unique(opts.ensure_installed, {
+  "AstroNvim/astrocore",
+  ---@type AstroCoreOpts
+  opts = {
+    treesitter = {
+      highlight = true,
+      indent = true,
+      auto_install = true,
+      ensure_installed = {
+        -- Core
         "lua",
         "vim",
-        "dockerfile",
-        "yaml",
+        "vimdoc",
+        "query",
+
+        -- Web
+        "html",
+        "css",
+        "scss",
+        "javascript",
+        "typescript",
+        "tsx",
+        "vue",
+        "angular",
+        "svelte",
+        "astro",
+
+        -- Markup
+        "markdown",
+        "markdown_inline",
+        "mdx",
         "json",
-        "typst",
-      })
-    end,
+        "jsonc",
+        "yaml",
+        "toml",
+        "xml",
+
+        -- Languages
+        "python",
+        "go",
+        "gomod",
+        "gosum",
+        "rust",
+        "php",
+        "java",
+        "sql",
+        "just",
+
+        -- Shell/Config
+        "bash",
+        "fish",
+        "dockerfile",
+        "terraform",
+        "hcl",
+        "helm",
+        "cmake",
+
+        -- Other
+        "regex",
+        "gitignore",
+        "git_config",
+        "git_rebase",
+        "gitcommit",
+        "gitattributes",
+        "diff",
+      },
+    },
   },
 }

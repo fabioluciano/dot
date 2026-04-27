@@ -1,41 +1,96 @@
+---@type LazySpec
 return {
   {
-    "williamboman/mason.nvim",
-    version = "^1",
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
     opts = {
       ensure_installed = {
-        "prettier",
+        -- Lua
+        "lua-language-server",
         "stylua",
+
+        -- Python
+        "pyright",
+        "ruff",
+        "debugpy",
+
+        -- Go
+        "gopls",
+        "gofumpt",
+        "goimports",
+        "golangci-lint",
+        "delve",
+
+        -- TypeScript/JavaScript
+        "typescript-language-server",
+        "prettier",
+        "eslint-lsp",
+
+        -- Angular
+        "angular-language-server",
+
+        -- Vue
+        "vue-language-server",
+
+        -- HTML/CSS
+        "html-lsp",
+        "css-lsp",
+        "tailwindcss-language-server",
+
+        -- JSON/YAML
+        "json-lsp",
+        "yaml-language-server",
+        "yamllint",
+        "yamlfmt",
+
+        -- Bash
+        "bash-language-server",
+        "shellcheck",
+        "shfmt",
+
+        -- Docker
+        "dockerfile-language-server",
+        "docker-compose-language-service",
+
+        -- Terraform
+        "terraform-ls",
+        "tflint",
+
+        -- Rust
+        "rust-analyzer",
+
+        -- PHP
+        "intelephense",
+        "phpactor",
+
+        -- Java
+        "jdtls",
+
+        -- SQL
+        "sqlls",
+
+        -- XML
+        "lemminx",
+
+        -- TOML
+        "taplo",
+
+        -- Helm
+        "helm-ls",
+
+        -- Markdown
+        "marksman",
+        "markdownlint",
+
+        -- MDX
+        "mdx-analyzer",
+
+        -- CMake
+        "cmake-language-server",
+        "cmakelint",
+
+        -- General
+        "tree-sitter-cli",
       },
     },
-  },
-  {
-    "williamboman/mason-lspconfig.nvim",
-    version = "^1",
-    opts = function(_, opts)
-      opts.ensure_installed = require("astrocore").list_insert_unique(opts.ensure_installed, {
-        "lua_ls",
-        "tinymist",           -- Typst language server
-      })
-      -- Fix astrocommunity.pack.docker using invalid lspconfig name
-      for i, name in ipairs(opts.ensure_installed) do
-        if name == "docker-language-server" then
-          opts.ensure_installed[i] = "dockerls"
-          break
-        end
-      end
-    end,
-  },
-  {
-    "jay-babu/mason-null-ls.nvim",
-    enabled = false,
-  },
-  {
-    "jay-babu/mason-nvim-dap.nvim",
-    opts = function(_, opts)
-      opts.ensure_installed = require("astrocore").list_insert_unique(opts.ensure_installed, {
-        "python",
-      })
-    end,
   },
 }

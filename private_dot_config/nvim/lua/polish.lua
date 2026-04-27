@@ -59,8 +59,6 @@ for type, icon in pairs(signs) do
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
 
-
-
 -- ╭──────────────────────────────────────────────────────────╮
 -- │                    Spellcheck Setup                       │
 -- │              Download spell files if missing              │
@@ -87,5 +85,3 @@ vim.defer_fn(function()
     ensure_spell_file(lang)
   end
 end, 500)
-
-

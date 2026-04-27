@@ -1,133 +1,160 @@
--- ╭──────────────────────────────────────────────────────────╮
--- │                    User Plugins                           │
--- │              Custom plugins not in AstroCommunity         │
--- ╰──────────────────────────────────────────────────────────╯
-
+---@type LazySpec
 return {
-	-- Better quick fix list
-	{
-		"kevinhwang91/nvim-bqf",
-		ft = "qf",
-		opts = {
-			preview = {
-				winblend = 0,
-			},
-		},
-	},
+  -- Full tmux integration (navigation, resize, copy mode)
+  {
+    "aserowy/tmux.nvim",
+    event = "VeryLazy",
+    opts = {},
+  },
 
-	-- Better marks
-	{
-		"chentoast/marks.nvim",
-		event = "BufReadPost",
-		opts = {
-			default_mappings = true,
-			signs = true,
-			mappings = {},
-		},
-	},
+  -- Neo-tree file explorer customization
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    opts = {
+      default_component_configs = {
+        indent = {
+          with_expanders = true,
+          expander_collapsed = "",
+          expander_expanded = "",
+        },
+        icon = {
+          folder_closed = "\u{e5ff}",
+          folder_open = "\u{e5fe}",
+          folder_empty = "\u{f115}",
+          folder_empty_open = "\u{f115}",
+        },
+        git_status = {
+          symbols = {
+            added = "\u{f457}",
+            modified = "\u{f459}",
+            deleted = "\u{f458}",
+            renamed = "\u{f45a}",
+            untracked = "\u{f128}",
+            ignored = "\u{f474}",
+            unstaged = "\u{f06a}",
+            staged = "\u{f055}",
+            conflict = "\u{eb37}",
+          },
+        },
+      },
+      filesystem = {
+        filtered_items = {
+          visible = true,
+          hide_dotfiles = false,
+          hide_gitignored = false,
+        },
+        use_libuv_file_watcher = true,
+        group_empty_dirs = true,
+        follow_current_file = {
+          enabled = false,
+        },
+      },
+    },
+  },
 
-	-- Undo tree visualization
-	{
-		"mbbill/undotree",
-		cmd = "UndotreeToggle",
-		keys = {
-			{ "<leader>U", "<cmd>UndotreeToggle<cr>", desc = "Toggle Undotree" },
-		},
-	},
+  -- Better quick fix list
+  {
+    "kevinhwang91/nvim-bqf",
+    ft = "qf",
+    opts = {
+      preview = {
+        winblend = 0,
+      },
+    },
+  },
 
-	-- Color highlighter
-	{
-		"NvChad/nvim-colorizer.lua",
-		event = { "BufReadPost", "BufNewFile" },
-		opts = {
-			filetypes = {
-				"css", "scss", "sass", "less",
-				"html", "vue", "svelte",
-				"javascript", "javascriptreact", "typescript", "typescriptreact",
-				"lua", "conf", "toml", "yaml",
-			},
-			user_default_options = {
-				RGB = true,
-				RRGGBB = true,
-				names = false,
-				RRGGBBAA = true,
-				css = true,
-				css_fn = true,
-				mode = "virtualtext",
-				virtualtext = "■",
-				tailwind = true,
-			},
-		},
-	},
+  -- Better marks
+  {
+    "chentoast/marks.nvim",
+    event = "BufReadPost",
+    opts = {
+      default_mappings = true,
+      signs = true,
+      mappings = {},
+    },
+  },
 
-	-- Better fold
-	{
-		"kevinhwang91/nvim-ufo",
-		dependencies = "kevinhwang91/promise-async",
-		event = "BufReadPost",
-		opts = {
-			provider_selector = function()
-				return { "treesitter", "indent" }
-			end,
-		},
-		init = function()
-			vim.o.foldcolumn = "1"
-			vim.o.foldlevel = 99
-			vim.o.foldlevelstart = 99
-			vim.o.foldenable = true
-		end,
-		keys = {
-			{
-				"zR",
-				function()
-					require("ufo").openAllFolds()
-				end,
-				desc = "Open all folds",
-			},
-			{
-				"zM",
-				function()
-					require("ufo").closeAllFolds()
-				end,
-				desc = "Close all folds",
-			},
-			{
-				"zK",
-				function()
-					require("ufo").peekFoldedLinesUnderCursor()
-				end,
-				desc = "Peek fold",
-			},
-		},
-	},
+  -- Undo tree visualization
+  {
+    "mbbill/undotree",
+    cmd = "UndotreeToggle",
+    keys = {
+      { "<leader>U", "<cmd>UndotreeToggle<cr>", desc = "Toggle Undotree" },
+    },
+  },
 
-	-- Fix nvim-notify E937 on Neovim 0.12+
-	{
-		"rcarriga/nvim-notify",
-		opts = { stages = "static" },
-	},
+  -- Color highlighter
+  {
+    "NvChad/nvim-colorizer.lua",
+    event = { "BufReadPost", "BufNewFile" },
+    opts = {
+      filetypes = {
+        "css",
+        "scss",
+        "sass",
+        "less",
+        "html",
+        "vue",
+        "svelte",
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact",
+        "lua",
+        "conf",
+        "toml",
+        "yaml",
+      },
+      user_default_options = {
+        RGB = true,
+        RRGGBB = true,
+        names = false,
+        RRGGBBAA = true,
+        css = true,
+        css_fn = true,
+        mode = "virtualtext",
+        virtualtext = "■",
+        tailwind = true,
+      },
+    },
+  },
 
-	-- Markdown preview
-	{
-		"iamcco/markdown-preview.nvim",
-		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-		ft = { "markdown" },
-		build = function()
-			vim.fn["mkdp#util#install"]()
-		end,
-		keys = {
-			{ "<leader>mp", "<cmd>MarkdownPreview<cr>", desc = "Markdown Preview", ft = "markdown" },
-		},
-	},
+  -- Better fold
+  {
+    "kevinhwang91/nvim-ufo",
+    dependencies = "kevinhwang91/promise-async",
+    event = "BufReadPost",
+    opts = {
+      provider_selector = function() return { "treesitter", "indent" } end,
+    },
+    init = function()
+      vim.o.foldcolumn = "1"
+      vim.o.foldlevel = 99
+      vim.o.foldlevelstart = 99
+      vim.o.foldenable = true
+    end,
+    keys = {
+      {
+        "zR",
+        function() require("ufo").openAllFolds() end,
+        desc = "Open all folds",
+      },
+      {
+        "zM",
+        function() require("ufo").closeAllFolds() end,
+        desc = "Close all folds",
+      },
+      {
+        "zK",
+        function() require("ufo").peekFoldedLinesUnderCursor() end,
+        desc = "Peek fold",
+      },
+    },
+  },
 
-	-- GitHub Copilot
-	{
-		"github/copilot.vim",
-		event = "InsertEnter",
-		config = function()
-			vim.g.copilot_no_tab_map = true
-			vim.g.copilot_assume_mapped = true
-			vim.g.copilot_tab_fallback = ""
-		end,
-	},
+  -- Fix nvim-notify E937 on Neovim 0.12+
+  {
+    "rcarriga/nvim-notify",
+    opts = { stages = "static" },
+  },
 }
