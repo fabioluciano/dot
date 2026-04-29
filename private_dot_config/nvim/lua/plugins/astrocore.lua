@@ -53,7 +53,7 @@ return {
     },
     mappings = {
       n = {
-        ["<Leader>C"] = { desc = " Claude" },
+        ["<Leader>C"] = { "<cmd>ClaudeCode<cr>", desc = " Claude" },
       },
     },
     autocmds = {
