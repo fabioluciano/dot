@@ -1,6 +1,7 @@
 # IDEs and Editors
 .vscode/
 .claude/
+.codegraph/
 .idea/
 *.swp
 *.swo
