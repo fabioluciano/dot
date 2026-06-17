@@ -47,3 +47,6 @@ logid.cfg
 .Brewfile
 {{- end }}
 
+
+# Public GPG key — usado pelos run_before, nao aplicar em ~
+keys/

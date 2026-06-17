@@ -33,6 +33,7 @@ return {
             if require("astrolsp").config.features.codelens then vim.lsp.codelens.enable(true, { bufnr = args.buf }) end
           end,
         },
+      },
       lsp_document_highlight = {
         cond = "textDocument/documentHighlight",
         {
@@ -45,7 +46,6 @@ return {
           desc = "Document Highlighting Clear",
           callback = function() vim.lsp.buf.clear_references() end,
         },
-      },
       },
     },
     mappings = {

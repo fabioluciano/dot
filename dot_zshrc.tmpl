@@ -5,7 +5,7 @@
 # Enable profiling (uncomment to debug startup time)
 # zmodload zsh/zprof
 
-# Skip global compinit
+# Skip global compinit (we run our own, cached, below)
 skip_global_compinit=1
 
 # =============================================================================
@@ -19,83 +19,71 @@ export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
+export ZSH_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
+[[ -d $ZSH_CACHE_DIR ]] || mkdir -p "$ZSH_CACHE_DIR"
+
 # =============================================================================
-# Plugin Manager - zplug
+# Plugin Manager - antidote (static bundle)
 # =============================================================================
+# antidote generates a single, pre-sourced file from .zsh_plugins.txt, so shell
+# startup only sources one (zcompiled) file instead of resolving plugins live.
 
-{{- if eq .chezmoi.os "linux" }}
-{{-   if eq .chezmoi.osRelease.id "arch" }}
-source /usr/share/zsh/scripts/zplug/init.zsh
-{{-   else }}
-source ~/.zplug/init.zsh
-{{-   end }}
-{{- else if eq .chezmoi.os "darwin" }}
-source /opt/homebrew/opt/zplug/init.zsh
-{{- end }}
-
-zplug 'zplug/zplug', hook-build:'zplug --self-manage'
-zplug "chrissicool/zsh-256color"
-
-# Essential oh-my-zsh libraries
-zplug "ohmyzsh/ohmyzsh", use:"lib/key-bindings.zsh"
-zplug "ohmyzsh/ohmyzsh", use:"lib/clipboard.zsh"
-zplug "ohmyzsh/ohmyzsh", use:"lib/completion.zsh"
-
-# Plugins
-zplug "plugins/aws",   from:oh-my-zsh
-zplug "plugins/git",   from:oh-my-zsh
-zplug "plugins/sudo",   from:oh-my-zsh
-zplug "plugins/terraform",   from:oh-my-zsh
-zplug "plugins/command-not-found",   from:oh-my-zsh
-zplug "plugins/docker",   from:oh-my-zsh
-zplug "Aloxaf/fzf-tab"
-
-# Platform-specific plugins
-if [[ $OSTYPE = (linux)* ]]; then
-    zplug "plugins/archlinux",     from:oh-my-zsh, if:"(( $+commands[pacman] ))"
+ANTIDOTE_DIR="${ZDOTDIR:-$HOME}/.antidote"
+if [[ ! -e $ANTIDOTE_DIR/antidote.zsh ]]; then
+    git clone --depth=1 https://github.com/mattmc3/antidote "$ANTIDOTE_DIR"
 fi
+source "$ANTIDOTE_DIR/antidote.zsh"
 
-if [[ $OSTYPE = (darwin)* ]]; then
-    zplug "plugins/macos",         from:oh-my-zsh
-    zplug "plugins/brew",          from:oh-my-zsh, if:"(( $+commands[brew] ))"
+# --- Stage 1: completions onto fpath (must run BEFORE compinit) --------------
+_zpre_txt="${ZDOTDIR:-$HOME}/.zsh_plugins_pre.txt"
+_zpre_zsh="${ZDOTDIR:-$HOME}/.zsh_plugins_pre.zsh"
+if [[ ! $_zpre_zsh -nt $_zpre_txt ]]; then
+    antidote bundle <"$_zpre_txt" >"$_zpre_zsh"
 fi
+source "$_zpre_zsh"
 
-# Enhancement plugins (deferred loading)
-zplug "hlissner/zsh-autopair", defer:2
-zplug 'zsh-users/zsh-autosuggestions'
-zplug 'zsh-users/zsh-syntax-highlighting', defer:2
-zplug 'zsh-users/zsh-history-substring-search', defer:3
-zplug 'zsh-users/zsh-completions', depth:1
-
-zplug "junegunn/fzf", use:shell/key-bindings.zsh
-
-# Install missing plugins automatically (silent for non-interactive shells)
-if ! zplug check; then
-    zplug install
-fi
-
-zplug load
-
-# =============================================================================
-# Completion System (ONLY ONCE - with 24h cache)
-# =============================================================================
-
+# Extra fpath entries (also before compinit).
 fpath+=~/.zfunc
-
-# Homebrew completions (must be before compinit)
 {{- if eq .chezmoi.os "darwin" }}
 if command -v brew &>/dev/null; then
     FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 fi
 {{- end }}
 
-# Cache completions (24h TTL) - skips security checks on cached files
+# =============================================================================
+# Completion System (single, cached compinit) — defines `compdef`
+# =============================================================================
+
+# Refresh the dump (with security check) at most once every 24h; otherwise load
+# the cached dump with -C (skips the slow per-file security check).
 autoload -Uz compinit
-if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
-    compinit
+_zcompdump="${ZDOTDIR:-$HOME}/.zcompdump"
+if [[ -n ${_zcompdump}(#qN.mh+24) ]]; then
+    compinit -d "$_zcompdump"
 else
-    compinit -C  # Skip security check on cached files
+    compinit -C -d "$_zcompdump"
 fi
+# Compile the dump in the background so the next start is even faster.
+{ [[ ! -s ${_zcompdump}.zwc || $_zcompdump -nt ${_zcompdump}.zwc ]] \
+    && zcompile -R -- "${_zcompdump}.zwc" "$_zcompdump" 2>/dev/null } &!
+unset _zcompdump
+
+# --- Stage 2: remaining plugins (OMZ calls `compdef`; safe now) --------------
+# Regenerate (and compile) the static bundle only when the plugin list changes.
+_zplugins_txt="${ZDOTDIR:-$HOME}/.zsh_plugins.txt"
+_zplugins_zsh="${ZDOTDIR:-$HOME}/.zsh_plugins.zsh"
+if [[ ! $_zplugins_zsh -nt $_zplugins_txt ]]; then
+    antidote bundle <"$_zplugins_txt" >"$_zplugins_zsh"
+    zcompile -R -- "${_zplugins_zsh}.zwc" "$_zplugins_zsh" 2>/dev/null
+fi
+source "$_zplugins_zsh"
+unset _zpre_txt _zpre_zsh _zplugins_txt _zplugins_zsh
+
+# history-substring-search bindings (widgets are loaded by the bundle above)
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
 
 # =============================================================================
 # History Configuration
@@ -115,13 +103,15 @@ setopt HIST_IGNORE_SPACE     # Do not record an event starting with a space.
 setopt HIST_SAVE_NO_DUPS     # Do not write a duplicate event to the history file.
 setopt HIST_VERIFY           # Do not execute immediately upon history expansion.
 setopt APPEND_HISTORY        # append to history file (Default)
-setopt HIST_NO_STORE         # Don't store history commands
 setopt HIST_REDUCE_BLANKS    # Remove superfluous blanks from each command line being added to the history.
 
 # =============================================================================
 # Completion Styles
 # =============================================================================
 
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "$ZSH_CACHE_DIR/zcompcache"
 zstyle ':completion:*:git-checkout:*' sort false
 zstyle ':completion:*:descriptions' format '[%d]'
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
@@ -137,50 +127,55 @@ zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
 export PATH="${PATH}:${HOME}/.krew/bin:${HOME}/.local/bin"
 
 # =============================================================================
-# FZF Configuration
+# Tool Integrations
 # =============================================================================
 
+# _cache_eval <name> <cmd...>: run <cmd> once and cache its output, re-running
+# only when the underlying binary changes. Avoids spawning a subprocess for
+# every `tool init`-style integration on each shell startup.
+_cache_eval() {
+    local name=$1; shift
+    local cache="$ZSH_CACHE_DIR/$name.zsh"
+    local bin; bin=$(command -v "$1" 2>/dev/null)
+    if [[ -n $bin && ( ! -s $cache || $bin -nt $cache ) ]]; then
+        "$@" > "$cache" 2>/dev/null
+        zcompile -R -- "$cache.zwc" "$cache" 2>/dev/null
+    fi
+    [[ -s $cache ]] && source "$cache"
+}
+
+# _lazyload <cmd> <init>: defer a tool's completion/init until first use.
+_lazyload() {
+    local cmd=$1 init=$2
+    eval "$cmd() { unfunction $cmd; $init; $cmd \"\$@\"; }"
+}
+
+# FZF — keybindings + completion (fzf >= 0.48 ships `fzf --zsh`)
+if command -v fzf &>/dev/null; then
+    if fzf --zsh &>/dev/null; then
+        _cache_eval fzf fzf --zsh
+    else
 {{- if eq .chezmoi.os "linux" }}
 {{-   if eq .chezmoi.osRelease.id "arch" }}
-source /usr/share/fzf/completion.zsh
-source /usr/share/fzf/key-bindings.zsh
+        [[ -f /usr/share/fzf/completion.zsh ]]   && source /usr/share/fzf/completion.zsh
+        [[ -f /usr/share/fzf/key-bindings.zsh ]] && source /usr/share/fzf/key-bindings.zsh
 {{-   else }}
-[ -f /usr/share/doc/fzf/examples/completion.zsh ] && source /usr/share/doc/fzf/examples/completion.zsh
-[ -f /usr/share/doc/fzf/examples/key-bindings.zsh ] && source /usr/share/doc/fzf/examples/key-bindings.zsh
+        [[ -f /usr/share/doc/fzf/examples/completion.zsh ]]   && source /usr/share/doc/fzf/examples/completion.zsh
+        [[ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]] && source /usr/share/doc/fzf/examples/key-bindings.zsh
 {{-   end }}
 {{- end }}
+    fi
+fi
 
 export FZF_TMUX_OPTS="-p"
 export FZF_CTRL_R_OPTS="--reverse --preview 'echo {}' --preview-window down:30:hidden:wrap --bind '?:toggle-preview'"
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# Direnv — needed for directory changes
+command -v direnv &>/dev/null && _cache_eval direnv direnv hook zsh
 
-# =============================================================================
-# Tool Integrations
-# =============================================================================
-
-# Lazy load function
-_lazyload() {
-    local cmd="$1"
-    local init_code="$2"
-
-    # Create lazy wrapper function
-    eval "$cmd() {
-        unfunction $cmd  # Remove lazy wrapper
-        $init_code       # Initialize tool
-        $cmd \"\$@\"       # Call original command
-    }"
-}
-
-# Direnv - immediate (needed for directory changes)
-if command -v direnv &>/dev/null; then
-    eval "$(direnv hook zsh)"
-fi
-
-# Zoxide - immediate (preserve builtin cd for normal paths, fallback to z)
+# Zoxide — keep builtin cd for real paths, fall back to `z` otherwise
 if command -v zoxide &>/dev/null; then
-    eval "$(zoxide init zsh)"
-
+    _cache_eval zoxide zoxide init zsh
     cd() {
         if [[ $# -eq 0 || -d "$1" || "$1" == "." || "$1" == ".." || "$1" == -* ]]; then
             builtin cd "$@"
@@ -190,38 +185,23 @@ if command -v zoxide &>/dev/null; then
     }
 fi
 
-# Starship prompt - immediate (needed for prompt)
-if command -v starship &>/dev/null; then
-    eval "$(starship init zsh)"
-fi
+# Starship prompt
+command -v starship &>/dev/null && _cache_eval starship starship init zsh
 
-# Mise - immediate (needed for environment management)
-if command -v mise &>/dev/null; then
-    eval "$(mise activate zsh)"
-fi
+# Mise — runtime/environment manager
+command -v mise &>/dev/null && _cache_eval mise mise activate zsh
 
-# Bitwarden - lazy load (only when first used)
-if command -v bw &>/dev/null; then
-    _lazyload bw 'eval "$(bw completion --shell zsh)"'
-fi
+# Lazy-loaded completions (loaded on first use)
+command -v bw    &>/dev/null && _lazyload bw    'eval "$(bw completion --shell zsh)"'
+command -v jj    &>/dev/null && _lazyload jj    'source <(jj util completion zsh)'
+command -v ngrok &>/dev/null && _lazyload ngrok 'eval "$(ngrok completion)"'
+command -v sem   &>/dev/null && _lazyload sem   'eval "$(command sem completions zsh)"'
 
-# Jujutsu - lazy load (only when first used)
-if command -v jj &>/dev/null; then
-    _lazyload jj 'source <(jj util completion zsh)'
-fi
-
-# Ngrok - lazy load (only when first used)
-if command -v ngrok &>/dev/null; then
-    _lazyload ngrok 'eval "$(ngrok completion)"'
-fi
-
-# Kubectl - lazy load (saves ~200ms on startup)
+# Kubectl — lazy load (saves ~200ms on startup), re-alias to kubecolor if present
 if command -v kubectl &>/dev/null; then
     kubectl() {
-        unalias kubectl 2>/dev/null
         unfunction kubectl
         source <(command kubectl completion zsh)
-        # Re-alias to kubecolor if available
         if command -v kubecolor &>/dev/null; then
             alias kubectl=kubecolor
             compdef kubecolor=kubectl
@@ -230,28 +210,13 @@ if command -v kubectl &>/dev/null; then
     }
 fi
 
-# Helm - lazy load
+# Helm — lazy load
 if command -v helm &>/dev/null; then
     helm() {
         unfunction helm
-        source <(helm completion zsh)
+        source <(command helm completion zsh)
         helm "$@"
     }
-fi
-
-# Terraform - lazy load
-if command -v terraform &>/dev/null; then
-    terraform() {
-        unfunction terraform
-        complete -o nospace -C $(which terraform) terraform
-        terraform "$@"
-    }
-fi
-
-# Semantic Versioning CLI - lazy load
-if command -v sem &>/dev/null; then
-    # Load completion immediately (it's lightweight)
-    eval "$(command sem completions zsh)"
 fi
 
 # =============================================================================
@@ -309,7 +274,7 @@ fi
 {{- end }}
 
 # System shortcuts
-alias reload='source ~/.zshrc'
+alias reload='exec zsh'
 alias zshconfig='nvim ~/.zshrc'
 alias cls='clear'
 
@@ -318,12 +283,13 @@ alias cls='clear'
 # =============================================================================
 
 if command -v gpgconf &>/dev/null; then
+  export GPG_TTY=$TTY
   export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
   gpgconf --launch gpg-agent 2>/dev/null
 fi
 
 # =============================================================================
-# Profiling (uncomment to see startup time breakdown)
+# Profiling (uncomment together with the zprof line at the top)
 # =============================================================================
 
 # zprof

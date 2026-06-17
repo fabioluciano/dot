@@ -1,0 +1,33 @@
+# Antidote plugin bundle
+# Regenerated automatically by ~/.zshrc whenever this file changes.
+# Order matters: it is the order in which plugins are sourced.
+
+# --- Oh My Zsh libraries -----------------------------------------------------
+ohmyzsh/ohmyzsh path:lib/clipboard.zsh
+ohmyzsh/ohmyzsh path:lib/key-bindings.zsh
+
+# --- Oh My Zsh plugins -------------------------------------------------------
+ohmyzsh/ohmyzsh path:plugins/git
+ohmyzsh/ohmyzsh path:plugins/sudo
+ohmyzsh/ohmyzsh path:plugins/aws
+ohmyzsh/ohmyzsh path:plugins/terraform
+ohmyzsh/ohmyzsh path:plugins/command-not-found
+ohmyzsh/ohmyzsh path:plugins/docker
+{{- if eq .chezmoi.os "linux" }}
+{{-   if eq .chezmoi.osRelease.id "arch" }}
+ohmyzsh/ohmyzsh path:plugins/archlinux
+{{-   end }}
+{{- else if eq .chezmoi.os "darwin" }}
+ohmyzsh/ohmyzsh path:plugins/macos
+ohmyzsh/ohmyzsh path:plugins/brew
+{{- end }}
+
+# --- Interactive enhancements ------------------------------------------------
+# Strict order: autosuggestions -> syntax highlighting -> history search
+zsh-users/zsh-autosuggestions
+zdharma-continuum/fast-syntax-highlighting
+zsh-users/zsh-history-substring-search
+
+# --- Deferred (loaded right before the first prompt, after compinit) ---------
+hlissner/zsh-autopair kind:defer
+Aloxaf/fzf-tab kind:defer
