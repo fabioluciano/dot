@@ -81,6 +81,7 @@ just
 k9s
 kind-bin
 krew-bin
+kubecolor
 kubectl
 kube-linter
 kubeval-bin
@@ -191,8 +192,10 @@ virtualbox-guest-iso
 visual-studio-code-bin
 vlc
 whatsdesk-bin
+xclip
 xdg-user-dirs
 xh
+xsel
 yazi
 yubikey-manager
 zoxide

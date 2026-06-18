@@ -32,8 +32,6 @@ return {
   -- ╰────────────────────────────────────────────────────────╯
   { import = "astrocommunity.completion.blink-cmp" },
   { import = "astrocommunity.completion.blink-cmp-git" },
-  { import = "astrocommunity.completion.codeium-vim" },
-  { import = "astrocommunity.recipes.ai" },
   { import = "astrocommunity.ai.opencode-nvim" },
 
   -- ╭────────────────────────────────────────────────────────╮
@@ -53,13 +51,11 @@ return {
   -- │                    Diagnostics                         │
   -- ╰────────────────────────────────────────────────────────╯
   { import = "astrocommunity.diagnostics.trouble-nvim" },
-  { import = "astrocommunity.diagnostics.lsp_lines-nvim" },
 
   -- ╭────────────────────────────────────────────────────────╮
   -- │                    Editing Support                     │
   -- ╰────────────────────────────────────────────────────────╯
   { import = "astrocommunity.editing-support.comment-box-nvim" },
-  { import = "astrocommunity.editing-support.auto-save-nvim" },
   { import = "astrocommunity.editing-support.conform-nvim" },
   { import = "astrocommunity.editing-support.multicursors-nvim" },
   { import = "astrocommunity.editing-support.nvim-regexplainer" },
@@ -94,7 +90,6 @@ return {
   -- │                    LSP                                 │
   -- ╰────────────────────────────────────────────────────────╯
   { import = "astrocommunity.lsp.nvim-lint" },
-  { import = "astrocommunity.lsp.lspsaga-nvim" },
   { import = "astrocommunity.lsp.garbage-day-nvim" },
   { import = "astrocommunity.lsp.inc-rename-nvim" },
 
@@ -159,8 +154,15 @@ return {
       daily_notes = { folder = "daily", date_format = "%Y-%m-%d" },
       templates = { folder = "templates", date_format = "%Y-%m-%d", time_format = "%H:%M" },
       note_id_func = function(title)
-        local suffix = title and title:gsub(" ", "-"):gsub("[^A-Za-z0-9-]", ""):lower()
-          or string.char(math.random(65, 90)):rep(4)
+        local suffix
+        if title then
+          suffix = title:gsub(" ", "-"):gsub("[^A-Za-z0-9-]", ""):lower()
+        else
+          suffix = ""
+          for _ = 1, 4 do
+            suffix = suffix .. string.char(math.random(65, 90))
+          end
+        end
         return os.date "%Y%m%d%H%M" .. "-" .. suffix
       end,
       ui = {
@@ -221,6 +223,7 @@ return {
   -- ╰────────────────────────────────────────────────────────╯
   { import = "astrocommunity.utility.noice-nvim" },
   { import = "astrocommunity.utility.telescope-live-grep-args-nvim" },
+  { import = "astrocommunity.utility.kulala-nvim" },
 
   -- ╭────────────────────────────────────────────────────────╮
   -- │                    Workflow                            │

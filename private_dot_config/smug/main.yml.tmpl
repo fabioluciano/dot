@@ -1,0 +1,30 @@
+session: main
+root: ~/
+
+windows:
+  - name: editor
+    root: ~/developer
+    commands:
+      - nvim
+
+  - name: opencode
+    root: ~/developer
+    commands:
+      - opencode
+
+  - name: git
+    root: ~/developer
+    commands:
+      - lazygit
+
+  - name: system
+
+  - name: monitoring
+    commands:
+      - btop
+{{- if eq .chezmoi.os "linux" }}
+    panes:
+      - type: horizontal
+        commands:
+          - nvtop
+{{- end }}

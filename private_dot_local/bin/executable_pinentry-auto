@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 # Dispatcher de pinentry: usa a versao grafica quando ha um display disponivel
 # e cai para a versao curses (TTY) caso contrario. Evita falhas de pinentry em
 # sessoes sem ambiente grafico (SSH, console, chezmoi apply headless).

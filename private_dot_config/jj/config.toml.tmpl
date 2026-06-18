@@ -5,7 +5,7 @@ email = "{{ .email }}"
 # Override email for work repositories
 [[--scope]]
 --when.repositories = ["/mnt/srv/work"{{ if eq .chezmoi.os "darwin" }}, "~/Projects/work"{{ end }}]
-{{- if env "GITHUB_TOKEN" }}
+{{- if env "WORK_MAIL" }}
 [--scope.user]
 email = "{{ env "WORK_MAIL" }}"
 {{- else }}

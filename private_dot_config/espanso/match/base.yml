@@ -1,6 +1,6 @@
 # espanso match file
 
-# yaml-language-server: $schema=https://raw.githubusercontent.com/espanso/espanso/dev/schemas/match.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/espanso/espanso/master/schemas/match.schema.json
 
 matches:
   - trigger: ":dhoje"

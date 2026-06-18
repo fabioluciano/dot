@@ -229,9 +229,14 @@ alias ls='eza --icons --git'
 alias ll='eza -l --icons --git'
 alias la='eza -la --icons --git'
 alias lt='eza --tree --icons --git'
+alias tree='eza --tree --icons --git'
 alias l='ll'
 alias cat='bat'
 alias df='duf'
+alias ps='procs'
+
+# Weather - `wttr` for current location, `wttr <city>` for another
+wttr() { curl -s "wttr.in/${1:-}" }
 
 # Git shortcuts
 alias g='git'
@@ -283,7 +288,7 @@ alias cls='clear'
 # =============================================================================
 
 if command -v gpgconf &>/dev/null; then
-  export GPG_TTY=$TTY
+  export GPG_TTY=$(tty)
   export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
   gpgconf --launch gpg-agent 2>/dev/null
 fi

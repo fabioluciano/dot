@@ -1,0 +1,11 @@
+# Externally-managed dependencies fetched by chezmoi.
+# Refreshed at most weekly; run `chezmoi --refresh-externals apply` to force.
+
+[".antidote"]
+    type = "git-repo"
+    url = "https://github.com/mattmc3/antidote.git"
+    refreshPeriod = "168h"
+    [".antidote".clone]
+        args = ["--depth=1"]
+    [".antidote".pull]
+        args = ["--ff-only"]

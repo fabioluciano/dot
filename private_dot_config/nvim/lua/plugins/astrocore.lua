@@ -53,7 +53,26 @@ return {
     },
     mappings = {
       n = {
-        ["<Leader>C"] = { "<cmd>ClaudeCode<cr>", desc = " Claude" },
+        -- AI
+        ["<Leader>o"] = { function() require("opencode").toggle() end, desc = "󱙺 Toggle Opencode" },
+
+        -- Run / Tasks (overseer)
+        ["<Leader>R"] = { desc = "󱓞 Run/Tasks" },
+        ["<Leader>Rr"] = { "<cmd>OverseerRun<cr>", desc = "Run task" },
+        ["<Leader>Rt"] = { "<cmd>OverseerToggle<cr>", desc = "Toggle task list" },
+
+        -- Test (neotest)
+        ["<Leader>T"] = { desc = "󰙨 Test" },
+        ["<Leader>Tt"] = { function() require("neotest").run.run(vim.fn.expand "%") end, desc = "Test file" },
+        ["<Leader>Tn"] = { function() require("neotest").run.run() end, desc = "Test nearest" },
+        ["<Leader>Ts"] = { function() require("neotest").summary.toggle() end, desc = "Toggle summary" },
+
+        -- Git extras (diffview / octo)
+        ["<Leader>gD"] = { "<cmd>DiffviewOpen<cr>", desc = "Diffview open" },
+        ["<Leader>gO"] = { "<cmd>Octo pr list<cr>", desc = "Octo: list PRs" },
+
+        -- Misc
+        ["<Leader>z"] = { "<cmd>ZenMode<cr>", desc = "Zen mode" },
       },
     },
     autocmds = {

@@ -24,9 +24,3 @@ pinentry-program /opt/homebrew/bin/pinentry-mac
 # Wrapper: pinentry grafico com display, curses em sessao TTY/headless.
 pinentry-program {{ .chezmoi.homeDir }}/.local/bin/pinentry-auto
 {{- end }}
-
-# Disable grab (allows for better integration with some DEs)
-no-grab
-
-# Allow preset passphrases
-allow-preset-passphrase

@@ -44,7 +44,6 @@ return {
 
         -- Bash
         "bash-language-server",
-        "shellcheck",
         "shfmt",
 
         -- Docker
@@ -74,8 +73,9 @@ return {
         -- TOML
         "taplo",
 
-        -- Helm
+        -- Helm / Kubernetes
         "helm-ls",
+        "kubeconform",
 
         -- Markdown
         "marksman",

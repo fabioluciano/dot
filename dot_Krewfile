@@ -10,8 +10,8 @@ cert-manager
 clog
 colorize-applied
 cost
-ctx
 count
+ctx
 custom-cols
 datree
 deprecations
@@ -40,7 +40,6 @@ prompt
 resource-capacity
 score
 sniff
-stern
 tree
 view-utilization
 who-can

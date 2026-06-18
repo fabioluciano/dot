@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Re-run whenever ~/.Krewfile changes.
+# Krewfile hash: {{ include "dot_Krewfile" | sha256sum }}
+set -euo pipefail
+
+command -v kubectl >/dev/null 2>&1 || exit 0
+kubectl krew version >/dev/null 2>&1 || exit 0
+[[ -f "$HOME/.Krewfile" ]] || exit 0
+
+echo ":: kubectl krew install (Krewfile changed)"
+while IFS= read -r plugin; do
+    [[ -z "$plugin" ]] && continue
+    kubectl krew install "$plugin" || true
+done < <(grep -vE '^\s*(#|$)' "$HOME/.Krewfile")

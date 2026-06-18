@@ -27,7 +27,6 @@ notify_each_step = true
 "Krew Update" = "kubectl krew upgrade || true"
 "Tmux Plugins" = "~/.tmux/plugins/tpm/bin/update_plugins all || true"
 "Neovim Plugins" = "nvim --headless '+Lazy! sync' +qa || true"
-"Mise Update" = "mise self-update && mise upgrade || true"
 
 [brew]
 greedy_cask = true

@@ -21,6 +21,12 @@ kubectl = "latest"
 bazel = "latest"
 pre-commit = "latest"
 
+# Node/Python tooling (moved off Homebrew so mise owns the versions)
+pnpm = "latest"
+pipx = "latest"             # note: `uv tool` / `uvx` already cover this
+"pipx:poetry" = "latest"
+"npm:typescript" = "latest"
+
 [settings]
 # Enable version files for better compatibility
 idiomatic_version_file_enable_tools = ["node", "python", "ruby", "java"]

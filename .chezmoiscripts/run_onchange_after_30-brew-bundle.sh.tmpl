@@ -1,0 +1,11 @@
+{{- if eq .chezmoi.os "darwin" -}}
+#!/usr/bin/env bash
+# Re-run whenever ~/.Brewfile changes.
+# Brewfile hash: {{ include "dot_Brewfile" | sha256sum }}
+set -euo pipefail
+
+command -v brew >/dev/null 2>&1 || exit 0
+
+echo ":: brew bundle (Brewfile changed)"
+brew bundle --global
+{{- end -}}

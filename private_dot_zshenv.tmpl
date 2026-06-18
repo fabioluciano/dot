@@ -4,7 +4,7 @@
 # mise shims — garante as versoes gerenciadas pelo mise tambem em shells
 # NAO-interativos, scripts e processos que dao spawn em zsh. O `mise activate`
 # no .zshrc cobre apenas o shell interativo; os shims cobrem o resto.
-export PATH="$HOME/.local/share/mise/shims:$PATH"
+[[ -d "$HOME/.local/share/mise/shims" ]] && export PATH="$HOME/.local/share/mise/shims:$PATH"
 
 # API Tokens
 # Uses existing env vars when available, falls back to Bitwarden otherwise
@@ -13,13 +13,36 @@ export PATH="$HOME/.local/share/mise/shims:$PATH"
 
 {{- if $bw -}}
 {{- $fields := bitwardenFields "item" "dotfiles-tokens" }}
-export GITHUB_TOKEN="{{ $fields.github_token.value }}"
-export GITLAB_TOKEN="{{ $fields.gitlab_token.value }}"
-export BITBUCKET_TOKEN="{{ $fields.bitbucket_token.value }}"
-export JIRA_TOKEN="{{ $fields.jira_token.value }}"
-export JIRA_EMAIL="{{ $fields.jira_email.value }}"
-export JIRA_DOMAIN="{{ $fields.jira_domain.value }}"
-export WORK_MAIL="{{ $fields.work_mail.value }}"
+{{- with $fields.github_token }}
+export GITHUB_TOKEN="{{ .value }}"{{ end }}
+{{- with $fields.gitlab_token }}
+export GITLAB_TOKEN="{{ .value }}"{{ end }}
+{{- with $fields.bitbucket_token }}
+export BITBUCKET_TOKEN="{{ .value }}"{{ end }}
+{{- with $fields.jira_token }}
+export JIRA_TOKEN="{{ .value }}"{{ end }}
+{{- with $fields.jira_email }}
+export JIRA_EMAIL="{{ .value }}"{{ end }}
+{{- with $fields.jira_domain }}
+export JIRA_DOMAIN="{{ .value }}"{{ end }}
+{{- with $fields.work_mail }}
+export WORK_MAIL="{{ .value }}"{{ end }}
+{{- with $fields.anthropic_api_key }}
+export ANTHROPIC_API_KEY="{{ .value }}"{{ end }}
+{{- with $fields.openai_api_key }}
+export OPENAI_API_KEY="{{ .value }}"{{ end }}
+{{- with $fields.google_api_key }}
+export GOOGLE_API_KEY="{{ .value }}"{{ end }}
+{{- with $fields.perplexity_api_key }}
+export PERPLEXITY_API_KEY="{{ .value }}"{{ end }}
+{{- with $fields.openrouter_api_key }}
+export OPENROUTER_API_KEY="{{ .value }}"{{ end }}
+{{- with $fields.groq_api_key }}
+export GROQ_API_KEY="{{ .value }}"{{ end }}
+{{- with $fields.mistral_api_key }}
+export MISTRAL_API_KEY="{{ .value }}"{{ end }}
+{{- with $fields.xai_api_key }}
+export XAI_API_KEY="{{ .value }}"{{ end }}
 {{- else }}
 export GITHUB_TOKEN="{{ env "GITHUB_TOKEN" }}"
 export GITLAB_TOKEN="{{ env "GITLAB_TOKEN" }}"
