@@ -223,7 +223,11 @@ return {
   -- ╰────────────────────────────────────────────────────────╯
   { import = "astrocommunity.utility.noice-nvim" },
   { import = "astrocommunity.utility.telescope-live-grep-args-nvim" },
-  { import = "astrocommunity.utility.kulala-nvim" },
+
+  -- ╭────────────────────────────────────────────────────────╮
+  -- │                    Programming Language Support        │
+  -- ╰────────────────────────────────────────────────────────╯
+  { import = "astrocommunity.programming-language-support.kulala-nvim" },
 
   -- ╭────────────────────────────────────────────────────────╮
   -- │                    Workflow                            │
