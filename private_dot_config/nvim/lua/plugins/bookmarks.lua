@@ -46,6 +46,26 @@ local function remove_bookmark()
   vim.notify("Removido dos bookmarks: " .. cwd, vim.log.levels.INFO)
 end
 
+local function open_bookmarks()
+  local bookmarks = load_bookmarks()
+  if #bookmarks == 0 then
+    vim.notify("Nenhum bookmark salvo", vim.log.levels.WARN)
+    return
+  end
+  
+  vim.ui.select(bookmarks, {
+    prompt = "Bookmarks:",
+    format_item = function(item)
+      return vim.fn.fnamemodify(item, ":~")
+    end,
+  }, function(choice)
+    if choice then
+      vim.cmd("cd " .. choice)
+      require("snacks").explorer()
+    end
+  end)
+end
+
 return {
   "folke/snacks.nvim",
   opts = {
@@ -82,5 +102,6 @@ return {
   keys = {
     { "<leader>Ba", add_bookmark, desc = "Add Bookmark" },
     { "<leader>Br", remove_bookmark, desc = "Remove Bookmark" },
+    { "<leader>Bd", open_bookmarks, desc = "Open Bookmarks" },
   },
 }
