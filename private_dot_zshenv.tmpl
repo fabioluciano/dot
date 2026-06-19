@@ -31,18 +31,8 @@ export WORK_MAIL="{{ .value }}"{{ end }}
 export ANTHROPIC_API_KEY="{{ .value }}"{{ end }}
 {{- with $fields.openai_api_key }}
 export OPENAI_API_KEY="{{ .value }}"{{ end }}
-{{- with $fields.google_api_key }}
-export GOOGLE_API_KEY="{{ .value }}"{{ end }}
-{{- with $fields.perplexity_api_key }}
-export PERPLEXITY_API_KEY="{{ .value }}"{{ end }}
-{{- with $fields.openrouter_api_key }}
-export OPENROUTER_API_KEY="{{ .value }}"{{ end }}
-{{- with $fields.groq_api_key }}
-export GROQ_API_KEY="{{ .value }}"{{ end }}
-{{- with $fields.mistral_api_key }}
-export MISTRAL_API_KEY="{{ .value }}"{{ end }}
-{{- with $fields.xai_api_key }}
-export XAI_API_KEY="{{ .value }}"{{ end }}
+{{- with $fields.mimo_api_key }}
+export MIMO_API_KEY="{{ .value }}"{{ end }}
 {{- else }}
 {{- with env "GITHUB_TOKEN" }}
 export GITHUB_TOKEN="{{ . }}"{{ end }}
