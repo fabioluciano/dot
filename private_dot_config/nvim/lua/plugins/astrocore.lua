@@ -54,7 +54,10 @@ return {
     mappings = {
       n = {
         -- AI
-        ["<Leader>o"] = { function() require("opencode").toggle() end, desc = "󱙺 Toggle Opencode" },
+        ["<Leader>o"] = { desc = "󱙺 OpenCode" },
+        ["<Leader>oa"] = { function() require("opencode").ask("@this: ") end, desc = "Ask OpenCode" },
+        ["<Leader>os"] = { function() require("opencode").select() end, desc = "Select OpenCode" },
+        ["<Leader>on"] = { function() require("opencode").command("session.new") end, desc = "New session" },
 
         -- Run / Tasks (overseer)
         ["<Leader>R"] = { desc = "󱓞 Run/Tasks" },
