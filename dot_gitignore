@@ -3,6 +3,7 @@
 .claude/
 .omx/
 .omc/
+.mimocode/
 .codegraph/
 .idea/
 *.swp
