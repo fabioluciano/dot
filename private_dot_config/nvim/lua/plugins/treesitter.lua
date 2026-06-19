@@ -34,7 +34,6 @@ return {
         -- Markup
         "markdown",
         "markdown_inline",
-        "mdx",
         "json",
         "jsonc",
         "yaml",

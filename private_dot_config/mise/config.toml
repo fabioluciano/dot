@@ -20,11 +20,12 @@ usage = "latest"
 kubectl = "latest"
 bazel = "latest"
 pre-commit = "latest"
+kubeconform = "latest"
 
 # Node/Python tooling (moved off Homebrew so mise owns the versions)
 pnpm = "latest"
+"pipx:poetry" = "latest"    # pipx backend: vfox-poetry plugin is flaky
 pipx = "latest"             # note: `uv tool` / `uvx` already cover this
-"pipx:poetry" = "latest"
 "npm:typescript" = "latest"
 
 [settings]

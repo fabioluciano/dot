@@ -75,7 +75,6 @@ return {
 
         -- Helm / Kubernetes
         "helm-ls",
-        "kubeconform",
 
         -- Markdown
         "marksman",
