@@ -82,9 +82,7 @@ k9s
 kind-bin
 krew-bin
 kubecolor
-kubectl
 kube-linter
-kubeval-bin
 kustomize
 lazydocker-bin
 lazygit
@@ -137,8 +135,6 @@ postgresql-libs
 postman-bin
 procs
 python-pip
-python-pipx
-python-poetry
 python-pynvim
 python-setuptools
 qalculate-gtk
@@ -185,6 +181,7 @@ uv
 vagrant
 ventoy-bin
 vhs
+viddy
 virt-manager
 virtualbox
 virtualbox-ext-oracle

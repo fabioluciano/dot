@@ -48,12 +48,12 @@
   ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
   ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
   graph = log --graph --all --decorate --oneline
-  
+
   # Add
   a = add
   ap = add -p
   aa = add --all
-  
+
   # Commit
   c = commit --verbose
   ca = commit -a --verbose
@@ -61,21 +61,21 @@
   cam = commit -a -m
   m = commit --amend --verbose
   amend = commit --amend --no-edit
-  
+
   # Diff
   d = diff
   ds = diff --stat
   dc = diff --cached
   dlc = diff --cached HEAD^
-  
+
   # Status
   s = status -s
   st = status
-  
+
   # Checkout
   co = checkout
   cob = checkout -b
-  
+
   # Branch
   b = "!git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)' refs/heads | sed -e 's-refs/heads/--'"
   br = branch
@@ -85,13 +85,13 @@
   pu = push
   puf = push --force-with-lease
   pl = pull
-  
+
   # Stash
   sl = stash list
   sa = stash apply
   ss = stash save
   sp = stash pop
-  
+
   # Other
   la = "!git config -l | grep alias | cut -c 7-"
   undo = reset --soft HEAD~1
@@ -99,7 +99,7 @@
   contributors = shortlog --summary --numbered
 
   fix-fetch = "!git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'"
-  
+
 [gitflow "branch"]
   develop = development
 

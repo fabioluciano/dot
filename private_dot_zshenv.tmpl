@@ -44,11 +44,18 @@ export MISTRAL_API_KEY="{{ .value }}"{{ end }}
 {{- with $fields.xai_api_key }}
 export XAI_API_KEY="{{ .value }}"{{ end }}
 {{- else }}
-export GITHUB_TOKEN="{{ env "GITHUB_TOKEN" }}"
-export GITLAB_TOKEN="{{ env "GITLAB_TOKEN" }}"
-export BITBUCKET_TOKEN="{{ env "BITBUCKET_TOKEN" }}"
-export JIRA_TOKEN="{{ env "JIRA_TOKEN" }}"
-export JIRA_EMAIL="{{ env "JIRA_EMAIL" }}"
-export JIRA_DOMAIN="{{ env "JIRA_DOMAIN" }}"
-export WORK_MAIL="{{ env "WORK_MAIL" }}"
+{{- with env "GITHUB_TOKEN" }}
+export GITHUB_TOKEN="{{ . }}"{{ end }}
+{{- with env "GITLAB_TOKEN" }}
+export GITLAB_TOKEN="{{ . }}"{{ end }}
+{{- with env "BITBUCKET_TOKEN" }}
+export BITBUCKET_TOKEN="{{ . }}"{{ end }}
+{{- with env "JIRA_TOKEN" }}
+export JIRA_TOKEN="{{ . }}"{{ end }}
+{{- with env "JIRA_EMAIL" }}
+export JIRA_EMAIL="{{ . }}"{{ end }}
+{{- with env "JIRA_DOMAIN" }}
+export JIRA_DOMAIN="{{ . }}"{{ end }}
+{{- with env "WORK_MAIL" }}
+export WORK_MAIL="{{ . }}"{{ end }}
 {{- end }}

@@ -22,6 +22,8 @@ bazel = "latest"
 pre-commit = "latest"
 kubeconform = "latest"
 
+terraform-ls = "latest"
+
 # Node/Python tooling (moved off Homebrew so mise owns the versions)
 pnpm = "latest"
 "pipx:poetry" = "latest"    # pipx backend: vfox-poetry plugin is flaky

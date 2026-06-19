@@ -7,15 +7,18 @@ ohmyzsh/ohmyzsh path:lib/clipboard.zsh
 ohmyzsh/ohmyzsh path:lib/key-bindings.zsh
 
 # --- Oh My Zsh plugins -------------------------------------------------------
-ohmyzsh/ohmyzsh path:plugins/git
 ohmyzsh/ohmyzsh path:plugins/sudo
-ohmyzsh/ohmyzsh path:plugins/aws
-ohmyzsh/ohmyzsh path:plugins/terraform
-ohmyzsh/ohmyzsh path:plugins/command-not-found
-ohmyzsh/ohmyzsh path:plugins/docker
+# These only add completions/aliases — defer them off the startup critical path.
+ohmyzsh/ohmyzsh path:plugins/aws kind:defer
+ohmyzsh/ohmyzsh path:plugins/terraform kind:defer
+ohmyzsh/ohmyzsh path:plugins/docker kind:defer
 {{- if eq .chezmoi.os "linux" }}
 {{-   if eq .chezmoi.osRelease.id "arch" }}
 ohmyzsh/ohmyzsh path:plugins/archlinux
+# command-not-found: on Arch the handler is pkgfile (fast, local DB). On macOS
+# it wires Homebrew's `brew which-formula`, which adds seconds per unknown
+# command — so it is intentionally NOT loaded on darwin.
+ohmyzsh/ohmyzsh path:plugins/command-not-found
 {{-   end }}
 {{- else if eq .chezmoi.os "darwin" }}
 ohmyzsh/ohmyzsh path:plugins/macos
@@ -27,7 +30,12 @@ ohmyzsh/ohmyzsh path:plugins/brew
 zsh-users/zsh-autosuggestions
 zdharma-continuum/fast-syntax-highlighting
 zsh-users/zsh-history-substring-search
+# fish-style abbreviations: expand inline so history stays full & readable
+olets/zsh-abbr
 
 # --- Deferred (loaded right before the first prompt, after compinit) ---------
 hlissner/zsh-autopair kind:defer
 Aloxaf/fzf-tab kind:defer
+MichaelAquilina/zsh-you-should-use kind:defer
+# forgit: interactive git via fzf. Renamed clashing cmds (gai/gdi/gcoi) below.
+wfxr/forgit kind:defer

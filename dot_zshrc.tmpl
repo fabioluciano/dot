@@ -22,6 +22,14 @@ export LANG=en_US.UTF-8
 export ZSH_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
 [[ -d $ZSH_CACHE_DIR/completions ]] || mkdir -p "$ZSH_CACHE_DIR/completions"
 
+# Plugin tunables (read when the bundle is sourced below)
+# autosuggestions: suggest from history first, then from completion.
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+# you-should-use: nudge after the command output, not before.
+export YSU_MESSAGE_POSITION="after"
+# zsh-abbr: version-controlled, seed-once abbreviations file.
+export ABBR_USER_ABBREVIATIONS_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/zsh-abbr/user-abbreviations"
+
 # =============================================================================
 # Plugin Manager - antidote (static bundle)
 # =============================================================================
@@ -55,14 +63,20 @@ fi
 # =============================================================================
 
 # Refresh the dump (with security check) at most once every 24h; otherwise load
-# the cached dump with -C (skips the slow per-file security check).
+# the cached dump with -C (skips the slow compaudit + redump).
+# NOTE: glob qualifiers do NOT expand inside [[ ]], so the "older than 24h"
+# test must collect matches via an array (a real globbing context). Using
+# [[ -n ${f}(#qN.mh+24) ]] silently always takes the full path → redump on
+# every startup.
 autoload -Uz compinit
 _zcompdump="${ZDOTDIR:-$HOME}/.zcompdump"
-if [[ -n ${_zcompdump}(#qN.mh+24) ]]; then
+_zcompdump_stale=( ${_zcompdump}(N.mh+24) )
+if (( $#_zcompdump_stale )); then
     compinit -d "$_zcompdump"
 else
     compinit -C -d "$_zcompdump"
 fi
+unset _zcompdump_stale
 # Compile the dump in the background so the next start is even faster.
 { [[ ! -s ${_zcompdump}.zwc || $_zcompdump -nt ${_zcompdump}.zwc ]] \
     && zcompile -R -- "${_zcompdump}.zwc" "$_zcompdump" 2>/dev/null } &!
@@ -106,6 +120,15 @@ setopt APPEND_HISTORY        # append to history file (Default)
 setopt HIST_REDUCE_BLANKS    # Remove superfluous blanks from each command line being added to the history.
 
 # =============================================================================
+# Shell Options
+# =============================================================================
+
+setopt AUTO_CD               # `foo` ≡ `cd foo` when foo is a directory
+setopt INTERACTIVE_COMMENTS  # allow #comments in the interactive shell
+setopt NUMERIC_GLOB_SORT     # sort numeric filenames numerically (f2 < f10)
+setopt GLOB_DOTS             # let globs match dotfiles without an explicit leading dot
+
+# =============================================================================
 # Completion Styles
 # =============================================================================
 
@@ -117,6 +140,10 @@ zstyle ':completion:*:descriptions' format '[%d]'
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' menu no
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
+# kubectl: preview the subcommand's help (no-op if the tag doesn't match)
+zstyle ':fzf-tab:complete:(kubectl|k):*' fzf-preview 'kubectl $word --help 2>/dev/null | head -300'
+# systemctl (Linux): preview unit status
+zstyle ':fzf-tab:complete:systemctl-*:*' fzf-preview 'SYSTEMD_COLORS=1 systemctl status $word 2>/dev/null'
 zstyle ':fzf-tab:*' switch-group '<' '>'
 zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
 zstyle ':fzf-tab:*' popup-pad 80 0
@@ -235,19 +262,17 @@ alias l='ll'
 alias cat='bat'
 alias df='duf'
 alias ps='procs'
+command -v viddy &>/dev/null && alias watch='viddy'  # modern watch: diff, scroll, history
 
 # Weather - `wttr` for current location, `wttr <city>` for another
 wttr() { curl -s "wttr.in/${1:-}" }
 
-# Git shortcuts
+# Git shortcuts (ga/gd/gco/glo etc. are provided interactively by forgit)
 alias g='git'
 alias gs='git status'
-alias ga='git add'
 alias gc='git commit'
 alias gp='git push'
 alias gl='git pull'
-alias gd='git diff'
-alias gco='git checkout'
 alias gb='git branch'
 alias glog='git log --oneline --graph --decorate'
 
