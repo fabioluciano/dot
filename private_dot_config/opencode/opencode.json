@@ -5,7 +5,11 @@
   "default_agent": "atlas",
   "formatter": true,
   "lsp": true,
-  "enabled_providers": ["xiaomi", "anthropic", "bedrock"],
+  "enabled_providers": [
+    "xiaomi",
+    "anthropic",
+    "amazon-bedrock"
+  ],
   "compaction": {
     "auto": true,
     "prune": true,
@@ -34,9 +38,10 @@
         "apiKey": "{env:ANTHROPIC_API_KEY}"
       }
     },
-    "bedrock": {
+    "amazon-bedrock": {
       "options": {
-        "apiKey": "{env:BEDROCK_API_KEY}"
+        "apiKey": "{env:AWS_BEARER_TOKEN_BEDROCK}",
+        "region": "us-east-1"
       }
     }
   },
@@ -125,7 +130,6 @@
       "enabled": true,
       "timeout": 10000
     },
-
     "github": {
       "type": "remote",
       "url": "https://api.githubcopilot.com/mcp/",
