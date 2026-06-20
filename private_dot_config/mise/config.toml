@@ -4,7 +4,7 @@
 go = "1.26"
 java = "26"
 node = "26"
-ruby = "4"
+ruby = "3.4"
 groovy = "5"
 python = "3.14"
 bun = "1"

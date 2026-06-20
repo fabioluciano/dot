@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Generate ~/.config/zsh/tokens.zsh from Bitwarden on first apply (and whenever
+# the sync script changes). No-ops gracefully if bw is missing/locked — a
+# locked vault never aborts `chezmoi apply`. Re-run `zsh-tokens-sync` by hand
+# after rotating a token.
+# sync script hash: {{ include "private_dot_local/bin/executable_zsh-tokens-sync" | sha256sum }}
+set -euo pipefail
+
+sync="{{ .chezmoi.homeDir }}/.local/bin/zsh-tokens-sync"
+[ -x "$sync" ] && "$sync" || true
