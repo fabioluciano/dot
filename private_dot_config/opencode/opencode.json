@@ -5,15 +5,23 @@
   "default_agent": "atlas",
   "formatter": true,
   "lsp": true,
+  "enabled_providers": ["xiaomi", "anthropic", "bedrock"],
   "compaction": {
     "auto": true,
     "prune": true,
     "reserved": 10000
   },
   "watcher": {
-    "ignore": ["node_modules/**", "dist/**", ".git/**", "vendor/**"]
+    "ignore": [
+      "node_modules/**",
+      "dist/**",
+      ".git/**",
+      "vendor/**"
+    ]
   },
-  "instructions": ["~/.config/opencode/AGENTS.md"],
+  "instructions": [
+    "~/.config/opencode/AGENTS.md"
+  ],
   "provider": {
     "xiaomi": {
       "options": {
@@ -34,8 +42,6 @@
   },
   "plugin": [
     "context-mode",
-    "superpowers@git+https://github.com/obra/superpowers.git",
-    "ecc-universal",
     "oh-my-openagent"
   ],
   "permission": {
@@ -62,39 +68,54 @@
       "description": "Show Beads ready tasks",
       "template": "Use Beads to inspect ready work. Run `bd ready --json` if available, then summarize ready tasks and blockers. If Beads is not initialized, say that `bd init` is needed."
     },
-    "switch-provider": {
-      "description": "Switch oh-my-openagent provider (xiaomi/anthropic/bedrock)",
-      "template": "Ask the user which provider to use: xiaomi, anthropic, or bedrock. Then edit ~/.config/opencode/oh-my-openagent.json and replace ALL model values (in agents and categories) to use the chosen provider. Mapping: xiaomi main=xiaomi/mimo-v2.5-pro fallback=xiaomi/mimo-v2.5 light=xiaomi/mimo-v2.5 | anthropic main=anthropic/claude-sonnet-4-20250514 fallback=anthropic/claude-haiku-4-20250414 light=anthropic/claude-haiku-4-20250414 | bedrock main=bedrock/anthropic.claude-sonnet-4-20250514-v1:0 fallback=bedrock/anthropic.claude-haiku-4-20250414-v1:0 light=bedrock/anthropic.claude-haiku-4-20250414-v1:0. Main/complex agents: sisyphus, hephaestus, oracle, prometheus, metis, momus, unspecified-high, ultrabrain, deep. Light agents: librarian, explore, multimodal-looker, atlas, sisyphus-junior, quick, artistry, writing, visual-engineering, unspecified-low. Confirm when done."
-    }
   },
   "mcp": {
     "context7": {
       "type": "local",
-      "command": ["npx", "-y", "@upstash/context7-mcp"],
+      "command": [
+        "npx",
+        "-y",
+        "@upstash/context7-mcp"
+      ],
       "enabled": true,
       "timeout": 10000
     },
     "playwright": {
       "type": "local",
-      "command": ["npx", "-y", "@playwright/mcp"],
+      "command": [
+        "npx",
+        "-y",
+        "@playwright/mcp"
+      ],
       "enabled": true,
       "timeout": 15000
     },
     "sequential-thinking": {
       "type": "local",
-      "command": ["npx", "-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "command": [
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
       "enabled": true,
       "timeout": 10000
     },
     "memory": {
       "type": "local",
-      "command": ["npx", "-y", "@modelcontextprotocol/server-memory"],
+      "command": [
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ],
       "enabled": true,
       "timeout": 10000
     },
     "fetch": {
       "type": "local",
-      "command": ["uvx", "mcp-server-fetch"],
+      "command": [
+        "uvx",
+        "mcp-server-fetch"
+      ],
       "enabled": true,
       "timeout": 15000
     },
@@ -104,12 +125,7 @@
       "enabled": true,
       "timeout": 10000
     },
-    "ruflo": {
-      "type": "local",
-      "command": ["npx", "-y", "ruflo@latest", "mcp", "start"],
-      "enabled": false,
-      "timeout": 30000
-    },
+
     "github": {
       "type": "remote",
       "url": "https://api.githubcopilot.com/mcp/",
@@ -122,7 +138,9 @@
     },
     "codebase-memory": {
       "type": "local",
-      "command": ["/Users/fabioluciano/.local/bin/codebase-memory-mcp"],
+      "command": [
+        "/Users/fabioluciano/.local/bin/codebase-memory-mcp"
+      ],
       "enabled": true,
       "timeout": 30000
     }

@@ -2,103 +2,103 @@
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
   "agents": {
     "sisyphus": {
-      "model": "mimo/mimo-v2.5-pro",
+      "model": "xiaomi/mimo-v2.5-pro",
       "fallback_models": [
         {
-          "model": "mimo/mimo-v2.5"
+          "model": "xiaomi/mimo-v2.5"
         }
       ]
     },
     "hephaestus": {
-      "model": "mimo/mimo-v2.5-pro",
+      "model": "xiaomi/mimo-v2.5-pro",
       "fallback_models": [
         {
-          "model": "mimo/mimo-v2.5"
+          "model": "xiaomi/mimo-v2.5"
         }
       ]
     },
     "oracle": {
-      "model": "mimo/mimo-v2.5-pro",
+      "model": "xiaomi/mimo-v2.5-pro",
       "fallback_models": [
         {
-          "model": "mimo/mimo-v2.5"
+          "model": "xiaomi/mimo-v2.5"
         }
       ]
     },
     "librarian": {
-      "model": "mimo/mimo-v2.5"
+      "model": "xiaomi/mimo-v2.5"
     },
     "explore": {
-      "model": "mimo/mimo-v2.5"
+      "model": "xiaomi/mimo-v2.5"
     },
     "multimodal-looker": {
-      "model": "mimo/mimo-v2.5"
+      "model": "xiaomi/mimo-v2.5"
     },
     "prometheus": {
-      "model": "mimo/mimo-v2.5-pro",
+      "model": "xiaomi/mimo-v2.5-pro",
       "fallback_models": [
         {
-          "model": "mimo/mimo-v2.5"
+          "model": "xiaomi/mimo-v2.5"
         }
       ]
     },
     "metis": {
-      "model": "mimo/mimo-v2.5-pro",
+      "model": "xiaomi/mimo-v2.5-pro",
       "fallback_models": [
         {
-          "model": "mimo/mimo-v2.5"
+          "model": "xiaomi/mimo-v2.5"
         }
       ]
     },
     "momus": {
-      "model": "mimo/mimo-v2.5-pro",
+      "model": "xiaomi/mimo-v2.5-pro",
       "fallback_models": [
         {
-          "model": "mimo/mimo-v2.5"
+          "model": "xiaomi/mimo-v2.5"
         }
       ]
     },
     "atlas": {
-      "model": "mimo/mimo-v2.5"
+      "model": "xiaomi/mimo-v2.5"
     },
     "sisyphus-junior": {
-      "model": "mimo/mimo-v2.5"
+      "model": "xiaomi/mimo-v2.5"
     }
   },
   "categories": {
     "visual-engineering": {
-      "model": "mimo/mimo-v2.5"
+      "model": "xiaomi/mimo-v2.5"
     },
     "ultrabrain": {
-      "model": "mimo/mimo-v2.5-pro",
+      "model": "xiaomi/mimo-v2.5-pro",
       "fallback_models": [
         {
-          "model": "mimo/mimo-v2.5"
+          "model": "xiaomi/mimo-v2.5"
         }
       ]
     },
     "deep": {
-      "model": "mimo/mimo-v2.5-pro",
+      "model": "xiaomi/mimo-v2.5-pro",
       "fallback_models": [
         {
-          "model": "mimo/mimo-v2.5"
+          "model": "xiaomi/mimo-v2.5"
         }
       ]
     },
     "artistry": {
-      "model": "mimo/mimo-v2.5"
+      "model": "xiaomi/mimo-v2.5"
     },
     "quick": {
-      "model": "mimo/mimo-v2.5"
+      "model": "xiaomi/mimo-v2.5"
     },
     "unspecified-low": {
-      "model": "mimo/mimo-v2.5"
+      "model": "xiaomi/mimo-v2.5"
     },
     "unspecified-high": {
-      "model": "mimo/mimo-v2.5-pro"
+      "model": "xiaomi/mimo-v2.5-pro"
     },
     "writing": {
-      "model": "mimo/mimo-v2.5"
+      "model": "xiaomi/mimo-v2.5"
     }
   }
 }
