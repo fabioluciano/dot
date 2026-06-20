@@ -1,28 +1,30 @@
 [tools]
-# Runtime versions - use 'latest' for automatic updates
+# Runtimes pinned to major version for reproducibility; utilities float at latest.
+# Pinned on 2026-06-20 — bump each runtime's major when upgrading intentionally.
+go = "1.26"
+java = "26"
+node = "26"
+ruby = "4"
+groovy = "5"
+python = "3.14"
+bun = "1"
+deno = "2"
+
+# Infrastructure & build utilities (float at latest)
 terraform = "latest"
 terragrunt = "latest"
-go = "latest"
-java = "latest"
-node = "latest"
-ruby = "latest"
 maven = "latest"
-groovy = "latest"
-python = "latest"
-bun = "latest"
+bazel = "latest"
+kubectl = "latest"
+kubeconform = "latest"
+terraform-ls = "latest"
 
-# CLI tools
+# CLI tools (float at latest)
 yq = "latest"
 pandoc = "latest"
-deno = "latest"
 uv = "latest"
 usage = "latest"
-kubectl = "latest"
-bazel = "latest"
 pre-commit = "latest"
-kubeconform = "latest"
-
-terraform-ls = "latest"
 
 # Node/Python tooling (moved off Homebrew so mise owns the versions)
 pnpm = "latest"

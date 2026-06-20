@@ -14,3 +14,5 @@ exclude = ["scripts"]
 [data]
 name = "Fábio Luciano"
 email = "fabio@naoimporta.com"
+github_user = "fabioluciano"
+weather_city = "Brasilia,Brazil"

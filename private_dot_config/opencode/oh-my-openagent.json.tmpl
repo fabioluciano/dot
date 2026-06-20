@@ -1,0 +1,44 @@
+{{- $provider := env "OPENCODE_PROVIDER" | default "bedrock" -}}
+{
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
+  "agents": {
+{{- $agents := keys $.opencode.agent_tiers | sortAlpha }}
+{{- range $i, $agent := $agents }}
+{{- $tier := index $.opencode.agent_tiers $agent }}
+    "{{ $agent }}": {
+      "model": "{{ index (index $.opencode.tiers $provider) $tier }}",
+      "fallback_models": [
+{{- $others := list }}
+{{- range $p := list "bedrock" "anthropic" "xiaomi" }}
+{{- if ne $p $provider }}
+{{- $others = append $others $p }}
+{{- end }}
+{{- end }}
+{{- range $j, $other := $others }}
+        {"model": "{{ index (index $.opencode.tiers $other) $tier }}"}{{- if lt $j (sub (len $others) 1) }},{{ end }}
+{{- end }}
+      ]
+    }{{- if lt $i (sub (len $agents) 1) }},{{ end -}}
+{{ end }}
+  },
+  "categories": {
+{{- $categories := keys $.opencode.category_tiers | sortAlpha }}
+{{- range $i, $cat := $categories }}
+{{- $tier := index $.opencode.category_tiers $cat }}
+    "{{ $cat }}": {
+      "model": "{{ index (index $.opencode.tiers $provider) $tier }}",
+      "fallback_models": [
+{{- $others := list }}
+{{- range $p := list "bedrock" "anthropic" "xiaomi" }}
+{{- if ne $p $provider }}
+{{- $others = append $others $p }}
+{{- end }}
+{{- end }}
+{{- range $j, $other := $others }}
+        {"model": "{{ index (index $.opencode.tiers $other) $tier }}"}{{- if lt $j (sub (len $others) 1) }},{{ end }}
+{{- end }}
+      ]
+    }{{- if lt $i (sub (len $categories) 1) }},{{ end -}}
+{{ end }}
+  }
+}

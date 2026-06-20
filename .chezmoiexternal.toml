@@ -6,6 +6,6 @@
     url = "https://github.com/mattmc3/antidote.git"
     refreshPeriod = "168h"
     [".antidote".clone]
-        args = ["--depth=1"]
+        args = ["--depth=1", "--branch=v2.1.0"]
     [".antidote".pull]
         args = ["--ff-only"]

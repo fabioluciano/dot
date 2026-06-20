@@ -4,7 +4,7 @@
 
 matches:
   - trigger: ":dhoje"
-    replace: "{{today}}"
+    replace: "{{ "{{today}}" }}"
     vars:
       - name: today
         type: date
@@ -12,7 +12,7 @@ matches:
           format: "%d/%m/%Y"
 
   - trigger: ":agora"
-    replace: "{{now}}"
+    replace: "{{ "{{now}}" }}"
     vars:
       - name: now
         type: date
@@ -20,7 +20,7 @@ matches:
           format: "%Y-%m-%d %H:%M"
 
   - trigger: ":uuid"
-    replace: "{{output}}"
+    replace: "{{ "{{output}}" }}"
     vars:
       - name: output
         type: shell
@@ -28,16 +28,16 @@ matches:
           cmd: "uuidgen | tr 'A-Z' 'a-z'"
 
   - trigger: ":mail"
-    replace: "fabio@naoimporta.com"
+    replace: "{{ .email }}"
 
   - trigger: ":gh"
-    replace: "https://github.com/fabioluciano"
+    replace: "https://github.com/{{ .github_user }}"
 
   - trigger: ":sig"
     replace: |
-      Fabio Luciano
+      {{ .name }}
 
   - trigger: ":br"
     replace: |
       Best regards,
-      Fabio Luciano
+      {{ .name }}

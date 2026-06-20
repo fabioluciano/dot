@@ -39,6 +39,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # Environment and secrets
+.env
 .env.local
 .env.*.local
 *.pem
@@ -63,6 +64,10 @@ env/
 .coverage
 .pytest_cache/
 coverage/
+
+# Zsh generated files
+.zcompdump*
+.zsh_plugins.zsh
 
 # Personal notes
 TODO.md

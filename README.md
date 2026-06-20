@@ -58,3 +58,131 @@ topgrade                # update everything (system, brew, mise, plugins, …)
   identity + SSH-based commit signing via YubiKey.
 - `.chezmoiscripts/` — `run_before_*` (YubiKey key material) and
   `run_onchange_after_*` (package sync).
+
+## System Dependencies
+
+These must be present **before** `chezmoi init --apply` will succeed:
+
+| Dependency | Why | macOS | Arch |
+|---|---|---|---|
+| **chezmoi** (>=2.47) | dotfile manager itself | `brew install chezmoi` | `pacman -S chezmoi` |
+| **git** | pulls the source repo | included with Xcode CLI tools | `pacman -S git` |
+| **bitwarden-cli** (`bw`) | unlocks `dotfiles-tokens` vault to populate `~/.zshenv` | `brew install bitwarden-cli` | `pacman -S bitwarden-cli` |
+| **mise** | installs Node/Python/etc per-project | `brew install mise` | `pacman -S mise` |
+| **Homebrew** (macOS) | manages ~170 formulae + casks | already on system | n/a |
+| **pacman/yay** (Arch) | manages ~200 packages | n/a | `pacman -S yay` or `paru` |
+| **antidote** | zsh plugin manager (fetched by `.chezmoiexternal.toml`) | cloned automatically | cloned automatically |
+| **krew** | kubectl plugin manager (`dot_Krewfile`) | `brew install krew` | `pacman -S krew-bin` |
+
+Optional but expected: a **YubiKey** for GPG/SSH commit signing. The
+`run_before_*` scripts derive the public key and `allowed_signers`; signing
+degrades gracefully if absent.
+
+## Troubleshooting
+
+**Preview before applying:**
+
+```sh
+chezmoi diff            # show exactly what would change
+chezmoi --dry-run apply # apply without touching anything
+```
+
+**chezmoi doctor** catches most misconfigurations (missing git, broken templates,
+stale cache):
+
+```sh
+chezmoi doctor
+```
+
+**Bitwarden vault locked** — the `run_onchange_after_*` scripts call `bw` to
+fetch tokens. If the vault is locked, you'll see `bw get` failures:
+
+```sh
+bw login
+bw unlock          # unlock the vault, then re-run:
+chezmoi apply
+```
+
+**Template render errors** — if a `.tmpl` file references a missing data key
+(defined in `.chezmoidata.yaml`), chezmoi will fail with a template error.
+Debug with:
+
+```sh
+chezmoi execute-template < dot_zshenv.tmpl
+```
+
+**antidote not refreshing** — `.chezmoiexternal.toml` sets a 168-hour refresh.
+Force an immediate update:
+
+```sh
+chezmoi --refresh-externals apply
+```
+
+## Rollback
+
+`chezmoi apply` is idempotent. The source directory is the source of truth; the
+target files are derived from it. To undo a change:
+
+1. **Inspect what changed:**
+
+   ```sh
+   chezmoi diff
+   ```
+
+2. **Revert in the source directory:**
+
+   ```sh
+   # undo the last commit
+   git -C "$(chezmoi source-dir)" revert HEAD
+
+   # or checkout a specific file
+   git -C "$(chezmoi source-dir)" checkout HEAD -- <path>
+   ```
+
+3. **Re-apply from the reverted source:**
+
+   ```sh
+   chezmoi apply
+   ```
+
+Because `chezmoi apply` re-syncs from source, reverting a commit and applying
+restores the previous state. The `--dry-run` flag lets you verify the rollback
+before committing.
+
+**Note:** Package installs (brew/pacman) are not automatically undone by
+reverting a dotfile commit. If you added a formula and want to remove it,
+edit `dot_Brewfile`/`dot_Pacmanfile` and run `chezmoi apply` again.
+
+## Switching opencode provider (`oc-provider`)
+
+The `oc-provider` command switches all opencode agents to use a specific LLM
+provider in one shot:
+
+```sh
+oc-provider bedrock     # switch to AWS Bedrock
+oc-provider anthropic   # switch to Anthropic
+oc-provider xiaomi      # switch to Xiaomi (mimo)
+```
+
+**How it works:**
+
+1. Sets `OPENCODE_PROVIDER` environment variable to the chosen provider.
+2. Runs `chezmoi apply` to re-render `oh-my-openagent.json` from its template
+   (`.chezmoidata.yaml` defines the per-provider model/config matrix).
+3. Each provider entry in the matrix specifies which model, API endpoint, and
+   auth mechanism opencode uses for that provider.
+
+**Fallback behavior:** opencode is configured with automatic fallback to the
+other two providers if the primary is unavailable (rate-limited, auth failure,
+etc.). The matrix in `.chezmoidata.yaml` controls priority order.
+
+**Verify current provider:**
+
+```sh
+echo $OPENCODE_PROVIDER
+chezmoi execute-template < private_dot_config/opencode/oh-my-openagent.json.tmpl
+```
+
+The `oc-provider` command is part of the opencode tap installed via Homebrew
+(`anomalyco/tap/opencode`). On Arch, it's managed alongside the opencode
+package.

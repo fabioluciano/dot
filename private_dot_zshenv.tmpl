@@ -7,35 +7,14 @@
 [[ -d "$HOME/.local/share/mise/shims" ]] && export PATH="$HOME/.local/share/mise/shims:$PATH"
 
 # API Tokens
-# Uses existing env vars when available, falls back to Bitwarden otherwise
-{{- $bw := false -}}
-{{- if not (env "GITHUB_TOKEN") }}{{ $bw = true }}{{ end }}
+# Uses existing env vars when available, falls back to Bitwarden otherwise.
+# Graceful fallback: a locked Bitwarden vault does NOT abort shell startup.
 
-{{- if $bw -}}
-{{- $fields := bitwardenFields "item" "dotfiles-tokens" }}
-{{- with $fields.github_token }}
-export GITHUB_TOKEN="{{ .value }}"{{ end }}
-{{- with $fields.gitlab_token }}
-export GITLAB_TOKEN="{{ .value }}"{{ end }}
-{{- with $fields.bitbucket_token }}
-export BITBUCKET_TOKEN="{{ .value }}"{{ end }}
-{{- with $fields.jira_token }}
-export JIRA_TOKEN="{{ .value }}"{{ end }}
-{{- with $fields.jira_email }}
-export JIRA_EMAIL="{{ .value }}"{{ end }}
-{{- with $fields.jira_domain }}
-export JIRA_DOMAIN="{{ .value }}"{{ end }}
-{{- with $fields.work_mail }}
-export WORK_MAIL="{{ .value }}"{{ end }}
-{{- with $fields.claude_api_key }}
-export ANTHROPIC_API_KEY="{{ .value }}"{{ end }}
-{{- with $fields.bedrock_api_key }}
-export AWS_BEARER_TOKEN_BEDROCK="{{ .value }}"{{ end }}
-{{- with $fields.mimo_api_key }}
-export MIMO_API_KEY="{{ .value }}"{{ end }}
-{{- else }}
-{{- with env "GITHUB_TOKEN" }}
-export GITHUB_TOKEN="{{ . }}"{{ end }}
+{{- $hasEnv := (env "GITHUB_TOKEN") }}
+{{- if $hasEnv }}
+
+# Tokens already in environment — export directly
+export GITHUB_TOKEN="{{ env "GITHUB_TOKEN" }}"
 {{- with env "GITLAB_TOKEN" }}
 export GITLAB_TOKEN="{{ . }}"{{ end }}
 {{- with env "BITBUCKET_TOKEN" }}
@@ -50,8 +29,92 @@ export JIRA_DOMAIN="{{ . }}"{{ end }}
 export WORK_MAIL="{{ . }}"{{ end }}
 {{- with env "ANTHROPIC_API_KEY" }}
 export ANTHROPIC_API_KEY="{{ . }}"{{ end }}
-{{- with env "BEDROCK_API_KEY" }}
+{{- with env "AWS_BEARER_TOKEN_BEDROCK" }}
 export AWS_BEARER_TOKEN_BEDROCK="{{ . }}"{{ end }}
 {{- with env "MIMO_API_KEY" }}
 export MIMO_API_KEY="{{ . }}"{{ end }}
+
+{{- else }}
+
+# No tokens in environment — try Bitwarden at runtime (graceful fallback)
+_zshenv_bw_warned=""
+_zshenv_warn() {
+  [ -z "$_zshenv_bw_warned" ] && _zshenv_bw_warned=1 \
+    && echo "[zshenv] Warning: some API tokens not set (Bitwarden vault locked?)." >&2
+}
+
+_zshenv_bw_cache=""
+_zshenv_bw_get() {
+  # Fetches a single field from Bitwarden item "dotfiles-tokens".
+  # Caches the item to avoid repeated bw calls. Returns empty on any failure.
+  if [ -z "$_zshenv_bw_cache" ]; then
+    command -v bw &>/dev/null || return 0
+    bw unlock --check &>/dev/null 2>&1 || return 0
+    _zshenv_bw_cache=$(bw get item "dotfiles-tokens" 2>/dev/null) || return 0
+  fi
+  [ -z "$_zshenv_bw_cache" ] && return 0
+  printf '%s' "$_zshenv_bw_cache" | python3 -c "
+import sys, json
+try:
+    d = json.load(sys.stdin)
+    fields = {f['name']: f.get('value','') for f in d.get('fields', [])}
+    print(fields.get(sys.argv[1], ''), end='')
+except Exception:
+    pass
+" "$1" 2>/dev/null
+}
+
+# GITHUB_TOKEN
+_val=$(_zshenv_bw_get "github_token")
+export GITHUB_TOKEN="${_val:-}"
+[ -z "$_val" ] && _zshenv_warn
+
+# GITLAB_TOKEN
+_val=$(_zshenv_bw_get "gitlab_token")
+export GITLAB_TOKEN="${_val:-}"
+[ -z "$_val" ] && _zshenv_warn
+
+# BITBUCKET_TOKEN
+_val=$(_zshenv_bw_get "bitbucket_token")
+export BITBUCKET_TOKEN="${_val:-}"
+[ -z "$_val" ] && _zshenv_warn
+
+# JIRA_TOKEN
+_val=$(_zshenv_bw_get "jira_token")
+export JIRA_TOKEN="${_val:-}"
+[ -z "$_val" ] && _zshenv_warn
+
+# JIRA_EMAIL
+_val=$(_zshenv_bw_get "jira_email")
+export JIRA_EMAIL="${_val:-}"
+[ -z "$_val" ] && _zshenv_warn
+
+# JIRA_DOMAIN
+_val=$(_zshenv_bw_get "jira_domain")
+export JIRA_DOMAIN="${_val:-}"
+[ -z "$_val" ] && _zshenv_warn
+
+# WORK_MAIL
+_val=$(_zshenv_bw_get "work_mail")
+export WORK_MAIL="${_val:-}"
+[ -z "$_val" ] && _zshenv_warn
+
+# ANTHROPIC_API_KEY
+_val=$(_zshenv_bw_get "claude_api_key")
+export ANTHROPIC_API_KEY="${_val:-}"
+[ -z "$_val" ] && _zshenv_warn
+
+# AWS_BEARER_TOKEN_BEDROCK
+_val=$(_zshenv_bw_get "bedrock_api_key")
+export AWS_BEARER_TOKEN_BEDROCK="${_val:-}"
+[ -z "$_val" ] && _zshenv_warn
+
+# MIMO_API_KEY
+_val=$(_zshenv_bw_get "mimo_api_key")
+export MIMO_API_KEY="${_val:-}"
+[ -z "$_val" ] && _zshenv_warn
+
+unset -f _zshenv_bw_get _zshenv_warn
+unset _zshenv_bw_cache _zshenv_bw_warned _val
+
 {{- end }}

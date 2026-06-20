@@ -72,7 +72,7 @@
     "beads-ready": {
       "description": "Show Beads ready tasks",
       "template": "Use Beads to inspect ready work. Run `bd ready --json` if available, then summarize ready tasks and blockers. If Beads is not initialized, say that `bd init` is needed."
-    },
+    }
   },
   "mcp": {
     "context7": {

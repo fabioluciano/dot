@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+set -euo pipefail
+# Alterna o provider do OpenCode (bedrock/anthropic/xiaomi) para todos os agentes.
+# Escreve o provider ativo em ~/.config/opencode/.active_provider e re-renderiza
+# oh-my-openagent.json via chezmoi apply.
+
+PROVIDERS=(bedrock anthropic xiaomi)
+STATE_FILE="${HOME}/.config/opencode/.active_provider"
+
+usage() {
+  cat >&2 <<EOF
+Uso: oc-provider <provider>
+
+Providers disponíveis: ${PROVIDERS[*]}
+
+Exemplo:
+  oc-provider anthropic    # troca todos os agentes para Anthropic
+  oc-provider xiaomi       # troca todos os agentes para Xiaomi
+  oc-provider bedrock      # troca todos os agentes para Bedrock (padrão)
+EOF
+  exit 1
+}
+
+# --- Validação do argumento ---
+if [[ $# -ne 1 ]]; then
+  echo "Erro: provider não especificado." >&2
+  usage
+fi
+
+provider="$1"
+
+# Verifica se o provider é válido
+valid=false
+for p in "${PROVIDERS[@]}"; do
+  if [[ "$p" == "$provider" ]]; then
+    valid=true
+    break
+  fi
+done
+
+if [[ "$valid" != true ]]; then
+  echo "Erro: provider inválido '$provider'." >&2
+  echo "Providers válidos: ${PROVIDERS[*]}" >&2
+  exit 1
+fi
+
+# --- Persiste o provider ativo ---
+mkdir -p "$(dirname "$STATE_FILE")"
+printf '%s\n' "$provider" > "$STATE_FILE"
+
+# --- Re-renderiza oh-my-openagent.json via chezmoi ---
+OPENCODE_PROVIDER="$provider" chezmoi apply ~/.config/opencode/oh-my-openagent.json
+
+echo ""
+echo "✓ Provider ativo: $provider"
+echo "  Arquivo de estado: $STATE_FILE"
+echo "  oh-my-openagent.json atualizado via chezmoi."
