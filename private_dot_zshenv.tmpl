@@ -29,6 +29,8 @@ export JIRA_DOMAIN="{{ .value }}"{{ end }}
 export WORK_MAIL="{{ .value }}"{{ end }}
 {{- with $fields.anthropic_api_key }}
 export ANTHROPIC_API_KEY="{{ .value }}"{{ end }}
+{{- with $fields.bedrock_api_key }}
+export BEDROCK_API_KEY="{{ .value }}"{{ end }}
 {{- with $fields.openai_api_key }}
 export OPENAI_API_KEY="{{ .value }}"{{ end }}
 {{- with $fields.mimo_api_key }}
@@ -48,4 +50,6 @@ export JIRA_EMAIL="{{ . }}"{{ end }}
 export JIRA_DOMAIN="{{ . }}"{{ end }}
 {{- with env "WORK_MAIL" }}
 export WORK_MAIL="{{ . }}"{{ end }}
+{{- with env "BEDROCK_API_KEY" }}
+export BEDROCK_API_KEY="{{ . }}"{{ end }}
 {{- end }}

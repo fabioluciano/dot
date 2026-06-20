@@ -20,6 +20,16 @@
         "baseURL": "https://token-plan-sgp.xiaomimimo.com/v1",
         "apiKey": "{env:MIMO_API_KEY}"
       }
+    },
+    "anthropic": {
+      "options": {
+        "apiKey": "{env:ANTHROPIC_API_KEY}"
+      }
+    },
+    "bedrock": {
+      "options": {
+        "apiKey": "{env:BEDROCK_API_KEY}"
+      }
     }
   },
   "plugin": [
@@ -51,6 +61,10 @@
     "beads-ready": {
       "description": "Show Beads ready tasks",
       "template": "Use Beads to inspect ready work. Run `bd ready --json` if available, then summarize ready tasks and blockers. If Beads is not initialized, say that `bd init` is needed."
+    },
+    "switch-provider": {
+      "description": "Switch oh-my-openagent provider (xiaomi/anthropic/bedrock)",
+      "template": "Ask the user which provider to use: xiaomi, anthropic, or bedrock. Then edit ~/.config/opencode/oh-my-openagent.json and replace ALL model values (in agents and categories) to use the chosen provider. Mapping: xiaomi main=xiaomi/mimo-v2.5-pro fallback=xiaomi/mimo-v2.5 light=xiaomi/mimo-v2.5 | anthropic main=anthropic/claude-sonnet-4-20250514 fallback=anthropic/claude-haiku-4-20250414 light=anthropic/claude-haiku-4-20250414 | bedrock main=bedrock/anthropic.claude-sonnet-4-20250514-v1:0 fallback=bedrock/anthropic.claude-haiku-4-20250414-v1:0 light=bedrock/anthropic.claude-haiku-4-20250414-v1:0. Main/complex agents: sisyphus, hephaestus, oracle, prometheus, metis, momus, unspecified-high, ultrabrain, deep. Light agents: librarian, explore, multimodal-looker, atlas, sisyphus-junior, quick, artistry, writing, visual-engineering, unspecified-low. Confirm when done."
     }
   },
   "mcp": {
