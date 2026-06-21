@@ -125,10 +125,19 @@
       },
       "timeout": 15000
     },
+    "codegraph": {
+      "type": "local",
+      "command": [
+        "codegraph",
+        "serve",
+        "--mcp"
+      ],
+      "enabled": true
+    },
     "codebase-memory": {
       "type": "local",
       "command": [
-        "/Users/fabioluciano/.local/bin/codebase-memory-mcp"
+        "codebase-memory-mcp"
       ],
       "enabled": true,
       "timeout": 30000

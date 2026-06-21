@@ -29,7 +29,8 @@
 Use the right specialized tool for each task. NEVER fall back to generic grep/glob when a specialized MCP exists.
 
 ### Code Intelligence
-- **codebase-memory**: ALWAYS use for any code question — "where is X", "who calls Y", "what does Z do", data flow, impact analysis, code snippets. Call `search_graph` / `trace_path` / `get_code_snippet` BEFORE running broad grep or glob searches.
+- **codegraph**: PRIMARY tool for almost any code question or before an edit — "how does X work", architecture, a bug, "where is X", surveying an area, or the symbols you are about to change. Call `codegraph_explore` FIRST (returns verbatim source grouped by file + the call path among them in one capped call — treat shown source as already Read). Use `codegraph_node` to read a whole file (Read-equivalent, with dependents attached) or one named symbol with its caller/callee trail; `codegraph_callers` for "who calls Y"; `codegraph_search` only for quick name lookups. Prefer these over grep/glob/Read for code discovery.
+- **codebase-memory**: Use for graph-level queries — multi-hop relationships, cross-service flow, complexity/bottleneck hot-paths (`query_graph` Cypher), architecture clusters (`get_architecture`), and impact analysis. Call `search_graph` / `trace_path` / `get_code_snippet` for structural questions BEFORE running broad grep or glob searches.
 
 ### External Documentation
 - **context7**: ALWAYS use for external library/framework docs. Call `resolve-library-id` then `query-docs` BEFORE guessing any API shape or behavior.
