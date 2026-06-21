@@ -1,5 +1,26 @@
 # Global Rules
 
+## MCP-FIRST (read this before anything else)
+
+Before ANY code investigation, you MUST try the specialized MCP first —
+generic grep/glob/Read are the fallback, never the first move:
+
+1. **Any code question or pre-edit survey** (how/where/what/flow, "find X",
+   the symbols you are about to change) → call `codegraph_explore` FIRST.
+   If codegraph returns nothing, the repo is not indexed — say so and run/ask
+   for `codegraph index`; do NOT silently fall back to grep.
+2. **Structural / multi-hop / impact / complexity questions** →
+   `codebase-memory` (`search_graph`, `trace_path`, `query_graph`). If the
+   project is missing from `list_projects`, index it with `index_repository`
+   before answering — do NOT fall back to grep.
+3. **External library/framework behavior** → `context7` (`resolve-library-id`
+   then `query-docs`) before guessing any API.
+4. **Browser task** → `playwright`. **Public-repo examples** → `gh_grep`.
+   **GitHub ops** → `github`.
+
+Falling back to grep/glob when a specialized MCP exists (and is indexed) is a
+defect. The full per-tool guidance is in "MCP Usage (mandatory)" below.
+
 ## Language
 - Always respond in Brazilian Portuguese (pt-BR)
 - Code comments in English, explanations in Portuguese
