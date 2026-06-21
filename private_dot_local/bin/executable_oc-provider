@@ -49,7 +49,7 @@ mkdir -p "$(dirname "$STATE_FILE")"
 printf '%s\n' "$provider" > "$STATE_FILE"
 
 # --- Re-renderiza oh-my-openagent.json via chezmoi ---
-OPENCODE_PROVIDER="$provider" chezmoi apply ~/.config/opencode/oh-my-openagent.json
+chezmoi apply ~/.config/opencode/oh-my-openagent.json
 
 echo ""
 echo "✓ Provider ativo: $provider"

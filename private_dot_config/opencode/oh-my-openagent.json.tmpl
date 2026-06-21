@@ -1,4 +1,4 @@
-{{- $provider := env "OPENCODE_PROVIDER" | default "bedrock" -}}
+{{- $provider := output "sh" "-c" "cat \"$HOME/.config/opencode/.active_provider\" 2>/dev/null || echo bedrock" | trim -}}
 {
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
   "agents": {

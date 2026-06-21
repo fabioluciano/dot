@@ -166,9 +166,10 @@ oc-provider xiaomi      # switch to Xiaomi (mimo)
 
 **How it works:**
 
-1. Sets `OPENCODE_PROVIDER` environment variable to the chosen provider.
-2. Runs `chezmoi apply` to re-render `oh-my-openagent.json` from its template
-   (`.chezmoidata.yaml` defines the per-provider model/config matrix).
+1. Writes the chosen provider name to `~/.config/opencode/.active_provider`.
+2. Runs `chezmoi apply` to re-render `oh-my-openagent.json` from its template,
+   which reads `.active_provider` as the single source of truth (default: `bedrock`
+   when the file is absent).
 3. Each provider entry in the matrix specifies which model, API endpoint, and
    auth mechanism opencode uses for that provider.
 
@@ -179,7 +180,7 @@ etc.). The matrix in `.chezmoidata.yaml` controls priority order.
 **Verify current provider:**
 
 ```sh
-echo $OPENCODE_PROVIDER
+cat ~/.config/opencode/.active_provider
 chezmoi execute-template < private_dot_config/opencode/oh-my-openagent.json.tmpl
 ```
 
