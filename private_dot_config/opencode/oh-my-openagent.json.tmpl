@@ -1,44 +1,69 @@
 {{- $provider := output "sh" "-c" "cat \"$HOME/.config/opencode/.active_provider\" 2>/dev/null || echo bedrock" | trim -}}
+{{- $validProviders := list "bedrock" "xiaomi" -}}
+{{- if not (has $provider $validProviders) -}}{{- $provider = "bedrock" -}}{{- end -}}
+{{- $tierOrder := list "pro" "fast" "cheap" -}}
 {
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
+  "team_mode": {
+    "enabled": true,
+    "max_parallel_members": 3,
+    "max_members": 6,
+    "tmux_visualization": true,
+    "max_wall_clock_minutes": 90
+  },
   "agents": {
 {{- $agents := keys $.opencode.agent_tiers | sortAlpha }}
 {{- range $i, $agent := $agents }}
 {{- $tier := index $.opencode.agent_tiers $agent }}
+{{- $primary := index (index $.opencode.tiers $provider) $tier }}
+{{- $seen := list $primary }}
+{{- $fallbacks := list }}
+{{- range $t := $tierOrder }}
+{{- if ne $t $tier }}
+{{- $m := index (index $.opencode.tiers $provider) $t }}
+{{- if not (has $m $seen) }}
+{{- $seen = append $seen $m }}
+{{- $fallbacks = append $fallbacks $m }}
+{{- end }}
+{{- end }}
+{{- end }}
     "{{ $agent }}": {
-      "model": "{{ index (index $.opencode.tiers $provider) $tier }}",
-      "fallback_models": [
-{{- $others := list }}
-{{- range $p := list "bedrock" "anthropic" "xiaomi" }}
-{{- if ne $p $provider }}
-{{- $others = append $others $p }}
+      "model": "{{ $primary }}",
+      "fallback_models": [{{ range $j, $m := $fallbacks }}{{ if $j }}, {{ end }}{"model": "{{ $m }}"}{{ end }}]
+{{- if or (eq $agent "explore") (eq $agent "librarian") (eq $agent "multimodal-looker") }}
+      ,"permission": {
+        "edit": "deny"{{ if eq $agent "explore" }},
+        "bash": "ask"{{ end }}
+      }
+{{- end }}
+{{- if eq $provider "bedrock" }}
+{{- if or (eq $agent "oracle") (eq $agent "momus") (eq $agent "prometheus") (eq $agent "metis") }}
+      ,"thinking": {"type": "enabled", "budgetTokens": 16000}
 {{- end }}
 {{- end }}
-{{- range $j, $other := $others }}
-        {"model": "{{ index (index $.opencode.tiers $other) $tier }}"}{{- if lt $j (sub (len $others) 1) }},{{ end }}
+    }{{ if lt $i (sub (len $agents) 1) }},{{ end }}
 {{- end }}
-      ]
-    }{{- if lt $i (sub (len $agents) 1) }},{{ end -}}
-{{ end }}
   },
   "categories": {
 {{- $categories := keys $.opencode.category_tiers | sortAlpha }}
 {{- range $i, $cat := $categories }}
 {{- $tier := index $.opencode.category_tiers $cat }}
+{{- $primary := index (index $.opencode.tiers $provider) $tier }}
+{{- $seen := list $primary }}
+{{- $fallbacks := list }}
+{{- range $t := $tierOrder }}
+{{- if ne $t $tier }}
+{{- $m := index (index $.opencode.tiers $provider) $t }}
+{{- if not (has $m $seen) }}
+{{- $seen = append $seen $m }}
+{{- $fallbacks = append $fallbacks $m }}
+{{- end }}
+{{- end }}
+{{- end }}
     "{{ $cat }}": {
-      "model": "{{ index (index $.opencode.tiers $provider) $tier }}",
-      "fallback_models": [
-{{- $others := list }}
-{{- range $p := list "bedrock" "anthropic" "xiaomi" }}
-{{- if ne $p $provider }}
-{{- $others = append $others $p }}
+      "model": "{{ $primary }}",
+      "fallback_models": [{{ range $j, $m := $fallbacks }}{{ if $j }}, {{ end }}{"model": "{{ $m }}"}{{ end }}]
+    }{{ if lt $i (sub (len $categories) 1) }},{{ end }}
 {{- end }}
-{{- end }}
-{{- range $j, $other := $others }}
-        {"model": "{{ index (index $.opencode.tiers $other) $tier }}"}{{- if lt $j (sub (len $others) 1) }},{{ end }}
-{{- end }}
-      ]
-    }{{- if lt $i (sub (len $categories) 1) }},{{ end -}}
-{{ end }}
   }
 }

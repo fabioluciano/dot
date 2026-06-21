@@ -7,7 +7,6 @@
   "lsp": true,
   "enabled_providers": [
     "xiaomi",
-    "anthropic",
     "amazon-bedrock"
   ],
   "compaction": {
@@ -33,11 +32,6 @@
         "apiKey": "{env:MIMO_API_KEY}"
       }
     },
-    "anthropic": {
-      "options": {
-        "apiKey": "{env:ANTHROPIC_API_KEY}"
-      }
-    },
     "amazon-bedrock": {
       "options": {
         "apiKey": "{env:AWS_BEARER_TOKEN_BEDROCK}",
@@ -47,7 +41,8 @@
   },
   "plugin": [
     "context-mode",
-    "oh-my-openagent"
+    "oh-my-openagent",
+    "opencode-notify"
   ],
   "permission": {
     "bash": "allow",
@@ -105,16 +100,6 @@
       "enabled": true,
       "timeout": 10000
     },
-    "memory": {
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "@modelcontextprotocol/server-memory"
-      ],
-      "enabled": true,
-      "timeout": 10000
-    },
     "fetch": {
       "type": "local",
       "command": [
@@ -147,6 +132,17 @@
       ],
       "enabled": true,
       "timeout": 30000
+    }
+  },
+  "experimental": {
+    "disable_omo_env": true,
+    "dynamic_context_pruning": {
+      "enabled": true,
+      "notification": "minimal",
+      "turn_protection": {
+        "enabled": true,
+        "turns": 3
+      }
     }
   }
 }

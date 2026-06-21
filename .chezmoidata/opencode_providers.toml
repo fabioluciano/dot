@@ -3,18 +3,16 @@
 default_provider = "bedrock"
 
 [opencode.tiers.bedrock]
-pro  = "amazon-bedrock/anthropic.claude-opus-4-8"
-fast = "amazon-bedrock/anthropic.claude-sonnet-4-6"
-
-[opencode.tiers.anthropic]
-pro  = "anthropic/claude-opus-4"
-fast = "anthropic/claude-sonnet-4"
+pro   = "amazon-bedrock/us.anthropic.claude-opus-4-8"
+fast  = "amazon-bedrock/us.anthropic.claude-sonnet-4-6"
+cheap = "amazon-bedrock/us.anthropic.claude-haiku-4-5-20251001-v1:0"
 
 [opencode.tiers.xiaomi]
-pro  = "xiaomi/mimo-v2.5-pro"
-fast = "xiaomi/mimo-v2.5"
+pro   = "xiaomi/mimo-v2.5-pro"
+fast  = "xiaomi/mimo-v2.5"
+cheap = "xiaomi/mimo-v2.5"
 
-# Map each agent to a tier ("pro" or "fast")
+# Map each agent to a tier ("pro", "fast", or "cheap")
 [opencode.agent_tiers]
 # Pro tier agents (complex reasoning, planning, architecture)
 sisyphus          = "pro"
@@ -23,14 +21,15 @@ oracle            = "pro"
 prometheus        = "pro"
 metis             = "pro"
 momus             = "pro"
-# Fast tier agents (exploration, orchestration, simple tasks)
+# Fast tier agents (exploration, orchestration)
 librarian         = "fast"
 explore           = "fast"
 multimodal-looker = "fast"
 atlas             = "fast"
-sisyphus-junior   = "fast"
+# Cheap tier agents (simple tasks)
+sisyphus-junior   = "cheap"
 
-# Map each category to a tier ("pro" or "fast")
+# Map each category to a tier ("pro", "fast", or "cheap")
 [opencode.category_tiers]
 # Pro tier categories
 ultrabrain         = "pro"
@@ -39,6 +38,7 @@ unspecified-high   = "pro"
 # Fast tier categories
 visual-engineering = "fast"
 artistry           = "fast"
-quick              = "fast"
 unspecified-low    = "fast"
-writing            = "fast"
+# Cheap tier categories
+quick              = "cheap"
+writing            = "cheap"

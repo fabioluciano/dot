@@ -160,7 +160,6 @@ provider in one shot:
 
 ```sh
 oc-provider bedrock     # switch to AWS Bedrock
-oc-provider anthropic   # switch to Anthropic
 oc-provider xiaomi      # switch to Xiaomi (mimo)
 ```
 
@@ -173,9 +172,11 @@ oc-provider xiaomi      # switch to Xiaomi (mimo)
 3. Each provider entry in the matrix specifies which model, API endpoint, and
    auth mechanism opencode uses for that provider.
 
-**Fallback behavior:** opencode is configured with automatic fallback to the
-other two providers if the primary is unavailable (rate-limited, auth failure,
-etc.). The matrix in `.chezmoidata.yaml` controls priority order.
+**Fallback behavior:** opencode is configured with automatic intra-provider fallback
+between tiers (pro → fast → cheap) when the primary model is unavailable
+(rate-limited, throttled, etc.). Fallback stays within the active provider —
+it never crosses to a different provider. The tier matrix in `.chezmoidata/opencode_providers.toml`
+controls the model for each tier.
 
 **Verify current provider:**
 
@@ -187,3 +188,34 @@ chezmoi execute-template < private_dot_config/opencode/oh-my-openagent.json.tmpl
 The `oc-provider` command is part of the opencode tap installed via Homebrew
 (`anomalyco/tap/opencode`). On Arch, it's managed alongside the opencode
 package.
+
+## Managing opencode skills
+
+opencode skills are **not** tracked by chezmoi. They are managed exclusively by the [`skills` CLI](https://skills.sh) and installed directly to `~/.config/opencode/skills/`.
+
+opencode discovers skills automatically at startup — no config entry needed.
+
+### Install a skill
+
+```sh
+# Find skills
+npx skills find <query>
+
+# Install from a GitHub repo (global, for opencode)
+npx skills add <owner/repo> -a opencode -g
+
+# Example: install community DevOps skills
+npx skills add Raishin/vanguard-frontier-agentic -a opencode -g
+```
+
+### Manage installed skills
+
+```sh
+npx skills list                        # list installed skills
+npx skills update -g                   # update all global skills
+npx skills remove <skill> -a opencode  # remove a specific skill
+```
+
+### Why not chezmoi?
+
+Skills are community-maintained and updated frequently. Tracking them in chezmoi would require manual commits on every update. The `skills` CLI handles versioning and updates independently.

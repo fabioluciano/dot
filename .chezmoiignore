@@ -50,3 +50,6 @@ logid.cfg
 
 # Public GPG key — usado pelos run_before, nao aplicar em ~
 keys/
+
+# opencode skills: geridas pela `skills` CLI (npx skills add), NAO pelo chezmoi
+.config/opencode/skills/
