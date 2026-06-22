@@ -114,6 +114,7 @@ return {
         -- Misc
         ["<Leader>z"] = { "<cmd>ZenMode<cr>", desc = "Zen mode" },
         ["<Leader>ts"] = { "<cmd>Telescope toggleterm_manager<cr>", desc = "Search Toggleterms" },
+        ["<Leader>uo"] = { "<cmd>Neotree document_symbols<cr>", desc = "Outline (document symbols)" },
       },
     },
     autocmds = {
