@@ -36,6 +36,110 @@
       "options": {
         "apiKey": "{env:AWS_BEARER_TOKEN_BEDROCK}",
         "region": "us-east-1"
+      },
+      "models": {
+        "us.anthropic.claude-opus-4-8": {
+          "options": {
+            "thinking": {
+              "type": "enabled",
+              "budgetTokens": 16000
+            }
+          },
+          "variants": {
+            "low": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 16000
+              }
+            },
+            "medium": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 16000
+              }
+            },
+            "high": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 16000
+              }
+            },
+            "max": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 31999
+              }
+            }
+          }
+        },
+        "us.anthropic.claude-sonnet-4-6": {
+          "options": {
+            "thinking": {
+              "type": "enabled",
+              "budgetTokens": 8000
+            }
+          },
+          "variants": {
+            "low": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 6000
+              }
+            },
+            "medium": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 8000
+              }
+            },
+            "high": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 16000
+              }
+            },
+            "max": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 24000
+              }
+            }
+          }
+        },
+        "us.anthropic.claude-haiku-4-5-20251001-v1:0": {
+          "options": {
+            "thinking": {
+              "type": "enabled",
+              "budgetTokens": 2048
+            }
+          },
+          "variants": {
+            "low": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 1024
+              }
+            },
+            "medium": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 2048
+              }
+            },
+            "high": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 4000
+              }
+            },
+            "max": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 4000
+              }
+            }
+          }
+        }
       }
     }
   },
@@ -145,13 +249,14 @@
   },
   "experimental": {
     "disable_omo_env": true,
+    "task_system": true,
     "dynamic_context_pruning": {
       "enabled": true,
       "notification": "minimal",
-      "turn_protection": {
-        "enabled": true,
-        "turns": 3
-      }
+    },
+    "turn_protection": {
+      "enabled": true,
+      "turns": 3
     }
   }
 }

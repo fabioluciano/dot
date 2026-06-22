@@ -1,5 +1,22 @@
 ---@type LazySpec
 return {
+  {
+    "kdheepak/lazygit.nvim",
+    lazy = true,
+    cmd = {
+      "LazyGit",
+      "LazyGitConfig",
+      "LazyGitCurrentFile",
+      "LazyGitFilter",
+      "LazyGitFilterCurrentFile",
+    },
+    dependencies = { "nvim-lua/plenary.nvim" },
+    keys = {
+      { "<leader>gg", "<cmd>LazyGit<cr>",            desc = "LazyGit" },
+      { "<leader>gG", "<cmd>LazyGitCurrentFile<cr>", desc = "LazyGit (current file)" },
+    },
+  },
+
   -- Neo-tree file explorer customization
   {
     "nvim-neo-tree/neo-tree.nvim",

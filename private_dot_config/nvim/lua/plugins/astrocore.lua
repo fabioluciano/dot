@@ -39,7 +39,7 @@ return {
         spell = false, -- Disabled globally, enabled per filetype
         spelllang = { "en", "pt" },
         spelloptions = "camel", -- Check camelCase words separately
-        signcolumn = "auto",
+        signcolumn = "yes:1",
         wrap = true,
         tabstop = 2,
         -- Mouse support
@@ -53,11 +53,47 @@ return {
     },
     mappings = {
       n = {
-        -- AI
-        ["<Leader>o"] = { desc = "󱙺 OpenCode" },
-        ["<Leader>oa"] = { function() require("opencode").ask("@this: ") end, desc = "Ask OpenCode" },
-        ["<Leader>os"] = { function() require("opencode").select() end, desc = "Select OpenCode" },
-        ["<Leader>on"] = { function() require("opencode").command("session.new") end, desc = "New session" },
+        -- AI / OpenCode
+        ["<Leader>o"]  = { desc = "󱙺 OpenCode" },
+
+        -- Core actions
+        ["<Leader>oa"] = { function() require("opencode").ask("@this: ") end,                          desc = "Ask" },
+        ["<Leader>os"] = { function() require("opencode").select() end,                                desc = "Select action" },
+        ["<Leader>ot"] = { function() require("opencode").toggle() end,                                desc = "Toggle TUI" },
+
+        -- Prompts
+        ["<Leader>op"] = { desc = "󰙎 Prompts" },
+        ["<Leader>opf"] = { function() require("opencode").prompt("fix") end,                          desc = "Fix diagnostics" },
+        ["<Leader>ope"] = { function() require("opencode").prompt("explain") end,                      desc = "Explain" },
+        ["<Leader>opr"] = { function() require("opencode").prompt("review") end,                       desc = "Review" },
+        ["<Leader>opd"] = { function() require("opencode").prompt("document") end,                     desc = "Document" },
+        ["<Leader>opt"] = { function() require("opencode").prompt("test") end,                         desc = "Add tests" },
+        ["<Leader>opo"] = { function() require("opencode").prompt("optimize") end,                     desc = "Optimize" },
+        ["<Leader>opR"] = { function() require("opencode").prompt("refactor") end,                     desc = "Refactor" },
+        ["<Leader>ops"] = { function() require("opencode").prompt("security") end,                     desc = "Security review" },
+        ["<Leader>opD"] = { function() require("opencode").prompt("diagnostics") end,                  desc = "Explain diagnostics" },
+        ["<Leader>opg"] = { function() require("opencode").prompt("diff") end,                         desc = "Review git diff" },
+        ["<Leader>opx"] = { function() require("opencode").prompt("debug") end,                        desc = "Add debug logging" },
+
+        -- Session
+        ["<Leader>oS"] = { desc = " Session" },
+        ["<Leader>oSn"] = { function() require("opencode").command("session.new") end,                 desc = "New session" },
+        ["<Leader>oSl"] = { function() require("opencode").command("session.list") end,                desc = "List sessions" },
+        ["<Leader>oSs"] = { function() require("opencode").command("session.select") end,              desc = "Select session" },
+        ["<Leader>oSi"] = { function() require("opencode").command("session.interrupt") end,           desc = "Interrupt" },
+        ["<Leader>oSc"] = { function() require("opencode").command("session.compact") end,             desc = "Compact context" },
+        ["<Leader>oSu"] = { function() require("opencode").command("session.undo") end,                desc = "Undo" },
+        ["<Leader>oSr"] = { function() require("opencode").command("session.redo") end,                desc = "Redo" },
+        ["<Leader>oSh"] = { function() require("opencode").command("session.share") end,               desc = "Share session" },
+
+        -- Agent & navigation
+        ["<Leader>oA"] = { function() require("opencode").command("agent.cycle") end,                  desc = "Cycle agent" },
+        ["<S-C-u>"]    = { function() require("opencode").command("session.half.page.up") end,         desc = "OpenCode scroll up" },
+        ["<S-C-d>"]    = { function() require("opencode").command("session.half.page.down") end,       desc = "OpenCode scroll down" },
+
+        -- Operator (go / goo) — motion e line
+        ["go"]  = { function() return require("opencode").operator("@this ") end,        expr = true, desc = "Send range to OpenCode" },
+        ["goo"] = { function() return require("opencode").operator("@this ") .. "_" end, expr = true, desc = "Send line to OpenCode" },
 
         -- Run / Tasks (overseer)
         ["<Leader>R"] = { desc = "󱓞 Run/Tasks" },
@@ -70,9 +106,10 @@ return {
         ["<Leader>Tn"] = { function() require("neotest").run.run() end, desc = "Test nearest" },
         ["<Leader>Ts"] = { function() require("neotest").summary.toggle() end, desc = "Toggle summary" },
 
-        -- Git extras (diffview / octo)
-        ["<Leader>gD"] = { "<cmd>DiffviewOpen<cr>", desc = "Diffview open" },
-        ["<Leader>gO"] = { "<cmd>Octo pr list<cr>", desc = "Octo: list PRs" },
+        -- Git extras (diffview / codediff / octo)
+        ["<Leader>gD"] = { "<cmd>DiffviewOpen<cr>",  desc = "Diffview open" },
+        ["<Leader>gd"] = { "<cmd>CodeDiff<cr>",      desc = "CodeDiff open" },
+        ["<Leader>gO"] = { "<cmd>Octo pr list<cr>",  desc = "Octo: list PRs" },
 
         -- Misc
         ["<Leader>z"] = { "<cmd>ZenMode<cr>", desc = "Zen mode" },

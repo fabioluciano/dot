@@ -24,6 +24,7 @@ return {
         "typescript-language-server",
         "prettier",
         "eslint-lsp",
+        "biome",
 
         -- Angular
         "angular-language-server",
@@ -59,7 +60,6 @@ return {
 
         -- PHP
         "intelephense",
-        "phpactor",
 
         -- Java
         "jdtls",

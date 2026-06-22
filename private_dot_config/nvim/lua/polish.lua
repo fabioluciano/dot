@@ -5,6 +5,7 @@
 
 -- Enable undercurl support in terminal
 vim.opt.termguicolors = true
+vim.o.autoread = true -- Required for opencode-nvim events.reload (auto-reload buffers edited by opencode)
 -- Undercurl support for terminals that support it (kitty, wezterm, ghostty, etc.)
 vim.cmd [[
   let &t_Cs = "\e[4:3m"

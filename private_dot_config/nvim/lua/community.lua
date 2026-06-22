@@ -80,6 +80,7 @@ return {
   { import = "astrocommunity.git.neogit" },
   { import = "astrocommunity.git.diffview-nvim" },
   { import = "astrocommunity.git.git-blame-nvim" }, -- kept this one (more features than blame-nvim)
+  { import = "astrocommunity.git.codediff-nvim" },
 
   -- ╭────────────────────────────────────────────────────────╮
   -- │                    Indent                              │
@@ -96,7 +97,6 @@ return {
   -- ╭────────────────────────────────────────────────────────╮
   -- │                    Markdown & LaTeX                    │
   -- ╰────────────────────────────────────────────────────────╯
-  { import = "astrocommunity.markdown-and-latex.glow-nvim" },
   { import = "astrocommunity.markdown-and-latex.markdown-preview-nvim" },
 
   -- ╭────────────────────────────────────────────────────────╮
@@ -109,6 +109,7 @@ return {
   -- │                    Language Packs                      │
   -- ╰────────────────────────────────────────────────────────╯
   { import = "astrocommunity.pack.angular" },
+  { import = "astrocommunity.pack.astro" },
   { import = "astrocommunity.pack.bash" },
   { import = "astrocommunity.pack.go" },
   { import = "astrocommunity.pack.helm" },
@@ -122,6 +123,7 @@ return {
   { import = "astrocommunity.pack.python" },
   { import = "astrocommunity.pack.rust" },
   { import = "astrocommunity.pack.sql" },
+  { import = "astrocommunity.pack.svelte" },
   { import = "astrocommunity.pack.terraform" },
   { import = "astrocommunity.pack.toml" },
   { import = "astrocommunity.pack.typescript-all-in-one" },
@@ -203,7 +205,6 @@ return {
   -- ╭────────────────────────────────────────────────────────╮
   -- │                    Scrolling                           │
   -- ╰────────────────────────────────────────────────────────╯
-  { import = "astrocommunity.scrolling.neoscroll-nvim" },
   { import = "astrocommunity.scrolling.mini-animate" },
 
   -- ╭────────────────────────────────────────────────────────╮

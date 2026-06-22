@@ -60,7 +60,7 @@ local function open_bookmarks()
     end,
   }, function(choice)
     if choice then
-      vim.cmd("cd " .. choice)
+      vim.cmd("cd " .. vim.fn.fnameescape(choice))
       require("snacks").explorer()
     end
   end)
