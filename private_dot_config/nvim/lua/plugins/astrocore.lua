@@ -59,7 +59,7 @@ return {
         -- Core actions
         ["<Leader>oa"] = { function() require("opencode").ask("@this: ") end,                          desc = "Ask" },
         ["<Leader>os"] = { function() require("opencode").select() end,                                desc = "Select action" },
-        ["<Leader>ot"] = { function() require("opencode").toggle() end,                                desc = "Toggle TUI" },
+        ["<Leader>ot"] = { function() require("opencode").select() end,                                desc = "Open OpenCode" },
 
         -- Prompts
         ["<Leader>op"] = { desc = "󰙎 Prompts" },
