@@ -113,6 +113,7 @@ return {
 
         -- Misc
         ["<Leader>z"] = { "<cmd>ZenMode<cr>", desc = "Zen mode" },
+        ["<Leader>ts"] = { "<cmd>Telescope toggleterm_manager<cr>", desc = "Search Toggleterms" },
       },
     },
     autocmds = {

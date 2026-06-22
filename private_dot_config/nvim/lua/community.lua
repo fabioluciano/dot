@@ -220,6 +220,7 @@ return {
   -- ╰────────────────────────────────────────────────────────╯
   { import = "astrocommunity.terminal-integration.vim-tmux-yank" },
   { import = "astrocommunity.terminal-integration.flatten-nvim" },
+  { import = "astrocommunity.terminal-integration.vim-tmux-navigator" },
 
   -- ╭──────────────────────────────────────────────────────╮
   -- │                    Split and Window                    │

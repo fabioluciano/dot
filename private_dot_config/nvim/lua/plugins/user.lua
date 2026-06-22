@@ -162,6 +162,54 @@ return {
     },
   },
 
+  {
+    "akinsho/toggleterm.nvim",
+    opts = {
+      size = 15,
+      direction = "horizontal",
+      shell = vim.o.shell,
+      float_opts = { border = "rounded" },
+      persist_size = true,
+    },
+  },
+
+  {
+    "ryanmsnyder/toggleterm-manager.nvim",
+    lazy = true,
+    init = function(plugin) require("astrocore").on_load("telescope.nvim", plugin.name) end,
+    dependencies = {
+      "akinsho/toggleterm.nvim",
+      "nvim-telescope/telescope.nvim",
+      "nvim-lua/plenary.nvim",
+      -- NOTE: upstream's nested { "AstroNvim/astrocore", opts = { mappings = ... } }
+      -- is intentionally OMITTED. It would be the 100th astrocore fragment and trip
+      -- LuaJIT's __index chain limit (lazy meta.lua:267). The <Leader>ts mapping is
+      -- declared in plugins/astrocore.lua instead (folds into the existing fragment).
+    },
+    opts = function(_, opts)
+      local term_icon = require("astroui").get_icon "Terminal"
+      local actions = require("toggleterm-manager").actions
+      return require("astrocore").extend_tbl(opts, {
+        titles = { prompt = term_icon .. " Terminals" },
+        results = { term_icon = term_icon },
+        mappings = {
+          n = {
+            ["<CR>"] = { action = actions.toggle_term, exit_on_action = true },
+            ["r"] = { action = actions.rename_term, exit_on_action = false },
+            ["d"] = { action = actions.delete_term, exit_on_action = false },
+            ["n"] = { action = actions.create_term, exit_on_action = false },
+          },
+          i = {
+            ["<CR>"] = { action = actions.toggle_term, exit_on_action = true },
+            ["<C-r>"] = { action = actions.rename_term, exit_on_action = false },
+            ["<C-d>"] = { action = actions.delete_term, exit_on_action = false },
+            ["<C-n>"] = { action = actions.create_term, exit_on_action = false },
+          },
+        },
+      })
+    end,
+  },
+
   -- Fix nvim-notify E937 on Neovim 0.12+
   {
     "rcarriga/nvim-notify",
