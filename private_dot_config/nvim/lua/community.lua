@@ -66,6 +66,7 @@ return {
   { import = "astrocommunity.editing-support.yanky-nvim" },
   { import = "astrocommunity.editing-support.refactoring-nvim" },
   { import = "astrocommunity.editing-support.zen-mode-nvim" },
+  { import = "astrocommunity.editing-support.nvim-treesitter-context" },
 
   -- ╭────────────────────────────────────────────────────────╮
   -- │                    Fuzzy Finder                        │
