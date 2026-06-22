@@ -30,6 +30,7 @@
     "{{ $agent }}": {
       "model": "{{ $primary }}",
       "fallback_models": [{{ range $j, $m := $fallbacks }}{{ if $j }}, {{ end }}{"model": "{{ $m }}"}{{ end }}]
+      ,"prompt_append": "file://~/.config/opencode/AGENTS.md"
 {{- if or (eq $agent "explore") (eq $agent "librarian") (eq $agent "multimodal-looker") }}
       ,"permission": {
         "edit": "deny"{{ if eq $agent "explore" }},
@@ -40,6 +41,17 @@
 {{- if or (eq $agent "oracle") (eq $agent "momus") (eq $agent "prometheus") (eq $agent "metis") }}
       ,"thinking": {"type": "enabled", "budgetTokens": 16000}
 {{- end }}
+{{- $variantValue := "high" }}
+{{- if or (eq $agent "oracle") (eq $agent "momus") }}{{- $variantValue = "max" }}{{- end }}
+{{- if eq $tier "fast" }}{{- $variantValue = "medium" }}{{- end }}
+{{- if eq $tier "cheap" }}{{- $variantValue = "low" }}{{- end }}
+      ,"variant": "{{ $variantValue }}"
+{{- end }}
+{{- if eq $provider "xiaomi" }}
+{{- $variantValue := "high" }}
+{{- if eq $tier "fast" }}{{- $variantValue = "medium" }}{{- end }}
+{{- if eq $tier "cheap" }}{{- $variantValue = "low" }}{{- end }}
+      ,"variant": "{{ $variantValue }}"
 {{- end }}
     }{{ if lt $i (sub (len $agents) 1) }},{{ end }}
 {{- end }}
