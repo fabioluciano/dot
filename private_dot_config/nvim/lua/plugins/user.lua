@@ -21,6 +21,7 @@ return {
   {
     "nvim-neo-tree/neo-tree.nvim",
     opts = {
+      sources = { "document_symbols" },
       default_component_configs = {
         indent = {
           with_expanders = true,

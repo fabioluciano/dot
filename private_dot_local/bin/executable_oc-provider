@@ -4,7 +4,7 @@ set -euo pipefail
 # Escreve o provider ativo em ~/.config/opencode/.active_provider e re-renderiza
 # oh-my-openagent.json via chezmoi apply.
 
-PROVIDERS=(bedrock anthropic xiaomi)
+PROVIDERS=(bedrock anthropic xiaomi openai)
 STATE_FILE="${HOME}/.config/opencode/.active_provider"
 
 usage() {
@@ -49,9 +49,9 @@ mkdir -p "$(dirname "$STATE_FILE")"
 printf '%s\n' "$provider" > "$STATE_FILE"
 
 # --- Re-renderiza oh-my-openagent.json via chezmoi ---
-chezmoi apply ~/.config/opencode/oh-my-openagent.json
+chezmoi apply ~/.config/opencode/oh-my-openagent.jsonc
 
 echo ""
 echo "✓ Provider ativo: $provider"
 echo "  Arquivo de estado: $STATE_FILE"
-echo "  oh-my-openagent.json atualizado via chezmoi."
+echo "  oh-my-openagent.jsonc atualizado via chezmoi."

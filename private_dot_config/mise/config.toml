@@ -32,6 +32,17 @@ pnpm = "latest"
 pipx = "latest"             # note: `uv tool` / `uvx` already cover this
 "npm:typescript" = "latest"
 
+# Language servers / editor tooling (float at latest)
+"npm:typescript-language-server" = "latest"
+"npm:vscode-langservers-extracted" = "latest"
+"npm:pyright" = "latest"
+"go:golang.org/x/tools/gopls" = "latest"
+rust-analyzer = "latest"
+lua-language-server = "latest"
+"npm:yaml-language-server" = "latest"
+"npm:bash-language-server" = "latest"
+"aqua:artempyanykh/marksman" = "latest"
+
 [settings]
 # Enable version files for better compatibility
 idiomatic_version_file_enable_tools = ["node", "python", "ruby", "java"]

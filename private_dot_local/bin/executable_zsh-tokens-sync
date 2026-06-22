@@ -24,6 +24,7 @@ MAP=(
   "claude_api_key=ANTHROPIC_API_KEY"
   "bedrock_api_key=AWS_BEARER_TOKEN_BEDROCK"
   "mimo_api_key=MIMO_API_KEY"
+  "openai_api_key=OPENAI_API_KEY"
 )
 
 command -v bw >/dev/null 2>&1 || { echo "zsh-tokens-sync: bw nao instalado; pulando." >&2; exit 0; }

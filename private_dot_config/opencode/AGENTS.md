@@ -2,24 +2,61 @@
 
 ## MCP-FIRST (read this before anything else)
 
-Before ANY code investigation, you MUST try the specialized MCP first —
-generic grep/glob/Read are the fallback, never the first move:
+**This rule applies universally — no exceptions for delegated work:**
+Every top-level agent, subagent, category worker, team member, and child spawned
+via `task(...)` or any equivalent delegation mechanism **must** follow this policy.
+Delegation is not an escape hatch: a parent agent assigning a subtask must not do
+so in a way that permits the child to bypass MCP-first. When assigning work that
+touches code intelligence, graph/impact analysis, external docs/APIs, browser/UI,
+GitHub/public code, large output/logs/docs, LSP/symbol operations, media, or
+session recall — the delegated prompt **must** explicitly restate that MCPs are the
+required first action for those domains.
+
+Subagent findings produced from local `Read`/grep/shell without a corresponding
+MCP call are **auxiliary claims only** — they are not authoritative evidence and
+must not be treated as final answers without independent MCP validation or a
+context-mode summarized command.
+
+MCP usage is **mandatory**, not optional. Before ANY code investigation,
+external API assumption, browser interaction, GitHub operation, or broad search,
+you MUST use the specialized MCP that owns that domain. Generic tools
+(`rg`, grep/glob, `Read`, shell scripts, curl/fetch, ad-hoc web searches) are
+fallbacks only when the required MCP is unavailable or explicitly cannot answer
+the task. If the MCP requires an index and the relevant code is not indexed,
+index it first; do not use missing indexes as permission to bypass the MCP.
+
+Mandatory routing rules:
 
 1. **Any code question or pre-edit survey** (how/where/what/flow, "find X",
-   the symbols you are about to change) → call `codegraph_explore` FIRST.
-   If codegraph returns nothing, the repo is not indexed — say so and run/ask
-   for `codegraph index`; do NOT silently fall back to grep.
-2. **Structural / multi-hop / impact / complexity questions** →
-   `codebase-memory` (`search_graph`, `trace_path`, `query_graph`). If the
-   project is missing from `list_projects`, index it with `index_repository`
-   before answering — do NOT fall back to grep.
-3. **External library/framework behavior** → `context7` (`resolve-library-id`
-   then `query-docs`) before guessing any API.
-4. **Browser task** → `playwright`. **Public-repo examples** → `gh_grep`.
-   **GitHub ops** → `github`.
+   impact of changing a symbol, or the symbols you are about to edit) → call
+   `codegraph_explore` FIRST. If source code is not indexed, run or ask for the
+   codegraph indexing step before answering. If codegraph says docs/configs are
+   not indexed because they are not source-code symbols, then read those files
+   directly; otherwise do NOT silently fall back to grep.
+2. **Structural / multi-hop / impact / complexity questions** → use
+   `codebase-memory` (`search_graph`, `trace_path`, `query_graph`,
+   `get_architecture`). If the project is missing from `list_projects`, index it
+   with `index_repository` before answering. If the index exists but is stale,
+   refresh it before relying on graph results.
+3. **External library/framework/API behavior** → use `context7`:
+   `resolve-library-id` first, then `query-docs`, before guessing any API shape,
+   option name, lifecycle, or migration behavior.
+4. **Browser, UI runtime, scraping, screenshots, or E2E interaction** → use
+   `playwright`; do not replace it with curl/fetch for pages that need a browser.
+5. **Public GitHub code examples** → use `gh_grep`. **GitHub repository
+   operations** (PRs, issues, commits, files, releases, reviews) → use `github`.
+6. **Large-output research, logs, generated command output, or reusable docs** →
+   use context-mode MCPs (`ctx_batch_execute`, `ctx_execute`, `ctx_search`,
+   `ctx_fetch_and_index`) so raw bytes stay out of the conversation context.
 
-Falling back to grep/glob when a specialized MCP exists (and is indexed) is a
-defect. The full per-tool guidance is in "MCP Usage (mandatory)" below.
+Treat bypassing an applicable MCP as a workflow defect. If you cannot use the
+required MCP, say why, then use the narrowest fallback.
+
+Indexing rule: when a tool depends on indexed content, missing or stale indexes
+must be fixed at the owning MCP layer first (`codegraph` index for codegraph,
+`codebase-memory index_repository` for codebase-memory, `ctx_index` /
+`ctx_fetch_and_index` for context-mode). Only use direct reads/searches for file
+types the MCP explicitly does not index or after the indexing attempt fails.
 
 ## Language
 - Always respond in Brazilian Portuguese (pt-BR)
@@ -47,27 +84,266 @@ defect. The full per-tool guidance is in "MCP Usage (mandatory)" below.
 
 ## MCP Usage (mandatory)
 
-Use the right specialized tool for each task. NEVER fall back to generic grep/glob when a specialized MCP exists.
+Use the right specialized MCP for each task. MCP calls are part of the required
+workflow and must happen before generic tools when the MCP domain matches.
 
-### Code Intelligence
-- **codegraph**: PRIMARY tool for almost any code question or before an edit — "how does X work", architecture, a bug, "where is X", surveying an area, or the symbols you are about to change. Call `codegraph_explore` FIRST (returns verbatim source grouped by file + the call path among them in one capped call — treat shown source as already Read). Use `codegraph_node` to read a whole file (Read-equivalent, with dependents attached) or one named symbol with its caller/callee trail; `codegraph_callers` for "who calls Y"; `codegraph_search` only for quick name lookups. Prefer these over grep/glob/Read for code discovery.
-- **codebase-memory**: Use for graph-level queries — multi-hop relationships, cross-service flow, complexity/bottleneck hot-paths (`query_graph` Cypher), architecture clusters (`get_architecture`), and impact analysis. Call `search_graph` / `trace_path` / `get_code_snippet` for structural questions BEFORE running broad grep or glob searches.
+### Code Intelligence: `codegraph`
 
-### External Documentation
-- **context7**: ALWAYS use for external library/framework docs. Call `resolve-library-id` then `query-docs` BEFORE guessing any API shape or behavior.
+Use first for almost every codebase question or before editing code/config that
+has symbols or dependencies.
 
-### GitHub & Code Examples
-- **gh_grep**: Use to find real-world code examples across public GitHub repos.
-- **github**: Use for all GitHub operations — PRs, issues, releases, file contents, commits.
+Available functions:
+- `codegraph_explore`: primary entry point; finds relevant files/symbols and
+  returns source plus call paths.
+- `codegraph_node`: reads a whole indexed file or one symbol with callers and
+  callees.
+- `codegraph_callers`: lists functions that call a symbol.
+- `codegraph_search`: quick symbol-name lookup when you only need locations.
 
-### Browser Automation
-- **playwright**: MUST use for ANY browser task — navigate, screenshot, scrape, UI testing. NEVER use curl or fetch for pages that require a real browser.
+Examples:
+- "Where is provider switching implemented?" → `codegraph_explore`.
+- "Before editing `oc-provider`, show callers/dependencies" →
+  `codegraph_explore` or `codegraph_node`.
+- "Who calls `loadConfig`?" → `codegraph_callers`.
+- "Find the `AuthService` symbol" → `codegraph_search`.
 
-### Reasoning
-- **sequential-thinking**: Use for complex multi-step problems that benefit from structured reasoning chains.
+If codegraph reports that source code is not indexed, index it before answering
+or ask the user to approve/run the indexing command if required. If codegraph
+reports that docs/configs are not indexed because they are outside its source
+symbol index, use direct file reads for those files. Do not skip codegraph for
+source-code areas.
 
-### Web Fetch
-- **fetch**: Use for simple one-shot URL fetches. Prefer context-mode fetch+index tools when you need to index or derive answers from large docs.
+### Code Graph Memory: `codebase-memory`
 
-### Memory
-- **codebase-memory is the single canonical memory system.** The generic `memory` MCP has been removed. Do NOT reference it.
+Use for graph-level questions that need relationships, architecture seams,
+multi-hop flows, impact analysis, or complexity signals.
+
+Available functions:
+- `list_projects`, `index_repository`, `index_status`: discover/index projects.
+- `search_graph`: find functions/classes/routes/variables in the graph.
+- `trace_path`: trace callers/callees, data flow, or cross-service flow.
+- `query_graph`: run Cypher for complex graph and complexity queries.
+- `get_code_snippet`: read a symbol after finding its qualified name.
+- `get_architecture`: summarize packages, services, dependencies, clusters.
+- `detect_changes`: detect code changes and impact since a ref/date.
+- `get_graph_schema`: inspect graph labels and relationships.
+- `manage_adr`: create or update Architecture Decision Records.
+- `ingest_traces`: ingest runtime traces into the graph.
+
+Examples:
+- "What breaks if we change this parser?" → `trace_path` inbound/outbound.
+- "Show cross-service flow from this route" → `trace_path` in cross-service
+  mode.
+- "Find hot paths with nested loops" → `query_graph` on complexity fields.
+- "Give me the architecture seams" → `get_architecture`.
+
+If the project is absent from `list_projects` or the index is stale, run
+`index_repository` before answering graph-level questions.
+
+`codebase-memory` is the canonical memory system. Do not reference or use a
+generic `memory` MCP.
+
+### External Documentation: `context7`
+
+Use before making claims about external libraries, frameworks, SDKs, CLIs, or
+APIs.
+
+Available functions:
+- `resolve-library-id`: map a library name to the exact Context7 library ID.
+- `query-docs`: query current docs/examples for that library ID.
+
+Examples:
+- "How does Zod v4 define transforms?" → resolve `Zod`, then `query-docs`.
+- "What is the current Next.js metadata API?" → resolve `Next.js`, then
+  `query-docs`.
+- "Which option does Playwright use for traces?" → resolve `Playwright`, then
+  `query-docs`.
+
+### GitHub And Public Code: `github` and `gh_grep`
+
+Use `github` for repository operations and `gh_grep` for real-world public code
+examples.
+
+`github` available function groups:
+- Repository/file operations: `get_file_contents`, `create_or_update_file`,
+  `push_files`, `delete_file`, `create_branch`, `fork_repository`.
+- Issues: `list_issues`, `issue_read`, `issue_write`, `add_issue_comment`,
+  `sub_issue_write`.
+- Pull requests/reviews: `list_pull_requests`, `pull_request_read`,
+  `create_pull_request`, `update_pull_request`, `merge_pull_request`,
+  `pull_request_review_write`, `add_comment_to_pending_review`,
+  `add_reply_to_pull_request_comment`, `request_copilot_review`.
+- Commits/releases/tags: `list_commits`, `get_commit`, `search_commits`,
+  `list_releases`, `get_latest_release`, `get_release_by_tag`, `list_tags`,
+  `get_tag`.
+- Search/discovery: `search_code`, `search_issues`, `search_pull_requests`,
+  `search_repositories`, `search_users`.
+- Metadata/security/Copilot: `get_me`, `list_branches`, `get_label`,
+  `list_repository_collaborators`, `get_teams`, `get_team_members`,
+  `list_issue_fields`, `list_issue_types`, `run_secret_scanning`,
+  `assign_copilot_to_issue`, `create_pull_request_with_copilot`,
+  `get_copilot_job_status`.
+
+`gh_grep` available function:
+- `searchGitHub`: grep-like search for literal code patterns across public
+  GitHub repositories.
+
+Examples:
+- "Open a PR" → `github_create_pull_request` after inspecting state.
+- "Comment on issue #12" → `github_add_issue_comment`.
+- "Find public examples of `getServerSession(`" → `gh_grep.searchGitHub`.
+- "What changed in this PR?" → `github_pull_request_read` with files/diff.
+
+### Browser Automation: `playwright`
+
+Use for any browser task: navigation, UI verification, screenshots, scraping,
+console/network inspection, and browser-based tests.
+
+Available functions:
+- Page/session: `browser_navigate`, `browser_tabs`, `browser_close`,
+  `browser_resize`, `browser_wait_for`.
+- Inspection: `browser_snapshot`, `browser_take_screenshot`,
+  `browser_console_messages`, `browser_network_requests`,
+  `browser_network_request`.
+- Interaction: `browser_click`, `browser_type`, `browser_fill_form`,
+  `browser_select_option`, `browser_press_key`, `browser_hover`,
+  `browser_drag`, `browser_drop`, `browser_file_upload`,
+  `browser_handle_dialog`.
+- Advanced: `browser_evaluate`, `browser_run_code_unsafe`,
+  `browser_navigate_back`.
+
+Examples:
+- "Verify the page visually" → `browser_navigate`, `browser_snapshot`,
+  `browser_take_screenshot`.
+- "Why does login fail?" → inspect form with `browser_snapshot`, interact, then
+  check `browser_console_messages` and `browser_network_requests`.
+- "Scrape this interactive page" → use Playwright, not curl.
+
+### Context Management And Large Output: `context-mode`
+
+Use when command output, logs, generated files, docs, or web pages are large
+enough that raw bytes should not enter the conversation.
+
+Available functions:
+- `ctx_batch_execute`: run multiple commands, index outputs, and query relevant
+  sections in one call.
+- `ctx_execute`: run code/commands in a sandbox and print only derived answers.
+- `ctx_execute_file`: analyze one file through code without reading all bytes
+  into context.
+- `ctx_fetch_and_index`: fetch and index web pages for later search.
+- `ctx_index`: persist provided content/path into the searchable store.
+- `ctx_search`: search indexed docs, command outputs, and session memory.
+- `ctx_stats`, `ctx_doctor`, `ctx_upgrade`, `ctx_purge`, `ctx_insight`: manage
+  and inspect context-mode.
+
+Examples:
+- "Summarize failures in a 10k-line test log" → `ctx_execute_file`.
+- "Run git log, diff, and blame then extract root cause" →
+  `ctx_batch_execute` with queries.
+- "Fetch these docs and reuse them later" → `ctx_fetch_and_index`, then
+  `ctx_search`.
+
+If you need to search reusable local docs or generated artifacts that are not
+already in context-mode, index them with `ctx_index` first instead of reading the
+entire raw content into the conversation.
+
+### Reasoning: `sequential-thinking`
+
+Use for complex multi-step analysis where explicit decomposition reduces risk.
+
+Available function:
+- `sequentialthinking`: iterative structured reasoning with revision/branching
+  support.
+
+Examples:
+- "Choose between three migration strategies" → `sequentialthinking`.
+- "Analyze a subtle distributed-systems failure" → `sequentialthinking`.
+
+### Language Server: `lsp`
+
+Use for symbol-aware editor operations and post-edit validation when a language
+server exists for the file type.
+
+Available functions:
+- `lsp_diagnostics`: get errors, warnings, hints for a file or directory.
+- `lsp_symbols`: list document symbols or search workspace symbols.
+- `lsp_goto_definition`: jump from a symbol use to its definition.
+- `lsp_find_references`: find references across the workspace.
+- `lsp_prepare_rename`: check whether a symbol can be renamed.
+- `lsp_rename`: rename a symbol across the workspace.
+- `lsp_status`: list configured and active LSP servers.
+- `lsp_install_decision`: record whether installing a missing server is allowed
+  or declined.
+
+Examples:
+- "After editing TypeScript" → run `lsp_diagnostics` on changed files.
+- "Rename this function safely" → `lsp_prepare_rename`, then `lsp_rename`.
+- "Find every reference to this method" → `lsp_find_references`.
+
+### Media And Documents: `look_at`
+
+Use for quick extraction from images, PDFs, screenshots, and diagrams when a
+high-level interpretation is enough.
+
+Available function:
+- `look_at`: extract basic information from one or more media files or image
+  payloads.
+
+Examples:
+- "Summarize this PDF invoice" → `look_at`.
+- "What does this architecture diagram show?" → `look_at`.
+
+Do not use `look_at` for pixel-perfect visual QA, exact text fidelity, or UI
+interaction; use Playwright or direct file reads where appropriate.
+
+### Session Recall: `session`
+
+Use to inspect previous OpenCode sessions when the user asks to continue,
+recover prior context, or search past work.
+
+Available functions:
+- `session_list`: list sessions with filters.
+- `session_info`: inspect metadata for one session.
+- `session_read`: read messages, todos, or transcripts from a session.
+- `session_search`: search messages across sessions.
+
+Examples:
+- "Continue the work from yesterday" → `session_list`, then `session_read`.
+- "Find where we discussed the MCP policy" → `session_search`.
+
+### Agent Orchestration: `skill`, `task`, `question`, `team`
+
+Use for specialized workflows, delegation, and user decisions. These are not a
+substitute for code intelligence MCPs; use them to route and supervise work.
+
+Available functions:
+- `skill`: load a skill or slash-command instruction pack.
+- `task`: delegate to a specialist sub-agent or category worker.
+- `question`: ask the user for a constrained decision.
+- `task_create`, `task_get`, `task_list`, `task_update`: track local work items.
+- `team_create`, `team_status`, `team_send_message`, `team_task_create`,
+  `team_task_list`, `team_task_update`, `team_shutdown_request`,
+  `team_approve_shutdown`, `team_reject_shutdown`, `team_delete`: coordinate
+  multi-agent team runs when team mode is enabled.
+
+Examples:
+- "Review this Kubernetes manifest" → load the Kubernetes review skill, then
+  delegate or answer with that guidance.
+- "Implement this multi-file feature" → create tracked tasks, consult plan if
+  needed, then delegate implementation.
+- "Pick one of these irreversible options" → use `question` before acting.
+
+### Web Fetch: `fetch` / `webfetch` / `websearch`
+
+Use only when a more specialized MCP does not apply.
+
+Available functions:
+- `fetch`: simple one-shot URL fetch with optional raw HTML.
+- `webfetch`: fetch URL content as markdown/text/html.
+- `websearch`: search the web for current public information.
+
+Examples:
+- "Fetch this plain text changelog URL" → `fetch` or `webfetch`.
+- "Find current public pages about a topic" → `websearch`.
+- For library docs, prefer `context7`; for large reusable pages, prefer
+  `ctx_fetch_and_index`.

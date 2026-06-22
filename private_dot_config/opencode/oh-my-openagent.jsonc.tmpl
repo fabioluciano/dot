@@ -1,5 +1,5 @@
 {{- $provider := output "sh" "-c" "cat \"$HOME/.config/opencode/.active_provider\" 2>/dev/null || echo bedrock" | trim -}}
-{{- $validProviders := list "bedrock" "xiaomi" -}}
+{{- $validProviders := list "bedrock" "xiaomi" "openai" "anthropic" -}}
 {{- if not (has $provider $validProviders) -}}{{- $provider = "bedrock" -}}{{- end -}}
 {{- $tierOrder := list "pro" "fast" "cheap" -}}
 {
@@ -47,6 +47,16 @@
 {{- if eq $tier "cheap" }}{{- $variantValue = "low" }}{{- end }}
       ,"variant": "{{ $variantValue }}"
 {{- end }}
+{{- if eq $provider "anthropic" }}
+{{- if or (eq $agent "oracle") (eq $agent "momus") (eq $agent "prometheus") (eq $agent "metis") }}
+      ,"thinking": {"type": "enabled", "budgetTokens": 16000}
+{{- end }}
+{{- $variantValue := "high" }}
+{{- if or (eq $agent "oracle") (eq $agent "momus") }}{{- $variantValue = "max" }}{{- end }}
+{{- if eq $tier "fast" }}{{- $variantValue = "medium" }}{{- end }}
+{{- if eq $tier "cheap" }}{{- $variantValue = "low" }}{{- end }}
+      ,"variant": "{{ $variantValue }}"
+{{- end }}
 {{- if eq $provider "xiaomi" }}
 {{- $variantValue := "high" }}
 {{- if eq $tier "fast" }}{{- $variantValue = "medium" }}{{- end }}
@@ -75,6 +85,7 @@
     "{{ $cat }}": {
       "model": "{{ $primary }}",
       "fallback_models": [{{ range $j, $m := $fallbacks }}{{ if $j }}, {{ end }}{"model": "{{ $m }}"}{{ end }}]
+      ,"prompt_append": "file://~/.config/opencode/AGENTS.md"
     }{{ if lt $i (sub (len $categories) 1) }},{{ end }}
 {{- end }}
   },
