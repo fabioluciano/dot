@@ -24,14 +24,14 @@ cheap = "anthropic/claude-haiku-4-5"
 
 # Map each agent to a tier ("pro", "fast", or "cheap")
 [opencode.agent_tiers]
-# Pro tier agents (complex reasoning, planning, architecture)
-sisyphus          = "pro"
-hephaestus        = "pro"
+# Pro tier agents (ONLY critical reasoning - oracle for deep analysis)
 oracle            = "pro"
-prometheus        = "pro"
-metis             = "pro"
-momus             = "pro"
-# Fast tier agents (exploration, orchestration)
+# Fast tier agents (Sonnet - orchestration, planning, exploration)
+sisyphus          = "fast"
+hephaestus        = "fast"
+prometheus        = "fast"
+metis             = "fast"
+momus             = "fast"
 librarian         = "fast"
 explore           = "fast"
 multimodal-looker = "fast"
@@ -39,16 +39,12 @@ atlas             = "fast"
 # Cheap tier agents (simple tasks)
 sisyphus-junior   = "cheap"
 
-# Map each category to a tier ("pro", "fast", or "cheap")
 [opencode.category_tiers]
-# Pro tier categories
-ultrabrain         = "pro"
-deep               = "pro"
-unspecified-high   = "pro"
-# Fast tier categories
+ultrabrain         = "fast"
+deep               = "fast"
+unspecified-high   = "fast"
 visual-engineering = "fast"
 artistry           = "fast"
 unspecified-low    = "fast"
-# Cheap tier categories
 quick              = "cheap"
 writing            = "cheap"

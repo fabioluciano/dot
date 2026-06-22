@@ -9,7 +9,7 @@
     "max_parallel_members": 3,
     "max_members": 6,
     "tmux_visualization": true,
-    "max_wall_clock_minutes": 90
+    "max_wall_clock_minutes": 45
   },
   "agents": {
 {{- $agents := keys $.opencode.agent_tiers | sortAlpha }}
@@ -20,10 +20,12 @@
 {{- $fallbacks := list }}
 {{- range $t := $tierOrder }}
 {{- if ne $t $tier }}
+{{- if not (and (eq $tier "cheap") (eq $t "pro")) }}
 {{- $m := index (index $.opencode.tiers $provider) $t }}
 {{- if not (has $m $seen) }}
 {{- $seen = append $seen $m }}
 {{- $fallbacks = append $fallbacks $m }}
+{{- end }}
 {{- end }}
 {{- end }}
 {{- end }}
@@ -38,9 +40,6 @@
       }
 {{- end }}
 {{- if eq $provider "bedrock" }}
-{{- if or (eq $agent "oracle") (eq $agent "momus") (eq $agent "prometheus") (eq $agent "metis") }}
-      ,"thinking": {"type": "enabled", "budgetTokens": 16000}
-{{- end }}
 {{- $variantValue := "high" }}
 {{- if or (eq $agent "oracle") (eq $agent "momus") }}{{- $variantValue = "max" }}{{- end }}
 {{- if eq $tier "fast" }}{{- $variantValue = "medium" }}{{- end }}
@@ -48,9 +47,6 @@
       ,"variant": "{{ $variantValue }}"
 {{- end }}
 {{- if eq $provider "anthropic" }}
-{{- if or (eq $agent "oracle") (eq $agent "momus") (eq $agent "prometheus") (eq $agent "metis") }}
-      ,"thinking": {"type": "enabled", "budgetTokens": 16000}
-{{- end }}
 {{- $variantValue := "high" }}
 {{- if or (eq $agent "oracle") (eq $agent "momus") }}{{- $variantValue = "max" }}{{- end }}
 {{- if eq $tier "fast" }}{{- $variantValue = "medium" }}{{- end }}
@@ -75,10 +71,12 @@
 {{- $fallbacks := list }}
 {{- range $t := $tierOrder }}
 {{- if ne $t $tier }}
+{{- if not (and (eq $tier "cheap") (eq $t "pro")) }}
 {{- $m := index (index $.opencode.tiers $provider) $t }}
 {{- if not (has $m $seen) }}
 {{- $seen = append $seen $m }}
 {{- $fallbacks = append $fallbacks $m }}
+{{- end }}
 {{- end }}
 {{- end }}
 {{- end }}
@@ -96,7 +94,7 @@
       "enabled": true,
       "notification": "minimal",
       "protected_tools": ["task", "todowrite", "todoread", "lsp_rename", "session_read", "session_write", "session_search"],
-      "turn_protection": {"enabled": true, "turns": 3}
+      "turn_protection": {"enabled": true, "turns": 2}
     }
   },
   "runtime_fallback": {

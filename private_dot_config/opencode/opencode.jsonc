@@ -1,13 +1,19 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "xiaomi/mimo-v2.5-pro",
+  "model": "xiaomi/mimo-v2.5",
   "small_model": "xiaomi/mimo-v2.5",
   "default_agent": "atlas",
   "formatter": true,
   "lsp": {
     "marksman": {
-      "command": ["marksman", "server"],
-      "extensions": [".md", ".markdown"]
+      "command": [
+        "marksman",
+        "server"
+      ],
+      "extensions": [
+        ".md",
+        ".markdown"
+      ]
     }
   },
   "enabled_providers": [
@@ -19,7 +25,7 @@
   "compaction": {
     "auto": true,
     "prune": false,
-    "reserved": 10000
+    "reserved": 6000
   },
   "watcher": {
     "ignore": [
@@ -48,15 +54,9 @@
         "apiKey": "{env:OPENAI_API_KEY}"
       },
       "models": {
-        "gpt-5.5": {
-          "options": { "reasoningEffort": "high" }
-        },
-        "gpt-5.4-mini": {
-          "options": { "reasoningEffort": "medium" }
-        },
-        "gpt-5.4-nano": {
-          "options": { "reasoningEffort": "low" }
-        }
+        "gpt-5.5": {},
+        "gpt-5.4-mini": {},
+        "gpt-5.4-nano": {}
       }
     },
     "anthropic": {
@@ -64,33 +64,9 @@
         "apiKey": "{env:ANTHROPIC_API_KEY}"
       },
       "models": {
-        "claude-opus-4-8": {
-          "options": { "thinking": { "type": "enabled", "budgetTokens": 16000 } },
-          "variants": {
-            "low": { "thinking": { "type": "enabled", "budgetTokens": 16000 } },
-            "medium": { "thinking": { "type": "enabled", "budgetTokens": 16000 } },
-            "high": { "thinking": { "type": "enabled", "budgetTokens": 16000 } },
-            "max": { "thinking": { "type": "enabled", "budgetTokens": 31999 } }
-          }
-        },
-        "claude-sonnet-4-6": {
-          "options": { "thinking": { "type": "enabled", "budgetTokens": 8000 } },
-          "variants": {
-            "low": { "thinking": { "type": "enabled", "budgetTokens": 6000 } },
-            "medium": { "thinking": { "type": "enabled", "budgetTokens": 8000 } },
-            "high": { "thinking": { "type": "enabled", "budgetTokens": 16000 } },
-            "max": { "thinking": { "type": "enabled", "budgetTokens": 24000 } }
-          }
-        },
-        "claude-haiku-4-5": {
-          "options": { "thinking": { "type": "enabled", "budgetTokens": 2048 } },
-          "variants": {
-            "low": { "thinking": { "type": "enabled", "budgetTokens": 1024 } },
-            "medium": { "thinking": { "type": "enabled", "budgetTokens": 2048 } },
-            "high": { "thinking": { "type": "enabled", "budgetTokens": 4000 } },
-            "max": { "thinking": { "type": "enabled", "budgetTokens": 4000 } }
-          }
-        }
+        "claude-opus-4-8": {},
+        "claude-sonnet-4-6": {},
+        "claude-haiku-4-5": {}
       }
     },
     "amazon-bedrock": {
@@ -99,115 +75,17 @@
         "region": "us-east-1"
       },
       "models": {
-        "us.anthropic.claude-opus-4-8": {
-          "options": {
-            "thinking": {
-              "type": "enabled",
-              "budgetTokens": 16000
-            }
-          },
-          "variants": {
-            "low": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 16000
-              }
-            },
-            "medium": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 16000
-              }
-            },
-            "high": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 16000
-              }
-            },
-            "max": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 31999
-              }
-            }
-          }
-        },
-        "us.anthropic.claude-sonnet-4-6": {
-          "options": {
-            "thinking": {
-              "type": "enabled",
-              "budgetTokens": 8000
-            }
-          },
-          "variants": {
-            "low": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 6000
-              }
-            },
-            "medium": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 8000
-              }
-            },
-            "high": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 16000
-              }
-            },
-            "max": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 24000
-              }
-            }
-          }
-        },
-        "us.anthropic.claude-haiku-4-5-20251001-v1:0": {
-          "options": {
-            "thinking": {
-              "type": "enabled",
-              "budgetTokens": 2048
-            }
-          },
-          "variants": {
-            "low": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 1024
-              }
-            },
-            "medium": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 2048
-              }
-            },
-            "high": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 4000
-              }
-            },
-            "max": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 4000
-              }
-            }
-          }
-        }
+        "us.anthropic.claude-opus-4-8": {},
+        "us.anthropic.claude-sonnet-4-6": {},
+        "us.anthropic.claude-haiku-4-5-20251001-v1:0": {}
       }
     }
   },
   "plugin": [
     "context-mode",
+    "openrtk",
     "oh-my-openagent",
-    "@tarquinen/opencode-dcp@latest",
+    "@tarquinen/opencode-dcp@3.1.13",
     "opencode-notify"
   ],
   "permission": {
@@ -244,7 +122,7 @@
         "@upstash/context7-mcp"
       ],
       "enabled": true,
-      "timeout": 10000
+      "timeout": 8000
     },
     "playwright": {
       "type": "local",
@@ -254,7 +132,7 @@
         "@playwright/mcp"
       ],
       "enabled": true,
-      "timeout": 15000
+      "timeout": 10000
     },
     "sequential-thinking": {
       "type": "local",
@@ -264,7 +142,7 @@
         "@modelcontextprotocol/server-sequential-thinking"
       ],
       "enabled": true,
-      "timeout": 10000
+      "timeout": 8000
     },
     "fetch": {
       "type": "local",
@@ -273,13 +151,13 @@
         "mcp-server-fetch"
       ],
       "enabled": true,
-      "timeout": 15000
+      "timeout": 10000
     },
     "gh_grep": {
       "type": "remote",
       "url": "https://mcp.grep.app",
       "enabled": true,
-      "timeout": 10000
+      "timeout": 8000
     },
     "github": {
       "type": "remote",
@@ -289,7 +167,7 @@
       "headers": {
         "Authorization": "Bearer {env:GITHUB_TOKEN}"
       },
-      "timeout": 15000
+      "timeout": 10000
     },
     "codegraph": {
       "type": "local",
@@ -298,7 +176,8 @@
         "serve",
         "--mcp"
       ],
-      "enabled": true
+      "enabled": true,
+      "timeout": 10000
     },
     "codebase-memory": {
       "type": "local",
@@ -306,7 +185,7 @@
         "codebase-memory-mcp"
       ],
       "enabled": true,
-      "timeout": 30000
+      "timeout": 15000
     }
   }
 }
