@@ -77,5 +77,25 @@
       "fallback_models": [{{ range $j, $m := $fallbacks }}{{ if $j }}, {{ end }}{"model": "{{ $m }}"}{{ end }}]
     }{{ if lt $i (sub (len $categories) 1) }},{{ end }}
 {{- end }}
+  },
+  "experimental": {
+    "disable_omo_env": true,
+    "task_system": true,
+    "dynamic_context_pruning": {
+      "enabled": true,
+      "notification": "minimal",
+      "protected_tools": ["task", "todowrite", "todoread", "lsp_rename", "session_read", "session_write", "session_search"],
+      "turn_protection": {"enabled": true, "turns": 3}
+    }
+  },
+  "runtime_fallback": {
+    "enabled": true,
+    "retry_on_errors": [429, 500, 502, 503, 504],
+    "max_fallback_attempts": 3,
+    "cooldown_seconds": 60,
+    "notify_on_fallback": true
+  },
+  "notification": {
+    "force_enable": true
   }
 }

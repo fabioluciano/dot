@@ -146,6 +146,7 @@
   "plugin": [
     "context-mode",
     "oh-my-openagent",
+    "@tarquinen/opencode-dcp@latest",
     "opencode-notify"
   ],
   "permission": {
@@ -246,27 +247,5 @@
       "enabled": true,
       "timeout": 30000
     }
-  },
-  "experimental": {
-    "disable_omo_env": true,
-    "task_system": true,
-    "dynamic_context_pruning": {
-      "enabled": true,
-      "notification": "minimal"
-    },
-    "turn_protection": {
-      "enabled": true,
-      "turns": 3
-    }
-  },
-  "runtime_fallback": {
-    "enabled": true,
-    "retry_on_errors": [429, 500, 502, 503, 504],
-    "max_fallback_attempts": 3,
-    "cooldown_seconds": 60,
-    "notify_on_fallback": true
-  },
-  "notification": {
-    "force_enable": true
   }
 }
