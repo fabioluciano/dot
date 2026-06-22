@@ -221,6 +221,12 @@ return {
   { import = "astrocommunity.terminal-integration.vim-tmux-yank" },
   { import = "astrocommunity.terminal-integration.flatten-nvim" },
 
+  -- ╭──────────────────────────────────────────────────────╮
+  -- │                    Split and Window                    │
+  -- ╰──────────────────────────────────────────────────────╯
+  { import = "astrocommunity.split-and-window.neominimap-nvim" },
+  { "Isrothy/neominimap.nvim", opts = { auto_enable = false } },
+
   -- ╭────────────────────────────────────────────────────────╮
   -- │                    Utility                             │
   -- ╰────────────────────────────────────────────────────────╯
