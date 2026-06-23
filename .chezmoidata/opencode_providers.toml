@@ -3,48 +3,52 @@
 default_provider = "bedrock"
 
 [opencode.tiers.bedrock]
-pro   = "amazon-bedrock/us.anthropic.claude-opus-4-8"
-fast  = "amazon-bedrock/us.anthropic.claude-sonnet-4-6"
+pro = "amazon-bedrock/us.anthropic.claude-opus-4-8"
+fast = "amazon-bedrock/us.anthropic.claude-sonnet-4-6"
 cheap = "amazon-bedrock/us.anthropic.claude-haiku-4-5-20251001-v1:0"
 
 [opencode.tiers.xiaomi]
-pro   = "xiaomi/mimo-v2.5-pro"
-fast  = "xiaomi/mimo-v2.5"
+pro = "xiaomi/mimo-v2.5-pro"
+fast = "xiaomi/mimo-v2.5"
 cheap = "xiaomi/mimo-v2.5"
 
 [opencode.tiers.openai]
-pro   = "openai/gpt-5.5"
-fast  = "openai/gpt-5.4-mini"
+pro = "openai/gpt-5.5"
+fast = "openai/gpt-5.4-mini"
 cheap = "openai/gpt-5.4-nano"
 
 [opencode.tiers.anthropic]
-pro   = "anthropic/claude-opus-4-8"
-fast  = "anthropic/claude-sonnet-4-6"
+pro = "anthropic/claude-opus-4-8"
+fast = "anthropic/claude-sonnet-4-6"
 cheap = "anthropic/claude-haiku-4-5"
 
 # Map each agent to a tier ("pro", "fast", or "cheap")
 [opencode.agent_tiers]
-# Pro tier agents (ONLY critical reasoning - oracle for deep analysis)
-oracle            = "pro"
-# Fast tier agents (Sonnet - orchestration, planning, exploration)
-sisyphus          = "fast"
-hephaestus        = "fast"
-prometheus        = "fast"
-metis             = "fast"
-momus             = "fast"
-librarian         = "fast"
-explore           = "fast"
+# Pro tier agents (complex reasoning, planning, architecture)
+sisyphus = "pro"
+hephaestus = "pro"
+oracle = "pro"
+prometheus = "pro"
+metis = "pro"
+momus = "pro"
+# Fast tier agents (exploration, orchestration)
+librarian = "fast"
+explore = "fast"
 multimodal-looker = "fast"
-atlas             = "fast"
+atlas = "fast"
 # Cheap tier agents (simple tasks)
-sisyphus-junior   = "cheap"
+sisyphus-junior = "cheap"
 
+# Map each category to a tier ("pro", "fast", or "cheap")
 [opencode.category_tiers]
-ultrabrain         = "fast"
-deep               = "fast"
-unspecified-high   = "fast"
+# Pro tier categories
+ultrabrain = "pro"
+deep = "pro"
+unspecified-high = "pro"
+# Fast tier categories
 visual-engineering = "fast"
-artistry           = "fast"
-unspecified-low    = "fast"
-quick              = "cheap"
-writing            = "cheap"
+artistry = "fast"
+unspecified-low = "fast"
+# Cheap tier categories
+quick = "cheap"
+writing = "cheap"
