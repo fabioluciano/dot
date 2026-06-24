@@ -1,0 +1,17 @@
+#compdef oc-provider
+
+local -a providers profiles
+providers=(bedrock anthropic xiaomi openai opencode opencode-free)
+profiles=(optimized moderate super)
+
+case "$CURRENT" in
+  2)
+    _describe 'provider' providers
+    ;;
+  3)
+    _describe 'profile' profiles
+    ;;
+  *)
+    _files
+    ;;
+esac

@@ -160,6 +160,8 @@ provider in one shot:
 
 ```sh
 oc-provider bedrock     # switch to AWS Bedrock
+oc-provider opencode    # switch to OpenCode Zen (opencode/ models)
+oc-provider opencode-free # switch to free OpenCode Zen models
 oc-provider xiaomi      # switch to Xiaomi (mimo)
 ```
 
@@ -167,7 +169,7 @@ oc-provider xiaomi      # switch to Xiaomi (mimo)
 
 1. Writes the chosen provider name to `~/.config/opencode/.active_provider`.
 2. Runs `chezmoi apply` to re-render `oh-my-openagent.json` from its template,
-   which reads `.active_provider` as the single source of truth (default: `bedrock`
+   which reads `.active_provider` as the single source of truth (default: `xiaomi`)
    when the file is absent).
 3. Each provider entry in the matrix specifies which model, API endpoint, and
    auth mechanism opencode uses for that provider.

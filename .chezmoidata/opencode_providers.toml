@@ -1,54 +1,330 @@
 [opencode]
-# Default provider (overridden by OPENCODE_PROVIDER env var at template time)
-default_provider = "bedrock"
+default_provider = "xiaomi"
 
-[opencode.tiers.bedrock]
-pro = "amazon-bedrock/us.anthropic.claude-opus-4-8"
-fast = "amazon-bedrock/us.anthropic.claude-sonnet-4-6"
-cheap = "amazon-bedrock/us.anthropic.claude-haiku-4-5-20251001-v1:0"
+[opencode.models.bedrock]
+orchestrator = ["amazon-bedrock/us.anthropic.claude-opus-4-8", "amazon-bedrock/us.anthropic.claude-sonnet-4-6", "amazon-bedrock/us.anthropic.claude-haiku-4-5-20251001-v1:0"]
+implementation = ["amazon-bedrock/us.anthropic.claude-opus-4-8", "amazon-bedrock/us.anthropic.claude-sonnet-4-6", "amazon-bedrock/us.anthropic.claude-haiku-4-5-20251001-v1:0"]
+planner = ["amazon-bedrock/us.anthropic.claude-haiku-4-5-20251001-v1:0", "amazon-bedrock/us.anthropic.claude-sonnet-4-6"]
+architecture = ["amazon-bedrock/us.anthropic.claude-opus-4-8", "amazon-bedrock/us.anthropic.claude-sonnet-4-6"]
+search = ["amazon-bedrock/us.anthropic.claude-haiku-4-5-20251001-v1:0", "amazon-bedrock/us.anthropic.claude-sonnet-4-6"]
+vision = ["amazon-bedrock/us.anthropic.claude-sonnet-4-6", "amazon-bedrock/us.anthropic.claude-opus-4-8"]
+review = ["amazon-bedrock/us.anthropic.claude-opus-4-8", "amazon-bedrock/us.anthropic.claude-sonnet-4-6"]
+long_running = ["amazon-bedrock/us.anthropic.claude-sonnet-4-6", "amazon-bedrock/us.anthropic.claude-opus-4-8"]
+quick = ["amazon-bedrock/us.anthropic.claude-haiku-4-5-20251001-v1:0", "amazon-bedrock/us.anthropic.claude-sonnet-4-6"]
+standard = ["amazon-bedrock/us.anthropic.claude-sonnet-4-6", "amazon-bedrock/us.anthropic.claude-haiku-4-5-20251001-v1:0"]
+complex = ["amazon-bedrock/us.anthropic.claude-opus-4-8", "amazon-bedrock/us.anthropic.claude-sonnet-4-6"]
+visual = ["amazon-bedrock/us.anthropic.claude-sonnet-4-6", "amazon-bedrock/us.anthropic.claude-opus-4-8"]
+deep = ["amazon-bedrock/us.anthropic.claude-opus-4-8", "amazon-bedrock/us.anthropic.claude-sonnet-4-6"]
+ultrabrain = ["amazon-bedrock/us.anthropic.claude-opus-4-8", "amazon-bedrock/us.anthropic.claude-sonnet-4-6"]
+ultrawork = ["amazon-bedrock/us.anthropic.claude-opus-4-8", "amazon-bedrock/us.anthropic.claude-sonnet-4-6"]
 
-[opencode.tiers.xiaomi]
-pro = "xiaomi/mimo-v2.5-pro"
-fast = "xiaomi/mimo-v2.5"
-cheap = "xiaomi/mimo-v2.5"
+[opencode.models.anthropic]
+orchestrator = ["anthropic/claude-opus-4-8", "anthropic/claude-sonnet-4-6", "anthropic/claude-haiku-4-5"]
+implementation = ["anthropic/claude-opus-4-8", "anthropic/claude-sonnet-4-6", "anthropic/claude-haiku-4-5"]
+planner = ["anthropic/claude-haiku-4-5", "anthropic/claude-sonnet-4-6"]
+architecture = ["anthropic/claude-opus-4-8", "anthropic/claude-sonnet-4-6"]
+search = ["anthropic/claude-haiku-4-5", "anthropic/claude-sonnet-4-6"]
+vision = ["anthropic/claude-sonnet-4-6", "anthropic/claude-opus-4-8"]
+review = ["anthropic/claude-opus-4-8", "anthropic/claude-sonnet-4-6"]
+long_running = ["anthropic/claude-sonnet-4-6", "anthropic/claude-opus-4-8"]
+quick = ["anthropic/claude-haiku-4-5", "anthropic/claude-sonnet-4-6"]
+standard = ["anthropic/claude-sonnet-4-6", "anthropic/claude-haiku-4-5"]
+complex = ["anthropic/claude-opus-4-8", "anthropic/claude-sonnet-4-6"]
+visual = ["anthropic/claude-sonnet-4-6", "anthropic/claude-opus-4-8"]
+deep = ["anthropic/claude-opus-4-8", "anthropic/claude-sonnet-4-6"]
+ultrabrain = ["anthropic/claude-opus-4-8", "anthropic/claude-sonnet-4-6"]
+ultrawork = ["anthropic/claude-opus-4-8", "anthropic/claude-sonnet-4-6"]
 
-[opencode.tiers.openai]
-pro = "openai/gpt-5.5"
-fast = "openai/gpt-5.4-mini"
-cheap = "openai/gpt-5.4-nano"
+[opencode.models.openai]
+orchestrator = ["openai/gpt-5.5", "openai/gpt-5.4-mini", "openai/gpt-5.4-nano"]
+implementation = ["openai/gpt-5.5", "openai/gpt-5.4-mini", "openai/gpt-5.4-nano"]
+planner = ["openai/gpt-5.4-nano", "openai/gpt-5.4-mini"]
+architecture = ["openai/gpt-5.5", "openai/gpt-5.4-mini"]
+search = ["openai/gpt-5.4-mini", "openai/gpt-5.4-nano"]
+vision = ["openai/gpt-5.5", "openai/gpt-5.4-mini"]
+review = ["openai/gpt-5.5", "openai/gpt-5.4-mini"]
+long_running = ["openai/gpt-5.4-mini", "openai/gpt-5.5"]
+quick = ["openai/gpt-5.4-nano", "openai/gpt-5.4-mini"]
+standard = ["openai/gpt-5.4-mini", "openai/gpt-5.4-nano"]
+complex = ["openai/gpt-5.5", "openai/gpt-5.4-mini"]
+visual = ["openai/gpt-5.5", "openai/gpt-5.4-mini"]
+deep = ["openai/gpt-5.5", "openai/gpt-5.4-mini"]
+ultrabrain = ["openai/gpt-5.5", "openai/gpt-5.4-mini"]
+ultrawork = ["openai/gpt-5.5", "openai/gpt-5.4-mini"]
 
-[opencode.tiers.anthropic]
-pro = "anthropic/claude-opus-4-8"
-fast = "anthropic/claude-sonnet-4-6"
-cheap = "anthropic/claude-haiku-4-5"
+[opencode.models.opencode]
+orchestrator = ["opencode/kimi-k2.5", "opencode/claude-opus-4-7", "opencode/gpt-5.5", "opencode/glm-5", "opencode/big-pickle"]
+implementation = ["opencode/gpt-5.5", "opencode/claude-opus-4-7", "opencode/kimi-k2.5", "opencode/glm-5"]
+planner = ["opencode/gpt-5-nano", "opencode/gpt-5.4-mini", "opencode/grok-build-0.1"]
+architecture = ["opencode/gpt-5.5", "opencode/gemini-3.1-pro", "opencode/claude-opus-4-7", "opencode/glm-5"]
+search = ["opencode/grok-build-0.1", "opencode/minimax-m2.7", "opencode/gpt-5-nano"]
+vision = ["opencode/gemini-3.1-pro", "opencode/gpt-5.5"]
+review = ["opencode/gpt-5.5", "opencode/claude-opus-4-7", "opencode/gemini-3.1-pro"]
+long_running = ["opencode/kimi-k2.5", "opencode/minimax-m2.7", "opencode/gpt-5.5"]
+quick = ["opencode/gpt-5-nano", "opencode/grok-build-0.1", "opencode/gpt-5.4-mini"]
+standard = ["opencode/claude-sonnet-4-6", "opencode/kimi-k2.5", "opencode/gpt-5.5"]
+complex = ["opencode/gpt-5.5", "opencode/claude-opus-4-7", "opencode/glm-5"]
+visual = ["opencode/gemini-3.1-pro", "opencode/gpt-5.5"]
+deep = ["opencode/gpt-5.5", "opencode/claude-opus-4-7", "opencode/kimi-k2.5"]
+ultrabrain = ["opencode/gpt-5.5", "opencode/claude-opus-4-7", "opencode/gemini-3.1-pro"]
+ultrawork = ["opencode/claude-opus-4-7", "opencode/gpt-5.5", "opencode/kimi-k2.5"]
 
-# Map each agent to a tier ("pro", "fast", or "cheap")
-[opencode.agent_tiers]
-# Pro tier agents (complex reasoning, planning, architecture)
-sisyphus = "pro"
-hephaestus = "pro"
-oracle = "pro"
-prometheus = "pro"
-metis = "pro"
-momus = "pro"
-# Fast tier agents (exploration, orchestration)
-librarian = "fast"
-explore = "fast"
-multimodal-looker = "fast"
-atlas = "fast"
-# Cheap tier agents (simple tasks)
-sisyphus-junior = "cheap"
+[opencode.models.opencode-free]
+orchestrator = ["opencode/big-pickle", "opencode/north-mini-code-free", "opencode/deepseek-v4-flash-free"]
+implementation = ["opencode/deepseek-v4-flash-free", "opencode/big-pickle", "opencode/mimo-v2.5-free"]
+planner = ["opencode/north-mini-code-free", "opencode/mimo-v2.5-free", "opencode/deepseek-v4-flash-free"]
+architecture = ["opencode/nemotron-3-ultra-free", "opencode/big-pickle", "opencode/deepseek-v4-flash-free"]
+search = ["opencode/north-mini-code-free", "opencode/mimo-v2.5-free", "opencode/deepseek-v4-flash-free"]
+vision = ["opencode/big-pickle", "opencode/nemotron-3-ultra-free"]
+review = ["opencode/nemotron-3-ultra-free", "opencode/big-pickle", "opencode/deepseek-v4-flash-free"]
+long_running = ["opencode/big-pickle", "opencode/deepseek-v4-flash-free", "opencode/mimo-v2.5-free"]
+quick = ["opencode/north-mini-code-free", "opencode/mimo-v2.5-free", "opencode/deepseek-v4-flash-free"]
+standard = ["opencode/deepseek-v4-flash-free", "opencode/big-pickle", "opencode/mimo-v2.5-free"]
+complex = ["opencode/nemotron-3-ultra-free", "opencode/big-pickle", "opencode/deepseek-v4-flash-free"]
+visual = ["opencode/big-pickle", "opencode/nemotron-3-ultra-free"]
+deep = ["opencode/nemotron-3-ultra-free", "opencode/big-pickle", "opencode/deepseek-v4-flash-free"]
+ultrabrain = ["opencode/nemotron-3-ultra-free", "opencode/big-pickle", "opencode/deepseek-v4-flash-free"]
+ultrawork = ["opencode/big-pickle", "opencode/nemotron-3-ultra-free", "opencode/deepseek-v4-flash-free"]
 
-# Map each category to a tier ("pro", "fast", or "cheap")
-[opencode.category_tiers]
-# Pro tier categories
-ultrabrain = "pro"
-deep = "pro"
-unspecified-high = "pro"
-# Fast tier categories
-visual-engineering = "fast"
-artistry = "fast"
-unspecified-low = "fast"
-# Cheap tier categories
-quick = "cheap"
-writing = "cheap"
+[opencode.models.xiaomi]
+orchestrator = ["xiaomi/mimo-v2.5-pro", "xiaomi/mimo-v2.5"]
+implementation = ["xiaomi/mimo-v2.5-pro", "xiaomi/mimo-v2.5"]
+planner = ["xiaomi/mimo-v2.5-pro-ultraspeed", "xiaomi/mimo-v2.5"]
+architecture = ["xiaomi/mimo-v2.5-pro", "xiaomi/mimo-v2.5"]
+search = ["xiaomi/mimo-v2.5-pro-ultraspeed", "xiaomi/mimo-v2.5"]
+vision = ["xiaomi/mimo-v2.5-pro", "xiaomi/mimo-v2.5"]
+review = ["xiaomi/mimo-v2.5-pro", "xiaomi/mimo-v2.5"]
+long_running = ["xiaomi/mimo-v2.5-pro-ultraspeed", "xiaomi/mimo-v2.5-pro"]
+quick = ["xiaomi/mimo-v2.5-pro-ultraspeed", "xiaomi/mimo-v2.5"]
+standard = ["xiaomi/mimo-v2.5", "xiaomi/mimo-v2.5-pro-ultraspeed"]
+complex = ["xiaomi/mimo-v2.5-pro", "xiaomi/mimo-v2.5"]
+visual = ["xiaomi/mimo-v2.5-pro", "xiaomi/mimo-v2.5"]
+deep = ["xiaomi/mimo-v2.5-pro", "xiaomi/mimo-v2.5"]
+ultrabrain = ["xiaomi/mimo-v2.5-pro", "xiaomi/mimo-v2.5"]
+ultrawork = ["xiaomi/mimo-v2.5-pro", "xiaomi/mimo-v2.5"]
+
+# =============================================================================
+# VARIANTS DEFAULT (quando nenhum perfil e especificado)
+# =============================================================================
+
+[opencode.variants.bedrock]
+orchestrator = "medium"
+implementation = "medium"
+architecture = "high"
+review = "medium"
+visual = "medium"
+deep = "high"
+ultrabrain = "high"
+ultrawork = "medium"
+
+[opencode.variants.anthropic]
+orchestrator = "medium"
+implementation = "medium"
+architecture = "high"
+review = "medium"
+visual = "medium"
+deep = "high"
+ultrabrain = "high"
+ultrawork = "medium"
+
+[opencode.variants.openai]
+architecture = "high"
+review = "medium"
+visual = "medium"
+deep = "high"
+ultrabrain = "high"
+ultrawork = "medium"
+
+[opencode.variants.opencode]
+architecture = "high"
+review = "medium"
+visual = "medium"
+deep = "high"
+ultrabrain = "high"
+ultrawork = "medium"
+
+[opencode.variants.xiaomi]
+orchestrator = "high"
+implementation = "high"
+architecture = "high"
+review = "high"
+visual = "high"
+deep = "high"
+ultrabrain = "high"
+ultrawork = "high"
+
+# =============================================================================
+# VARIANTS OPTIMIZED
+# =============================================================================
+
+[opencode.variants.bedrock-optimized]
+orchestrator = "low"
+implementation = "medium"
+architecture = "medium"
+review = "medium"
+visual = "low"
+deep = "medium"
+ultrabrain = "high"
+ultrawork = "medium"
+
+[opencode.variants.anthropic-optimized]
+orchestrator = "low"
+implementation = "medium"
+architecture = "medium"
+review = "medium"
+visual = "low"
+deep = "medium"
+ultrabrain = "high"
+ultrawork = "medium"
+
+[opencode.variants.openai-optimized]
+architecture = "medium"
+review = "medium"
+visual = "low"
+deep = "medium"
+ultrabrain = "high"
+ultrawork = "medium"
+
+[opencode.variants.opencode-optimized]
+architecture = "medium"
+review = "medium"
+visual = "low"
+deep = "medium"
+ultrabrain = "high"
+ultrawork = "medium"
+
+[opencode.variants.xiaomi-optimized]
+orchestrator = "high"
+implementation = "high"
+architecture = "high"
+review = "high"
+visual = "high"
+deep = "high"
+ultrabrain = "high"
+ultrawork = "high"
+
+# =============================================================================
+# VARIANTS SUPER (maxima economia)
+# =============================================================================
+
+[opencode.variants.bedrock-super]
+orchestrator = "low"
+implementation = "medium"
+architecture = "medium"
+review = "medium"
+visual = "low"
+deep = "medium"
+ultrabrain = "high"
+ultrawork = "medium"
+
+[opencode.variants.anthropic-super]
+orchestrator = "low"
+implementation = "medium"
+architecture = "medium"
+review = "medium"
+visual = "low"
+deep = "medium"
+ultrabrain = "high"
+ultrawork = "medium"
+
+[opencode.variants.openai-super]
+architecture = "low"
+review = "low"
+visual = "low"
+deep = "medium"
+ultrabrain = "high"
+ultrawork = "low"
+
+[opencode.variants.opencode-super]
+architecture = "low"
+review = "low"
+visual = "low"
+deep = "medium"
+ultrabrain = "high"
+ultrawork = "medium"
+
+[opencode.variants.xiaomi-super]
+orchestrator = "high"
+implementation = "high"
+architecture = "high"
+review = "high"
+visual = "high"
+deep = "high"
+ultrabrain = "high"
+ultrawork = "high"
+
+# =============================================================================
+# VARIANTS MODERATE (mesmo que optimized)
+# =============================================================================
+
+[opencode.variants.bedrock-moderate]
+orchestrator = "medium"
+implementation = "medium"
+architecture = "high"
+review = "medium"
+visual = "medium"
+deep = "high"
+ultrabrain = "high"
+ultrawork = "medium"
+
+[opencode.variants.anthropic-moderate]
+orchestrator = "medium"
+implementation = "medium"
+architecture = "high"
+review = "medium"
+visual = "medium"
+deep = "high"
+ultrabrain = "high"
+ultrawork = "medium"
+
+[opencode.variants.openai-moderate]
+architecture = "high"
+review = "medium"
+visual = "medium"
+deep = "high"
+ultrabrain = "high"
+ultrawork = "medium"
+
+[opencode.variants.opencode-moderate]
+architecture = "high"
+review = "medium"
+visual = "medium"
+deep = "high"
+ultrabrain = "high"
+ultrawork = "medium"
+
+[opencode.variants.xiaomi-moderate]
+orchestrator = "high"
+implementation = "high"
+architecture = "high"
+review = "high"
+visual = "high"
+deep = "high"
+ultrabrain = "high"
+ultrawork = "high"
+
+[opencode.agent_profiles]
+sisyphus = "orchestrator"
+hephaestus = "implementation"
+prometheus = "planner"
+oracle = "architecture"
+librarian = "search"
+explore = "search"
+multimodal-looker = "vision"
+metis = "planner"
+momus = "review"
+atlas = "long_running"
+sisyphus-junior = "quick"
+
+[opencode.agent_ultrawork_profiles]
+sisyphus = "ultrawork"
+
+[opencode.category_profiles]
+quick = "quick"
+unspecified-low = "standard"
+unspecified-high = "complex"
+visual-engineering = "visual"
+deep = "deep"
+ultrabrain = "ultrabrain"
+artistry = "visual"
+writing = "quick"
