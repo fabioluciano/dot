@@ -1,8 +1,0 @@
-{{- if env "WORK_MAIL" }}
-[user]
-  email = {{ env "WORK_MAIL" }}
-{{- else }}
-{{- $fields := bitwardenFields "item" "dotfiles-tokens" }}
-[user]
-  email = {{ $fields.work_mail.value }}
-{{- end }}

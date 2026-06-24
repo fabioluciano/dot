@@ -5,8 +5,8 @@ set -euo pipefail
 # oh-my-openagent.json via chezmoi apply.
 # Uso: oc-provider <provider> [profile]
 
-PROVIDERS=(bedrock anthropic xiaomi openai opencode opencode-free)
-PROFILES=(optimized super moderate)
+PROVIDERS=(bedrock anthropic xiaomi openai github-copilot opencode)
+PROFILES=(optimized super ultra moderate recommended)
 ############################################
 # Normalization and backward-compatibility
 ############################################
@@ -23,7 +23,7 @@ if [ "$#" -lt 2 ]; then
 else
   INPUT_PROFILE="$2"
   case "$INPUT_PROFILE" in
-    optimized|super|moderate)
+    optimized|super|ultra|moderate|recommended)
       PROFILE_TARGET="$INPUT_PROFILE"
       ;;
     default)
@@ -31,7 +31,7 @@ else
       PROFILE_TARGET="moderate"
       ;;
     *)
-      echo "Perfil inválido: $INPUT_PROFILE. Perfis válidos: optimized, moderate, super."
+      echo "Perfil inválido: $INPUT_PROFILE. Perfis válidos: optimized, moderate, super, ultra, recommended."
       exit 1
       ;;
   esac
@@ -58,7 +58,10 @@ Exemplo:
 oc-provider bedrock              # bedrock (profile moderate por padrão)
 oc-provider bedrock optimized    # bedrock com profile optimized
 oc-provider bedrock super        # bedrock com profile super
+oc-provider bedrock ultra        # bedrock com profile ultra
 oc-provider bedrock moderate     # bedrock com profile moderate
+oc-provider bedrock recommended  # bedrock com tiers recomendados pelo Oh My OpenAgent
+oc-provider github-copilot       # GitHub Copilot Plus (profile moderate por padrão)
 oc-provider xiaomi               # xiaomi (profile moderate por padrão)
 oc-provider opencode             # opencode (profile moderate por padrão)
 EOF
@@ -127,4 +130,6 @@ echo "✓ Profile ativo: ${profile}"
   echo "Perfis disponíveis:"
   echo "  optimized  - Economia de ~28% (medium para tarefas rotineiras, high para críticas)"
   echo "  moderate   - Alias para optimized"
+  echo "  recommended - Tiers recomendados pelo Oh My OpenAgent para cada papel/modelo"
   echo "  super      - Economia máxima de ~38% (low/medium para maioria, high apenas para ultrabrain)"
+  echo "  ultra      - Custo mínimo: menor esforço suportado, provider decide onde não há variant segura"

@@ -13,11 +13,11 @@
 {{- $provider = $state -}}
 {{- $profile = "moderate" -}}
 {{- end -}}
-{{- $validProviders := list "bedrock" "xiaomi" "openai" "opencode" "opencode-free" "anthropic" -}}
+{{- $validProviders := list "bedrock" "xiaomi" "openai" "github-copilot" "opencode" "anthropic" "google" -}}
 {{- if not (has $provider $validProviders) -}}{{- $provider = $defaultProvider -}}{{- end -}}
 {{- $providerModels := index $.opencode.models $provider -}}
 {{- $variantKey := printf "%s-%s" $provider $profile -}}
-{{- $providerVariants := get $.opencode.variants $variantKey | default (get $.opencode.variants $provider | default dict) -}}
+{{- $providerVariants := ternary (get $.opencode.variants $variantKey) (get $.opencode.variants $provider | default dict) (hasKey $.opencode.variants $variantKey) -}}
 {
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
   "team_mode": {

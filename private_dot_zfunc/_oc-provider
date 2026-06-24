@@ -1,8 +1,8 @@
 #compdef oc-provider
 
 local -a providers profiles
-providers=(bedrock anthropic xiaomi openai opencode opencode-free)
-profiles=(optimized moderate super)
+providers=(bedrock anthropic xiaomi openai github-copilot opencode)
+profiles=(optimized moderate super ultra recommended)
 
 case "$CURRENT" in
   2)

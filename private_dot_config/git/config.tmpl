@@ -1,18 +1,25 @@
+{{- /* chezmoi:template:missing-key=zero */ -}}
+{{- /* Máquina de trabalho (machineName fora de .personal_machines): e-mail vem
+        do WORK_MAIL ou do Bitwarden (campo work_mail). Personal: e-mail do data.
+        Em máquina pessoal o Bitwarden nem é consultado (branch não avaliado). */ -}}
+{{- $email := .email -}}
+{{- $machineName := default .chezmoi.hostname (index . "machineName") -}}
+{{- if not (has $machineName .personal_machines) -}}
+{{-   if env "WORK_MAIL" -}}
+{{-     $email = env "WORK_MAIL" -}}
+{{-   else -}}
+{{-     $email = (bitwardenFields "item" "dotfiles-tokens").work_mail.value -}}
+{{-   end -}}
+{{- end -}}
 [user]
-  email = {{ .email }}
+  email = {{ $email }}
   name = {{ .name }}
   signingkey = ~/.ssh/yubikey.pub
-
-[includeIf "gitdir:/mnt/srv/work/"]
-  path = ~/.config/git/work
 
 [includeIf "gitdir:/mnt/srv/"]
   path = ~/.config/git/projects
 
 {{- if eq .chezmoi.os "darwin" }}
-[includeIf "gitdir:{{ .chezmoi.homeDir }}/Projects/work/"]
-  path = ~/.config/git/work
-
 [includeIf "gitdir:{{ .chezmoi.homeDir }}/Projects/"]
   path = ~/.config/git/projects
 {{- end }}

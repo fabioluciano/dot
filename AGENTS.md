@@ -49,14 +49,14 @@ file-writing phase:
 - `run_onchange_after_*` — run after, **only when their embedded content hash
   changes**. Each script embeds a hash of the manifest it depends on via
   `{{ include "..." | sha256sum }}` in a comment line; changing that comment is
-  what re-triggers the script. If you change a manifest (e.g. `dot_Brewfile`)
+  what re-triggers the script. If you change a manifest (e.g. `dot_Brewfile.tmpl`)
   the hash changes and the sync re-runs; otherwise it's skipped.
 
 Package sync scripts and their manifests:
 
 | Script (`.chezmoiscripts/`)        | Manifest        | Target          | Tool                          |
 | ---------------------------------- | --------------- | --------------- | ----------------------------- |
-| `run_onchange_after_30-brew-bundle`| `dot_Brewfile`  | `~/.Brewfile`   | `brew bundle --global` (macOS)|
+| `run_onchange_after_30-brew-bundle`| `dot_Brewfile.tmpl`| `~/.Brewfile` | `brew bundle --global` (macOS)|
 | `run_onchange_after_40-pacman`     | `dot_Pacmanfile`| `~/.Pacmanfile` | `yay`/`paru`/`pacman` (Arch)  |
 | `run_onchange_after_50-krew`       | `dot_Krewfile`  | `~/.Krewfile`   | `kubectl krew install`        |
 | `run_onchange_after_20-mise-install`| `mise/config.toml`| `~/.config/mise`| `mise install`              |
@@ -68,16 +68,28 @@ gracefully (`command -v X || exit 0`) when its tool is absent.
 
 ## Template data
 
-Template values come from `private_dot_config/chezmoi/chezmoi.toml` `[data]`:
-`name`, `email`, `github_user`, `weather_city`. Reference as `{{ .email }}`
-etc. `.chezmoidata/opencode_providers.toml` provides the opencode provider/tier
-matrix consumed by the opencode template.
+Template values come from `.chezmoi.toml.tmpl` (chezmoi's own config, special-cased:
+run by `chezmoi init` before any other target so `.email` etc. are available on
+the very first apply on a fresh machine) `[data]`: `name`, `email`, `github_user`,
+`weather_city`, `machineName` (prompted once via `promptStringOnce`, defaults to
+`.chezmoi.hostname`). Reference as `{{ .email }}` etc. `.chezmoidata/opencode_providers.toml`
+provides the opencode provider/tier matrix consumed by the opencode template.
 
 Platform branching uses `.chezmoi.os` (`darwin`/`linux`) and
 `.chezmoi.osRelease.id` (`arch`). `.chezmoiignore` is itself a template that
 excludes Linux-only configs (xfce4, cortile, autostart, …) on non-Linux and
 `.Brewfile` on non-macOS — so a config existing in source doesn't mean it's
 applied on the current OS.
+
+Machine branching uses `.machineName` (set in `.chezmoi.toml.tmpl`) against the
+`personal_machines` list in `.chezmoidata/machines.toml` (`["iorek", "aesahaettr"]`).
+The idiom is **known machines are personal; anything else is a work machine** —
+so the work Mac is covered without hardcoding its name. Used by:
+`dot_Brewfile.tmpl` (work-only casks: Outlook/Teams/OnlyOffice/Slack/Zoom) and
+`private_dot_config/git/config.tmpl` (on a work machine the git `user.email` is
+pulled from `WORK_MAIL` env or Bitwarden's `work_mail` field; personal machines
+use `.email`, and Bitwarden is never queried on them since the branch is not
+evaluated). There is no separate work gitconfig file anymore.
 
 ## Secrets
 

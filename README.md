@@ -29,7 +29,7 @@ chezmoi init --apply https://github.com/fabioluciano/dot.git
 
 | Manifest        | Target            | Installed by                                   |
 | --------------- | ----------------- | ---------------------------------------------- |
-| `dot_Brewfile`  | `~/.Brewfile`     | `brew bundle --global` (macOS)                 |
+| `dot_Brewfile.tmpl`| `~/.Brewfile`  | `brew bundle --global` (macOS)                 |
 | `dot_Pacmanfile`| `~/.Pacmanfile`   | `yay`/`paru`/`pacman -S --needed` (Arch)       |
 | `dot_Krewfile`  | `~/.Krewfile`     | `kubectl krew install` (kubectl plugins)       |
 | mise            | `~/.config/mise`  | `mise install`                                 |
@@ -151,7 +151,7 @@ before committing.
 
 **Note:** Package installs (brew/pacman) are not automatically undone by
 reverting a dotfile commit. If you added a formula and want to remove it,
-edit `dot_Brewfile`/`dot_Pacmanfile` and run `chezmoi apply` again.
+edit `dot_Brewfile.tmpl`/`dot_Pacmanfile` and run `chezmoi apply` again.
 
 ## Switching opencode provider (`oc-provider`)
 
@@ -162,7 +162,10 @@ provider in one shot:
 oc-provider bedrock     # switch to AWS Bedrock
 oc-provider opencode    # switch to OpenCode Zen (opencode/ models)
 oc-provider opencode-free # switch to free OpenCode Zen models
+oc-provider github-copilot # switch to GitHub Copilot Plus models
 oc-provider xiaomi      # switch to Xiaomi (mimo)
+oc-provider opencode recommended # switch with Oh My OpenAgent recommended tiers
+oc-provider github-copilot ultra # GitHub Copilot with lowest safe reasoning variants
 ```
 
 **How it works:**
@@ -179,6 +182,14 @@ between tiers (pro → fast → cheap) when the primary model is unavailable
 (rate-limited, throttled, etc.). Fallback stays within the active provider —
 it never crosses to a different provider. The tier matrix in `.chezmoidata/opencode_providers.toml`
 controls the model for each tier.
+
+**Profiles:** pass an optional profile as the second argument. `moderate` is the
+default, `optimized`/`super` trade quality for cost, and `recommended` applies
+the Oh My OpenAgent recommended effort/variant tiers per role where the active
+provider supports them.
+`ultra` minimizes cost further by selecting the lowest safe reasoning variant
+for each provider/model family and leaving unsupported cases for the provider
+runtime default.
 
 **Verify current provider:**
 

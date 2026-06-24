@@ -45,6 +45,7 @@ logid.cfg
 {{- if ne .chezmoi.os "darwin" }}
 # Ignore macOS-specific files when not on macOS
 .Brewfile
+Library
 {{- end }}
 
 
