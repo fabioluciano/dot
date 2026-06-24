@@ -159,7 +159,8 @@ The `oc-provider` command switches all opencode agents to use a specific LLM
 provider in one shot:
 
 ```sh
-oc-provider bedrock     # switch to AWS Bedrock
+oc-provider bedrock-claude # switch to the canonical Bedrock Claude chain
+oc-provider bedrock-mixed  # switch to the mixed non-Anthropic Bedrock chain
 oc-provider opencode    # switch to OpenCode Zen (opencode/ models)
 oc-provider opencode-free # switch to free OpenCode Zen models
 oc-provider github-copilot # switch to GitHub Copilot Plus models
@@ -195,7 +196,7 @@ runtime default.
 
 ```sh
 cat ~/.config/opencode/.active_provider
-chezmoi execute-template < private_dot_config/opencode/oh-my-openagent.json.tmpl
+chezmoi execute-template < private_dot_config/opencode/oh-my-openagent.jsonc.tmpl
 ```
 
 The `oc-provider` command is part of the opencode tap installed via Homebrew

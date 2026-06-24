@@ -5,8 +5,8 @@ set -euo pipefail
 # oh-my-openagent.json via chezmoi apply.
 # Uso: oc-provider <provider> [profile]
 
-PROVIDERS=(bedrock anthropic xiaomi openai github-copilot opencode)
-PROFILES=(optimized super ultra moderate recommended)
+PROVIDERS=(bedrock-claude bedrock-mixed anthropic xiaomi openai github-copilot opencode opencode-free google)
+PROFILES=(optimized moderate super ultra recommended)
 ############################################
 # Normalization and backward-compatibility
 ############################################
@@ -23,7 +23,7 @@ if [ "$#" -lt 2 ]; then
 else
   INPUT_PROFILE="$2"
   case "$INPUT_PROFILE" in
-    optimized|super|ultra|moderate|recommended)
+    optimized|moderate|super|ultra|recommended)
       PROFILE_TARGET="$INPUT_PROFILE"
       ;;
     default)
@@ -55,15 +55,18 @@ Providers disponíveis: ${PROVIDERS[*]}
 Profiles disponíveis: ${PROFILES[*]} (padrão: moderate)
 
 Exemplo:
-oc-provider bedrock              # bedrock (profile moderate por padrão)
-oc-provider bedrock optimized    # bedrock com profile optimized
-oc-provider bedrock super        # bedrock com profile super
-oc-provider bedrock ultra        # bedrock com profile ultra
-oc-provider bedrock moderate     # bedrock com profile moderate
-oc-provider bedrock recommended  # bedrock com tiers recomendados pelo Oh My OpenAgent
+oc-provider bedrock-claude       # Bedrock Claude (profile moderate por padrão)
+oc-provider bedrock-claude optimized    # Bedrock Claude com profile optimized
+oc-provider bedrock-mixed       # Bedrock mixed (profile moderate por padrão)
+oc-provider bedrock-mixed optimized    # Bedrock mixed com profile optimized
+oc-provider bedrock-claude super        # Bedrock Claude com profile super
+oc-provider bedrock-claude ultra        # Bedrock Claude com profile ultra
+oc-provider bedrock-claude moderate     # Bedrock Claude com profile moderate
+oc-provider bedrock-claude recommended  # Bedrock Claude com tiers recomendados pelo Oh My OpenAgent
 oc-provider github-copilot       # GitHub Copilot Plus (profile moderate por padrão)
 oc-provider xiaomi               # xiaomi (profile moderate por padrão)
 oc-provider opencode             # opencode (profile moderate por padrão)
+oc-provider google               # google (profile moderate por padrão)
 EOF
   exit 1
 }

@@ -13,11 +13,14 @@
 {{- $provider = $state -}}
 {{- $profile = "moderate" -}}
 {{- end -}}
-{{- $validProviders := list "bedrock" "xiaomi" "openai" "github-copilot" "opencode" "anthropic" "google" -}}
+{{- if eq $provider "bedrock" -}}{{- $provider = "bedrock-claude" -}}{{- end -}}
+{{- $validProviders := list "bedrock-claude" "bedrock-mixed" "xiaomi" "openai" "github-copilot" "opencode" "opencode-free" "anthropic" "google" -}}
 {{- if not (has $provider $validProviders) -}}{{- $provider = $defaultProvider -}}{{- end -}}
 {{- $providerModels := index $.opencode.models $provider -}}
-{{- $variantKey := printf "%s-%s" $provider $profile -}}
-{{- $providerVariants := ternary (get $.opencode.variants $variantKey) (get $.opencode.variants $provider | default dict) (hasKey $.opencode.variants $variantKey) -}}
+{{- $variantProvider := $provider -}}
+{{- if eq $provider "bedrock" -}}{{- $variantProvider = "bedrock-claude" -}}{{- end -}}
+{{- $variantKey := printf "%s-%s" $variantProvider $profile -}}
+{{- $providerVariants := ternary (get $.opencode.variants $variantKey) (get $.opencode.variants $variantProvider | default dict) (hasKey $.opencode.variants $variantKey) -}}
 {
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
   "team_mode": {
@@ -31,7 +34,7 @@
 {{- $agents := keys $.opencode.agent_profiles | sortAlpha }}
 {{- range $i, $agent := $agents }}
 {{- $profile := index $.opencode.agent_profiles $agent }}
-{{- $chain := index $providerModels $profile }}
+{{- $chain := index $providerModels $profile | default (index $providerModels "moderate") }}
 {{- $primary := first $chain }}
 {{- $variantValue := get $providerVariants $profile }}
     "{{ $agent }}": {
@@ -43,7 +46,7 @@
       ,"prompt_append": "file://~/.config/opencode/AGENTS.md"
 {{- $ultraworkProfile := get $.opencode.agent_ultrawork_profiles $agent }}
 {{- if $ultraworkProfile }}
-{{- $ultraworkChain := index $providerModels $ultraworkProfile }}
+{{- $ultraworkChain := index $providerModels $ultraworkProfile | default (index $providerModels "moderate") }}
 {{- $ultraworkVariant := get $providerVariants $ultraworkProfile }}
       ,"ultrawork": {
         "model": "{{ first $ultraworkChain }}",
@@ -64,7 +67,7 @@
 {{- $categories := keys $.opencode.category_profiles | sortAlpha }}
 {{- range $i, $cat := $categories }}
 {{- $profile := index $.opencode.category_profiles $cat }}
-{{- $chain := index $providerModels $profile }}
+{{- $chain := index $providerModels $profile | default (index $providerModels "moderate") }}
 {{- $primary := first $chain }}
 {{- $variantValue := get $providerVariants $profile }}
     "{{ $cat }}": {
