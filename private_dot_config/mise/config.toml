@@ -36,7 +36,6 @@ pipx = "latest"             # note: `uv tool` / `uvx` already cover this
 # Language servers / editor tooling (float at latest)
 "npm:typescript-language-server" = "latest"
 "npm:vscode-langservers-extracted" = "latest"
-"npm:pyright" = "latest"
 "go:golang.org/x/tools/gopls" = "latest"
 rust-analyzer = "latest"
 lua-language-server = "latest"

@@ -4,7 +4,7 @@
     "enabled": true,
     // Automatically update npm-installed DCP when a newer npm latest is available.
     // Version-locked plugin specs are not updated.
-    "autoUpdate": true,
+    "autoUpdate": false,
     // Enable debug logging to ~/.config/opencode/logs/dcp/
     "debug": false,
     // Notification display: "off", "minimal", or "detailed"

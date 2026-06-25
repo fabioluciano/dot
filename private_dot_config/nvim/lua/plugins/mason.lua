@@ -9,7 +9,6 @@ return {
         "stylua",
 
         -- Python
-        "pyright",
         "ruff",
         "debugpy",
 

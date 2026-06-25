@@ -1,16 +1,16 @@
 local bookmarks_file = vim.fn.stdpath("data") .. "/bookmarks.json"
 
 local function load_bookmarks()
-  local file = io.open(bookmarks_file, "r")
-  if not file then return {} end
+  local ok, file = pcall(io.open, bookmarks_file, "r")
+  if not ok or not file then return {} end
   local content = file:read("*a")
   file:close()
   return vim.fn.json_decode(content) or {}
 end
 
 local function save_bookmarks(bookmarks)
-  local file = io.open(bookmarks_file, "w")
-  if not file then return end
+  local ok, file = pcall(io.open, bookmarks_file, "w")
+  if not ok or not file then return end
   file:write(vim.fn.json_encode(bookmarks))
   file:close()
 end

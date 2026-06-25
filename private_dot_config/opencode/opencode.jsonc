@@ -35,7 +35,8 @@
       "node_modules/**",
       "dist/**",
       ".git/**",
-      "vendor/**"
+      "vendor/**",
+      ".omo/**"
     ]
   },
   "instructions": [
