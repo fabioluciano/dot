@@ -21,7 +21,8 @@ $rust\
 $golang\
 $java\
 $helm\
-$package
+$package\
+$cmd_duration
 $character"""
 
 add_newline = true

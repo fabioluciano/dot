@@ -9,6 +9,7 @@ groovy = "5"
 python = "3.14"
 bun = "1"
 deno = "2"
+rust = "latest"
 
 # Infrastructure & build utilities (float at latest)
 terraform = "latest"
