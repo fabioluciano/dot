@@ -1,6 +1,4 @@
 access-matrix
-advise-policy
-advise-psp
 aks
 allctx
 auth-proxy
@@ -13,7 +11,6 @@ cost
 count
 ctx
 custom-cols
-datree
 deprecations
 df-pv
 doctor
