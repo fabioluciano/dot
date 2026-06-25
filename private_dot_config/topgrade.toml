@@ -21,7 +21,7 @@ no_retry = true
 notify_each_step = true
 
 [pre_commands]
-"Chezmoi Update" = "chezmoi update --apply || true"
+"Chezmoi Update" = "chezmoi update --apply || { echo 'WARN: chezmoi update failed' >&2; true; }"
 
 [commands]
 "Krew Update" = "kubectl krew upgrade || true"
