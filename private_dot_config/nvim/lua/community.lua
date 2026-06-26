@@ -100,6 +100,12 @@ return {
   -- │                    Markdown & LaTeX                    │
   -- ╰────────────────────────────────────────────────────────╯
   { import = "astrocommunity.markdown-and-latex.markdown-preview-nvim" },
+  {
+    "iamcco/markdown-preview.nvim",
+    build = function()
+      vim.fn.system { "sh", "-c", "cd app && bash install.sh" }
+    end,
+  },
 
   -- ╭────────────────────────────────────────────────────────╮
   -- │                    Motion                              │

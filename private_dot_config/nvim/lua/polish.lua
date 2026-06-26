@@ -6,6 +6,10 @@
 -- Enable undercurl support in terminal
 vim.opt.termguicolors = true
 vim.o.autoread = true -- Required for opencode-nvim events.reload (auto-reload buffers edited by opencode)
+
+-- Workaround: Neovim 0.12 + tmux mode 2031 (DECSET) incompatibility
+-- Prevents silent exit when tmux sends unexpected terminal mode responses
+vim.opt.termsync = false
 -- Undercurl support for terminals that support it (kitty, wezterm, ghostty, etc.)
 vim.cmd [[
   let &t_Cs = "\e[4:3m"
