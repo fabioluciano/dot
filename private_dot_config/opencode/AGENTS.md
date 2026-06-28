@@ -28,18 +28,18 @@ index it first; do not use missing indexes as permission to bypass the MCP.
 Mandatory routing rules:
 
 1. **Any code question or pre-edit survey** (how/where/what/flow, "find X",
-   impact of changing a symbol, or the symbols you are about to edit) → call
-   `codegraph_explore` FIRST. If source code is not indexed, run or ask for the
-   codegraph indexing step before answering. If codegraph says docs/configs are
+   impact of changing a symbol, or the symbols you are about to edit) → use
+   `codebase-memory` or `codegraph` (when available) FIRST. If source code is not indexed,
+   run or ask for the indexing step before answering. If the MCP says docs/configs are
    not indexed because they are not source-code symbols, then read those files
    directly; otherwise do NOT silently fall back to grep.
 2. **Structural / multi-hop / impact / complexity questions** → use
-   `codebase-memory` (`search_graph`, `trace_path`, `query_graph`,
-   `get_architecture`). If the project is missing from `list_projects`, index it
-   with `index_repository` before answering. If the index exists but is stale,
+   `codebase-memory` (`codebase-memory_search_graph`, `codebase-memory_trace_path`, `codebase-memory_query_graph`,
+   `codebase-memory_get_architecture`). If the project is missing from `codebase-memory_list_projects`, index it
+   with `codebase-memory_index_repository` before answering. If the index exists but is stale,
    refresh it before relying on graph results.
 3. **External library/framework/API behavior** → use `context7`:
-   `resolve-library-id` first, then `query-docs`, before guessing any API shape,
+   `context7_resolve-library-id` first, then `context7_query-docs`, before guessing any API shape,
    option name, lifecycle, or migration behavior.
 4. **Browser, UI runtime, scraping, screenshots, or E2E interaction** → use
    `playwright`; do not replace it with curl/fetch for pages that need a browser.
@@ -93,19 +93,19 @@ Use first for almost every codebase question or before editing code/config that
 has symbols or dependencies.
 
 Available functions:
-- `codegraph_explore`: primary entry point; finds relevant files/symbols and
+- `codegraph_codegraph_explore`: primary entry point; finds relevant files/symbols and
   returns source plus call paths.
-- `codegraph_node`: reads a whole indexed file or one symbol with callers and
+- `codegraph_codegraph_node`: reads a whole indexed file or one symbol with callers and
   callees.
-- `codegraph_callers`: lists functions that call a symbol.
-- `codegraph_search`: quick symbol-name lookup when you only need locations.
+- `codegraph_codegraph_callers`: lists functions that call a symbol.
+- `codegraph_codegraph_search`: quick symbol-name lookup when you only need locations.
 
 Examples:
-- "Where is provider switching implemented?" → `codegraph_explore`.
+- "Where is provider switching implemented?" → `codegraph_codegraph_explore`.
 - "Before editing `oc-provider`, show callers/dependencies" →
-  `codegraph_explore` or `codegraph_node`.
-- "Who calls `loadConfig`?" → `codegraph_callers`.
-- "Find the `AuthService` symbol" → `codegraph_search`.
+  `codegraph_codegraph_explore` or `codegraph_codegraph_node`.
+- "Who calls `loadConfig`?" → `codegraph_codegraph_callers`.
+- "Find the `AuthService` symbol" → `codegraph_codegraph_search`.
 
 If codegraph reports that source code is not indexed, index it before answering
 or ask the user to approve/run the indexing command if required. If codegraph
@@ -122,11 +122,11 @@ This project uses codebase-memory-mcp to maintain a knowledge graph of the codeb
 ALWAYS prefer MCP graph tools over grep/glob/file-search for code discovery.
  
 ## Priority Order
-1. `search_graph` — find functions, classes, routes, variables by pattern
-2. `trace_path` — trace who calls a function or what it calls
-3. `get_code_snippet` — read specific function/class source code
-4. `query_graph` — run Cypher queries for complex patterns
-5. `get_architecture` — high-level project summary
+1. `codebase-memory_search_graph` — find functions, classes, routes, variables by pattern
+2. `codebase-memory_trace_path` — trace who calls a function or what it calls
+3. `codebase-memory_get_code_snippet` — read specific function/class source code
+4. `codebase-memory_query_graph` — run Cypher queries for complex patterns
+5. `codebase-memory_get_architecture` — high-level project summary
  
 ## When to fall back to grep/glob
 - Searching for string literals, error messages, config values
@@ -134,35 +134,37 @@ ALWAYS prefer MCP graph tools over grep/glob/file-search for code discovery.
 - When MCP tools return insufficient results
  
 ## Examples
-- Find a handler: `search_graph(name_pattern=".*OrderHandler.*")`
-- Who calls it: `trace_path(function_name="OrderHandler", direction="inbound")`
-- Read source: `get_code_snippet(qualified_name="pkg/orders.OrderHandler")`
+- Find a handler: `codebase-memory_search_graph(name_pattern=".*OrderHandler.*")`
+- Who calls it: `codebase-memory_trace_path(function_name="OrderHandler", direction="inbound")`
+- Read source: `codebase-memory_get_code_snippet(qualified_name="pkg/orders.OrderHandler")`
 <!-- codebase-memory-mcp:end -->
 
 Use for graph-level questions that need relationships, architecture seams,
 multi-hop flows, impact analysis, or complexity signals.
 
 Available functions:
-- `list_projects`, `index_repository`, `index_status`: discover/index projects.
-- `search_graph`: find functions/classes/routes/variables in the graph.
-- `trace_path`: trace callers/callees, data flow, or cross-service flow.
-- `query_graph`: run Cypher for complex graph and complexity queries.
-- `get_code_snippet`: read a symbol after finding its qualified name.
-- `get_architecture`: summarize packages, services, dependencies, clusters.
-- `detect_changes`: detect code changes and impact since a ref/date.
-- `get_graph_schema`: inspect graph labels and relationships.
-- `manage_adr`: create or update Architecture Decision Records.
-- `ingest_traces`: ingest runtime traces into the graph.
+- `codebase-memory_list_projects`, `codebase-memory_index_repository`, `codebase-memory_index_status`: discover/index projects.
+- `codebase-memory_search_graph`: find functions/classes/routes/variables in the graph.
+- `codebase-memory_search_code`: graph-augmented code search with BM25 ranking.
+- `codebase-memory_trace_path`: trace callers/callees, data flow, or cross-service flow.
+- `codebase-memory_query_graph`: run Cypher for complex graph and complexity queries.
+- `codebase-memory_get_code_snippet`: read a symbol after finding its qualified name.
+- `codebase-memory_get_architecture`: summarize packages, services, dependencies, clusters.
+- `codebase-memory_detect_changes`: detect code changes and impact since a ref/date.
+- `codebase-memory_get_graph_schema`: inspect graph labels and relationships.
+- `codebase-memory_manage_adr`: create or update Architecture Decision Records.
+- `codebase-memory_ingest_traces`: ingest runtime traces into the graph.
+- `codebase-memory_delete_project`: delete a project from the index.
 
 Examples:
-- "What breaks if we change this parser?" → `trace_path` inbound/outbound.
-- "Show cross-service flow from this route" → `trace_path` in cross-service
+- "What breaks if we change this parser?" → `codebase-memory_trace_path` inbound/outbound.
+- "Show cross-service flow from this route" → `codebase-memory_trace_path` in cross-service
   mode.
-- "Find hot paths with nested loops" → `query_graph` on complexity fields.
-- "Give me the architecture seams" → `get_architecture`.
+- "Find hot paths with nested loops" → `codebase-memory_query_graph` on complexity fields.
+- "Give me the architecture seams" → `codebase-memory_get_architecture`.
 
-If the project is absent from `list_projects` or the index is stale, run
-`index_repository` before answering graph-level questions.
+If the project is absent from `codebase-memory_list_projects` or the index is stale, run
+`codebase-memory_index_repository` before answering graph-level questions.
 
 `codebase-memory` is the canonical memory system. Do not reference or use a
 generic `memory` MCP.
@@ -173,15 +175,15 @@ Use before making claims about external libraries, frameworks, SDKs, CLIs, or
 APIs.
 
 Available functions:
-- `resolve-library-id`: map a library name to the exact Context7 library ID.
-- `query-docs`: query current docs/examples for that library ID.
+- `context7_resolve-library-id`: map a library name to the exact Context7 library ID.
+- `context7_query-docs`: query current docs/examples for that library ID.
 
 Examples:
-- "How does Zod v4 define transforms?" → resolve `Zod`, then `query-docs`.
+- "How does Zod v4 define transforms?" → resolve `Zod`, then `context7_query-docs`.
 - "What is the current Next.js metadata API?" → resolve `Next.js`, then
-  `query-docs`.
+  `context7_query-docs`.
 - "Which option does Playwright use for traces?" → resolve `Playwright`, then
-  `query-docs`.
+  `context7_query-docs`.
 
 ### GitHub And Public Code: `github` and `gh_grep`
 
@@ -189,33 +191,33 @@ Use `github` for repository operations and `gh_grep` for real-world public code
 examples.
 
 `github` available function groups:
-- Repository/file operations: `get_file_contents`, `create_or_update_file`,
-  `push_files`, `delete_file`, `create_branch`, `fork_repository`.
-- Issues: `list_issues`, `issue_read`, `issue_write`, `add_issue_comment`,
-  `sub_issue_write`.
-- Pull requests/reviews: `list_pull_requests`, `pull_request_read`,
-  `create_pull_request`, `update_pull_request`, `merge_pull_request`,
-  `pull_request_review_write`, `add_comment_to_pending_review`,
-  `add_reply_to_pull_request_comment`, `request_copilot_review`.
-- Commits/releases/tags: `list_commits`, `get_commit`, `search_commits`,
-  `list_releases`, `get_latest_release`, `get_release_by_tag`, `list_tags`,
-  `get_tag`.
-- Search/discovery: `search_code`, `search_issues`, `search_pull_requests`,
-  `search_repositories`, `search_users`.
-- Metadata/security/Copilot: `get_me`, `list_branches`, `get_label`,
-  `list_repository_collaborators`, `get_teams`, `get_team_members`,
-  `list_issue_fields`, `list_issue_types`, `run_secret_scanning`,
-  `assign_copilot_to_issue`, `create_pull_request_with_copilot`,
-  `get_copilot_job_status`.
+- Repository/file operations: `github_get_file_contents`, `github_create_or_update_file`,
+  `github_push_files`, `github_delete_file`, `github_create_branch`, `github_fork_repository`.
+- Issues: `github_list_issues`, `github_issue_read`, `github_issue_write`, `github_add_issue_comment`,
+  `github_sub_issue_write`.
+- Pull requests/reviews: `github_list_pull_requests`, `github_pull_request_read`,
+  `github_create_pull_request`, `github_update_pull_request`, `github_merge_pull_request`,
+  `github_pull_request_review_write`, `github_add_comment_to_pending_review`,
+  `github_add_reply_to_pull_request_comment`, `github_request_copilot_review`.
+- Commits/releases/tags: `github_list_commits`, `github_get_commit`, `github_search_commits`,
+  `github_list_releases`, `github_get_latest_release`, `github_get_release_by_tag`, `github_list_tags`,
+  `github_get_tag`.
+- Search/discovery: `github_search_code`, `github_search_issues`, `github_search_pull_requests`,
+  `github_search_repositories`, `github_search_users`.
+- Metadata/security/Copilot: `github_get_me`, `github_list_branches`, `github_get_label`,
+  `github_list_repository_collaborators`, `github_get_teams`, `github_get_team_members`,
+  `github_list_issue_fields`, `github_list_issue_types`, `github_run_secret_scanning`,
+  `github_assign_copilot_to_issue`, `github_create_pull_request_with_copilot`,
+  `github_get_copilot_job_status`.
 
 `gh_grep` available function:
-- `searchGitHub`: grep-like search for literal code patterns across public
+- `gh_grep_searchGitHub`: grep-like search for literal code patterns across public
   GitHub repositories.
 
 Examples:
 - "Open a PR" → `github_create_pull_request` after inspecting state.
 - "Comment on issue #12" → `github_add_issue_comment`.
-- "Find public examples of `getServerSession(`" → `gh_grep.searchGitHub`.
+- "Find public examples of `getServerSession(`" → `gh_grep_searchGitHub`.
 - "What changed in this PR?" → `github_pull_request_read` with files/diff.
 
 ### Browser Automation: `playwright`
@@ -224,23 +226,23 @@ Use for any browser task: navigation, UI verification, screenshots, scraping,
 console/network inspection, and browser-based tests.
 
 Available functions:
-- Page/session: `browser_navigate`, `browser_tabs`, `browser_close`,
-  `browser_resize`, `browser_wait_for`.
-- Inspection: `browser_snapshot`, `browser_take_screenshot`,
-  `browser_console_messages`, `browser_network_requests`,
-  `browser_network_request`.
-- Interaction: `browser_click`, `browser_type`, `browser_fill_form`,
-  `browser_select_option`, `browser_press_key`, `browser_hover`,
-  `browser_drag`, `browser_drop`, `browser_file_upload`,
-  `browser_handle_dialog`.
-- Advanced: `browser_evaluate`, `browser_run_code_unsafe`,
-  `browser_navigate_back`.
+- Page/session: `playwright_browser_navigate`, `playwright_browser_tabs`, `playwright_browser_close`,
+  `playwright_browser_resize`, `playwright_browser_wait_for`.
+- Inspection: `playwright_browser_snapshot`, `playwright_browser_take_screenshot`,
+  `playwright_browser_console_messages`, `playwright_browser_network_requests`,
+  `playwright_browser_network_request`.
+- Interaction: `playwright_browser_click`, `playwright_browser_type`, `playwright_browser_fill_form`,
+  `playwright_browser_select_option`, `playwright_browser_press_key`, `playwright_browser_hover`,
+  `playwright_browser_drag`, `playwright_browser_drop`, `playwright_browser_file_upload`,
+  `playwright_browser_handle_dialog`.
+- Advanced: `playwright_browser_evaluate`, `playwright_browser_run_code_unsafe`,
+  `playwright_browser_navigate_back`.
 
 Examples:
-- "Verify the page visually" → `browser_navigate`, `browser_snapshot`,
-  `browser_take_screenshot`.
-- "Why does login fail?" → inspect form with `browser_snapshot`, interact, then
-  check `browser_console_messages` and `browser_network_requests`.
+- "Verify the page visually" → `playwright_browser_navigate`, `playwright_browser_snapshot`,
+  `playwright_browser_take_screenshot`.
+- "Why does login fail?" → inspect form with `playwright_browser_snapshot`, interact, then
+  check `playwright_browser_console_messages` and `playwright_browser_network_requests`.
 - "Scrape this interactive page" → use Playwright, not curl.
 
 ### Context Management And Large Output: `context-mode`
@@ -276,12 +278,12 @@ entire raw content into the conversation.
 Use for complex multi-step analysis where explicit decomposition reduces risk.
 
 Available function:
-- `sequentialthinking`: iterative structured reasoning with revision/branching
+- `sequential-thinking_sequentialthinking`: iterative structured reasoning with revision/branching
   support.
 
 Examples:
-- "Choose between three migration strategies" → `sequentialthinking`.
-- "Analyze a subtle distributed-systems failure" → `sequentialthinking`.
+- "Choose between three migration strategies" → `sequential-thinking_sequentialthinking`.
+- "Analyze a subtle distributed-systems failure" → `sequential-thinking_sequentialthinking`.
 
 ### Language Server: `lsp`
 
@@ -335,39 +337,37 @@ Examples:
 - "Continue the work from yesterday" → `session_list`, then `session_read`.
 - "Find where we discussed the MCP policy" → `session_search`.
 
-### Agent Orchestration: `skill`, `task`, `question`, `team`
+### Agent Orchestration: `skill`, `task`, `team`
 
 Use for specialized workflows, delegation, and user decisions. These are not a
 substitute for code intelligence MCPs; use them to route and supervise work.
 
 Available functions:
 - `skill`: load a skill or slash-command instruction pack.
-- `task`: delegate to a specialist sub-agent or category worker.
-- `question`: ask the user for a constrained decision.
 - `task_create`, `task_get`, `task_list`, `task_update`: track local work items.
 - `team_create`, `team_status`, `team_send_message`, `team_task_create`,
   `team_task_list`, `team_task_update`, `team_shutdown_request`,
-  `team_approve_shutdown`, `team_reject_shutdown`, `team_delete`: coordinate
-  multi-agent team runs when team mode is enabled.
+  `team_approve_shutdown`, `team_reject_shutdown`, `team_delete`,
+  `team_list`, `team_task_get`: coordinate multi-agent team runs when team
+  mode is enabled.
 
 Examples:
 - "Review this Kubernetes manifest" → load the Kubernetes review skill, then
   delegate or answer with that guidance.
 - "Implement this multi-file feature" → create tracked tasks, consult plan if
   needed, then delegate implementation.
-- "Pick one of these irreversible options" → use `question` before acting.
 
 ### Web Fetch: `fetch` / `webfetch` / `websearch`
 
 Use only when a more specialized MCP does not apply.
 
 Available functions:
-- `fetch`: simple one-shot URL fetch with optional raw HTML.
+- `fetch_fetch`: simple one-shot URL fetch with optional raw HTML.
 - `webfetch`: fetch URL content as markdown/text/html.
-- `websearch`: search the web for current public information.
+- `websearch_web_search_exa`: search the web for current public information.
 
 Examples:
-- "Fetch this plain text changelog URL" → `fetch` or `webfetch`.
-- "Find current public pages about a topic" → `websearch`.
+- "Fetch this plain text changelog URL" → `fetch_fetch` or `webfetch`.
+- "Find current public pages about a topic" → `websearch_web_search_exa`.
 - For library docs, prefer `context7`; for large reusable pages, prefer
   `ctx_fetch_and_index`.

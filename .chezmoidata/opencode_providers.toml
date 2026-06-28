@@ -408,6 +408,23 @@ ultrawork = [
   "opencode/nemotron-3-ultra-free",
 ]
 
+[opencode.models.bifrost]
+orchestrator = ["bifrost/auto"]
+implementation = ["bifrost/auto"]
+planner = ["bifrost/auto"]
+architecture = ["bifrost/auto"]
+search = ["bifrost/auto"]
+vision = ["bifrost/auto"]
+review = ["bifrost/auto"]
+long_running = ["bifrost/auto"]
+quick = ["bifrost/auto"]
+standard = ["bifrost/auto"]
+complex = ["bifrost/auto"]
+visual = ["bifrost/auto"]
+deep = ["bifrost/auto"]
+ultrabrain = ["bifrost/auto"]
+ultrawork = ["bifrost/auto"]
+
 [opencode.models.xiaomi]
 orchestrator = ["xiaomi/mimo-v2.5-pro", "xiaomi/mimo-v2.5"]
 implementation = ["xiaomi/mimo-v2.5-pro", "xiaomi/mimo-v2.5"]

@@ -14,7 +14,7 @@
 {{- $profile = "moderate" -}}
 {{- end -}}
 {{- if eq $provider "bedrock" -}}{{- $provider = "bedrock-claude" -}}{{- end -}}
-{{- $validProviders := list "bedrock-claude" "bedrock-mixed" "xiaomi" "openai" "github-copilot" "opencode" "opencode-free" "anthropic" "google" -}}
+{{- $validProviders := list "bedrock-claude" "bedrock-mixed" "xiaomi" "openai" "github-copilot" "opencode" "opencode-free" "anthropic" "google" "bifrost" -}}
 {{- if not (has $provider $validProviders) -}}{{- $provider = $defaultProvider -}}{{- end -}}
 {{- $providerModels := index $.opencode.models $provider -}}
 {{- $variantProvider := $provider -}}
