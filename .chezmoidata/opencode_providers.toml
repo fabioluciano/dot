@@ -70,69 +70,69 @@ ultrawork = [
 
 [opencode.models.bedrock-mixed]
 orchestrator = [
-  "amazon-bedrock/deepseek.r1-v1:0",
-  "amazon-bedrock/mistral.mistral-large-3-675b-instruct",
-  "amazon-bedrock/amazon.nova-pro-v1:0",
-]
-implementation = [
   "amazon-bedrock/mistral.mistral-large-3-675b-instruct",
   "amazon-bedrock/mistral.devstral-2-123b",
-  "amazon-bedrock/amazon.nova-pro-v1:0",
+  "amazon-bedrock/moonshotai.kimi-k2.5",
+]
+implementation = [
+  "amazon-bedrock/mistral.devstral-2-123b",
+  "amazon-bedrock/mistral.mistral-large-3-675b-instruct",
+  "amazon-bedrock/qwen.qwen3-coder-30b-a3b-v1:0",
 ]
 planner = [
-  "amazon-bedrock/amazon.nova-micro-v1:0",
   "amazon-bedrock/mistral.mistral-large-3-675b-instruct",
+  "amazon-bedrock/mistral.devstral-2-123b",
 ]
 architecture = [
-  "amazon-bedrock/deepseek.r1-v1:0",
   "amazon-bedrock/mistral.mistral-large-3-675b-instruct",
+  "amazon-bedrock/mistral.devstral-2-123b",
 ]
 search = [
-  "amazon-bedrock/amazon.nova-micro-v1:0",
-  "amazon-bedrock/amazon.nova-pro-v1:0",
+  "amazon-bedrock/qwen.qwen3-coder-30b-a3b-v1:0",
+  "amazon-bedrock/minimax.minimax-m2.5",
 ]
 vision = [
-  "amazon-bedrock/meta.llama4-maverick-17b-instruct-v1:0",
+  "amazon-bedrock/moonshotai.kimi-k2.5",
   "amazon-bedrock/mistral.mistral-large-3-675b-instruct",
 ]
 review = [
-  "amazon-bedrock/deepseek.r1-v1:0",
   "amazon-bedrock/mistral.mistral-large-3-675b-instruct",
-  "amazon-bedrock/amazon.nova-pro-v1:0",
+  "amazon-bedrock/mistral.devstral-2-123b",
+  "amazon-bedrock/moonshotai.kimi-k2.5",
 ]
 long_running = [
-  "amazon-bedrock/deepseek.r1-v1:0",
   "amazon-bedrock/mistral.mistral-large-3-675b-instruct",
+  "amazon-bedrock/mistral.devstral-2-123b",
 ]
 quick = [
-  "amazon-bedrock/amazon.nova-micro-v1:0",
-  "amazon-bedrock/amazon.nova-pro-v1:0",
+  "amazon-bedrock/qwen.qwen3-coder-30b-a3b-v1:0",
+  "amazon-bedrock/minimax.minimax-m2.5",
 ]
 standard = [
-  "amazon-bedrock/mistral.mistral-large-3-675b-instruct",
-  "amazon-bedrock/amazon.nova-pro-v1:0",
+  "amazon-bedrock/mistral.devstral-2-123b",
+  "amazon-bedrock/qwen.qwen3-coder-30b-a3b-v1:0",
 ]
 complex = [
-  "amazon-bedrock/deepseek.r1-v1:0",
   "amazon-bedrock/mistral.mistral-large-3-675b-instruct",
-  "amazon-bedrock/amazon.nova-pro-v1:0",
+  "amazon-bedrock/mistral.devstral-2-123b",
+  "amazon-bedrock/moonshotai.kimi-k2.5",
 ]
 visual = [
-  "amazon-bedrock/meta.llama4-maverick-17b-instruct-v1:0",
+  "amazon-bedrock/moonshotai.kimi-k2.5",
   "amazon-bedrock/mistral.mistral-large-3-675b-instruct",
 ]
 deep = [
-  "amazon-bedrock/deepseek.r1-v1:0",
   "amazon-bedrock/mistral.mistral-large-3-675b-instruct",
+  "amazon-bedrock/mistral.devstral-2-123b",
 ]
 ultrabrain = [
-  "amazon-bedrock/deepseek.r1-v1:0",
   "amazon-bedrock/mistral.mistral-large-3-675b-instruct",
+  "amazon-bedrock/mistral.devstral-2-123b",
 ]
 ultrawork = [
-  "amazon-bedrock/amazon.nova-micro-v1:0",
-  "amazon-bedrock/mistral.mistral-large-3-675b-instruct",
-  "amazon-bedrock/deepseek.r1-v1:0",
+  "amazon-bedrock/qwen.qwen3-coder-30b-a3b-v1:0",
+  "amazon-bedrock/mistral.devstral-2-123b",
+  "amazon-bedrock/minimax.minimax-m2.5",
 ]
 
 [opencode.models.anthropic]

@@ -1,17 +1,37 @@
 #compdef oc-provider
 
 local -a providers profiles
-providers=(bedrock-claude bedrock-mixed anthropic xiaomi openai github-copilot opencode opencode-free google)
-profiles=(optimized moderate super ultra recommended)
 
-case "$CURRENT" in
-  2)
+providers=(
+  'bedrock-claude:Bedrock Claude (Anthropic via AWS)'
+  'bedrock-mixed:Bedrock mixed (non-Anthropic via AWS)'
+  'anthropic:Anthropic direto'
+  'xiaomi:Xiaomi (mimo)'
+  'openai:OpenAI'
+  'github-copilot:GitHub Copilot Plus'
+  'opencode:OpenCode Zen'
+  'opencode-free:OpenCode Zen (modelos gratuitos)'
+  'google:Google'
+  'bifrost:Bifrost (auto-routing)'
+)
+
+profiles=(
+  'optimized:Economia de ~28% (medium para rotineiras, high para críticas)'
+  'moderate:Alias para optimized'
+  'super:Economia máxima de ~38% (low/medium para maioria)'
+  'ultra:Custo mínimo: menor esforço suportado'
+  'recommended:Tiers recomendados pelo Oh My OpenAgent'
+)
+
+_arguments \
+  '1:provider:->provider' \
+  '2:profile:->profile'
+
+case "$state" in
+  provider)
     _describe 'provider' providers
     ;;
-  3)
+  profile)
     _describe 'profile' profiles
-    ;;
-  *)
-    _files
     ;;
 esac

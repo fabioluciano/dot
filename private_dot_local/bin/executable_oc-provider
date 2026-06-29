@@ -5,7 +5,7 @@ set -euo pipefail
 # oh-my-openagent.json via chezmoi apply.
 # Uso: oc-provider <provider> [profile]
 
-PROVIDERS=(bedrock-claude bedrock-mixed anthropic xiaomi openai github-copilot opencode opencode-free google)
+PROVIDERS=(bedrock-claude bedrock-mixed anthropic xiaomi openai github-copilot opencode opencode-free google bifrost)
 PROFILES=(optimized moderate super ultra recommended)
 ############################################
 # Normalization and backward-compatibility

@@ -1,5 +1,70 @@
 # Global Rules
 
+## Question Tool (MANDATORY)
+
+Whenever you face a decision that belongs to the user — trade-offs, approach choices, conflicting options, or irreversible actions — you **MUST** use the `question` tool instead of deciding on your own.
+
+Use `question` when:
+- There are multiple valid approaches and the choice has meaningful consequences
+- A trade-off exists (e.g. speed vs. correctness, simplicity vs. flexibility)
+- An action is destructive or hard to reverse
+- The user's preference is genuinely unknown and cannot be inferred from context
+
+Do **not** use `question` for decisions that are clearly yours to make (code style within established conventions, trivial implementation details, tool selection with an obvious best fit).
+
+The `question` tool opens an interactive UI. Each call must include a clear question and concrete options for the user to choose from or override with a custom answer.
+
+## Built-in Tools (MANDATORY usage)
+
+OpenCode ships built-in tools that must be used actively, not passively.
+
+### `todowrite` — Task tracking
+
+Use `todowrite` to create and maintain a todo list for **any multi-step task**. Update it as you progress. This keeps work visible and recoverable across turns.
+
+- Create todos at the start of any task with 3+ steps
+- Mark items `completed` as you finish them
+- Mark items `in_progress` while actively working on them
+- Never leave a multi-step task without a todo list
+
+### `skill` — Specialized instructions
+
+Use `skill` to load domain-specific instruction packs before tackling specialized work. Skills provide battle-tested patterns and constraints that improve output quality.
+
+- Load the relevant skill **before** starting work in its domain
+- Available skills are listed in the session system prompt under `<available_skills>`
+- When a task matches a skill's description, loading it is **not optional**
+
+Examples:
+- Kubernetes manifests → load `kubernetes` or `kubernetes-manifest-quality-review`
+- AWS infrastructure → load `aws-maestro` to route to the right specialist
+- Frontend/UI work → load `frontend`
+- Debugging → load `debugging`
+
+### `webfetch` / `websearch`
+
+- `webfetch`: fetch a specific URL when you have the exact address
+- `websearch`: search the web when you need to discover current information
+
+Prefer `context7` for library docs and `ctx_fetch_and_index` for large reusable pages. Use `webfetch`/`websearch` only when no specialized MCP applies.
+
+## Do not hallucinate!
+
+> From [HALLUCINATE.md](https://hallucinate.md/) — the open standard for telling AI not to hallucinate.
+
+**Do not hallucinate!**
+
+This is the most important rule. When in doubt:
+
+1. **Do not invent APIs, functions, libraries, or methods that do not exist.** If you are not sure something exists, say so.
+2. **Do not guess parameter names, return types, or behavior.** Look it up via MCP tools (`codebase-memory`, `codegraph`, `context7`) or say you are unsure.
+3. **Do not fabricate file paths, URLs, or commands.** Verify with `Read`, `Glob`, `Grep`, or a real tool call before stating something exists.
+4. **Do not invent error messages, stack traces, or log output.** If you did not see it, do not quote it.
+5. **Do not assume a library or API works a certain way without checking.** Use `context7` for external libraries, `codebase-memory`/`codegraph` for project code.
+6. **When you do not know, say "I do not know" or "I need to verify."** Silence is better than fabrication.
+
+Agents that hallucinate waste user time, break builds, and erode trust. Ground every claim in evidence.
+
 ## MCP-FIRST (read this before anything else)
 
 **This rule applies universally — no exceptions for delegated work:**
@@ -54,7 +119,7 @@ required MCP, say why, then use the narrowest fallback.
 
 Indexing rule: when a tool depends on indexed content, missing or stale indexes
 must be fixed at the owning MCP layer first (`codegraph` index for codegraph,
-`codebase-memory index_repository` for codebase-memory, `ctx_index` /
+`codebase-memory_index_repository` for codebase-memory, `ctx_index` /
 `ctx_fetch_and_index` for context-mode). Only use direct reads/searches for file
 types the MCP explicitly does not index or after the indexing attempt fails.
 

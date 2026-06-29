@@ -23,7 +23,8 @@
     "github-copilot",
     "opencode",
     "anthropic",
-    "google"
+    "google",
+    "bifrost"
   ],
   "compaction": {
     "auto": true,
@@ -335,6 +336,15 @@
             ]
           }
         }
+      }
+    },
+    "bifrost": {
+      "options": {
+        "baseURL": "http://localhost:8080/v1",
+        "apiKey": "bifrost-gateway"
+      },
+      "models": {
+        "auto": {}
       }
     }
   },
