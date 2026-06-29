@@ -73,5 +73,28 @@ description = "Update mise and all tools"
 run = "mise doctor"
 description = "Run mise doctor"
 
+[tasks.skills-list]
+run = "mise exec -- skills list"
+description = "List installed skills via mise"
+
+[tasks.skills-find]
+run = "mise exec -- skills find {{vars.query}}"
+description = "Find skills by query"
+vars = { query = "" }
+
+[tasks.skills-add]
+run = "mise exec -- skills add {{vars.repo}} -a opencode -g -y"
+description = "Add a skill repo via mise"
+vars = { repo = "" }
+
+[tasks.skills-update]
+run = "mise exec -- skills update -g"
+description = "Update all global skills via mise"
+
+[tasks.skills-remove]
+run = "mise exec -- skills remove {{vars.skill}} -a opencode"
+description = "Remove a skill via mise"
+vars = { skill = "" }
+
 [plugins]
 # Add any custom plugins here
