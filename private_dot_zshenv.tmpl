@@ -6,6 +6,9 @@
 # no .zshrc cobre apenas o shell interativo; os shims cobrem o resto.
 [[ -d "$HOME/.local/share/mise/shims" ]] && export PATH="$HOME/.local/share/mise/shims:$PATH"
 
+# OpenCode experimental features
+export OPENCODE_EXPERIMENTAL_LSP_TOOL=true
+
 # API tokens
 # Resolved once from Bitwarden by `zsh-tokens-sync` into the file below
 # (secrets stay in the vault, never in this repo). Sourcing a pre-rendered file

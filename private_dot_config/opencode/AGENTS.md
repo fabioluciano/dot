@@ -18,13 +18,16 @@ The `question` tool opens an interactive UI. Each call must include a clear ques
 
 OpenCode ships built-in tools that must be used actively, not passively.
 
-### `todowrite` — Task tracking
+### Task tracking — `task_create` / `task_update` / `task_list` / `task_get`
 
-Use `todowrite` to create and maintain a todo list for **any multi-step task**. Update it as you progress. This keeps work visible and recoverable across turns.
+Use the task system tools to create and maintain a todo list for **any multi-step task**. Update it as you progress. This keeps work visible and recoverable across turns.
 
-- Create todos at the start of any task with 3+ steps
-- Mark items `completed` as you finish them
-- Mark items `in_progress` while actively working on them
+> **Note:** `todowrite` is **disabled** — the oh-my-openagent task system (`task_system: true`) replaces it with structured task tools. Never call `todowrite` directly.
+
+- `task_create(subject, description?)`: create a task at the start of any task with 3+ steps
+- `task_update(id, status)`: mark items `in_progress` while working, `completed` when done
+- `task_list()`: list all active tasks
+- `task_get(id)`: retrieve a specific task by ID
 - Never leave a multi-step task without a todo list
 
 ### `skill` — Specialized instructions

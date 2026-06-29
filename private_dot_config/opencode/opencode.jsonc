@@ -361,9 +361,15 @@
   "permission": {
     "bash": "allow",
     "edit": "allow",
+    "todowrite": "allow",
+    "question": "allow",
+    "lsp": "allow",
     "skill": {
       "*": "allow"
     }
+  },
+  "experimental": {
+    "primary_tools": []
   },
   "command": {
     "openspec-init": {
