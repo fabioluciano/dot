@@ -218,10 +218,11 @@ command -v starship &>/dev/null && _cache_eval starship starship init zsh
 command -v mise &>/dev/null && _cache_eval mise mise activate zsh
 
 # Lazy-loaded completions (loaded on first use)
-command -v bw    &>/dev/null && _lazyload bw    'eval "$(bw completion --shell zsh)"'
+command -v bw    &>/dev/null && _lazyload bw    'source <(bw completion --shell zsh)'
 command -v jj    &>/dev/null && _lazyload jj    'source <(jj util completion zsh)'
-command -v ngrok &>/dev/null && _lazyload ngrok 'eval "$(ngrok completion)"'
-command -v sem   &>/dev/null && _lazyload sem   'eval "$(command sem completions zsh)"'
+command -v ngrok &>/dev/null && _lazyload ngrok 'source <(ngrok completion)'
+command -v sem   &>/dev/null && _lazyload sem   'source <(sem completions zsh)'
+command -v omp  &>/dev/null && _lazyload omp  'source <(omp completions zsh)'
 
 # Kubectl — lazy load (saves ~200ms on startup), re-alias to kubecolor if present
 if command -v kubectl &>/dev/null; then

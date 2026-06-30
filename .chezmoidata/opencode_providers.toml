@@ -68,6 +68,13 @@ ultrawork = [
   "amazon-bedrock/us.anthropic.claude-haiku-4-5-20251001-v1:0",
 ]
 
+# bedrock-mixed: cadeia non-Anthropic do Bedrock, validada via Converse API
+# (us-east-1, 2026-06). Regras aplicadas:
+#  - us.deepseek.r1-v1:0 REMOVIDO de tudo: nao suporta tool use
+#    (ValidationException "This model doesn't support tool use").
+#  - moonshot.kimi-k2-thinking (8.8s) e qwen.qwen3-vl-235b-a22b (14.8s)
+#    nunca como primary: reasoning verboso/lento que trava loop de agente.
+#  - primary de cada tier = modelo rapido (1-2s) e tool-capable; fallbacks validos.
 [opencode.models.bedrock-mixed]
 orchestrator = [
   "amazon-bedrock/zai.glm-5",
@@ -75,49 +82,49 @@ orchestrator = [
   "amazon-bedrock/moonshotai.kimi-k2.5",
 ]
 long_running = [
-  "amazon-bedrock/minimax.minimax-m2.5",
+  "amazon-bedrock/mistral.devstral-2-123b",
   "amazon-bedrock/deepseek.v3.2",
   "amazon-bedrock/qwen.qwen3-coder-next",
 ]
 planner = [
-  "amazon-bedrock/moonshot.kimi-k2-thinking",
-  "amazon-bedrock/us.deepseek.r1-v1:0",
   "amazon-bedrock/openai.gpt-oss-120b-1:0",
+  "amazon-bedrock/zai.glm-4.7-flash",
+  "amazon-bedrock/qwen.qwen3-coder-30b-a3b-v1:0",
 ]
 architecture = [
-  "amazon-bedrock/moonshot.kimi-k2-thinking",
-  "amazon-bedrock/openai.gpt-oss-120b-1:0",
-  "amazon-bedrock/us.anthropic.claude-opus-4-8",
-]
-review = [
-  "amazon-bedrock/us.deepseek.r1-v1:0",
   "amazon-bedrock/openai.gpt-oss-120b-1:0",
   "amazon-bedrock/zai.glm-5",
+  "amazon-bedrock/moonshot.kimi-k2-thinking",
+]
+review = [
+  "amazon-bedrock/openai.gpt-oss-120b-1:0",
+  "amazon-bedrock/zai.glm-5",
+  "amazon-bedrock/deepseek.v3.2",
 ]
 implementation = [
   "amazon-bedrock/mistral.devstral-2-123b",
+  "amazon-bedrock/deepseek.v3.2",
   "amazon-bedrock/qwen.qwen3-coder-next",
-  "amazon-bedrock/minimax.minimax-m2.5",
 ]
 search = [
-  "amazon-bedrock/qwen.qwen3-coder-30b-a3b-v1:0",
-  "amazon-bedrock/zai.glm-4.7-flash",
+  "amazon-bedrock/openai.gpt-oss-120b-1:0",
   "amazon-bedrock/nvidia.nemotron-nano-3-30b",
+  "amazon-bedrock/qwen.qwen3-coder-30b-a3b-v1:0",
 ]
 vision = [
-  "amazon-bedrock/qwen.qwen3-vl-235b-a22b",
-  "amazon-bedrock/us.mistral.pixtral-large-2502-v1:0",
   "amazon-bedrock/moonshotai.kimi-k2.5",
+  "amazon-bedrock/us.mistral.pixtral-large-2502-v1:0",
+  "amazon-bedrock/qwen.qwen3-vl-235b-a22b",
 ]
 ultrabrain = [
+  "amazon-bedrock/zai.glm-5",
+  "amazon-bedrock/openai.gpt-oss-120b-1:0",
   "amazon-bedrock/moonshot.kimi-k2-thinking",
-  "amazon-bedrock/us.deepseek.r1-v1:0",
-  "amazon-bedrock/us.anthropic.claude-opus-4-8",
 ]
 deep = [
   "amazon-bedrock/zai.glm-5",
-  "amazon-bedrock/moonshotai.kimi-k2.5",
   "amazon-bedrock/minimax.minimax-m2.5",
+  "amazon-bedrock/moonshotai.kimi-k2.5",
 ]
 standard = [
   "amazon-bedrock/zai.glm-4.7",
@@ -130,19 +137,19 @@ complex = [
   "amazon-bedrock/minimax.minimax-m2.5",
 ]
 quick = [
-  "amazon-bedrock/zai.glm-4.7-flash",
-  "amazon-bedrock/qwen.qwen3-coder-30b-a3b-v1:0",
+  "amazon-bedrock/openai.gpt-oss-120b-1:0",
   "amazon-bedrock/nvidia.nemotron-nano-3-30b",
+  "amazon-bedrock/qwen.qwen3-coder-30b-a3b-v1:0",
 ]
 visual = [
-  "amazon-bedrock/qwen.qwen3-vl-235b-a22b",
   "amazon-bedrock/moonshotai.kimi-k2.5",
   "amazon-bedrock/us.mistral.pixtral-large-2502-v1:0",
+  "amazon-bedrock/qwen.qwen3-vl-235b-a22b",
 ]
 ultrawork = [
-  "amazon-bedrock/minimax.minimax-m2.5",
   "amazon-bedrock/zai.glm-5",
-  "amazon-bedrock/qwen.qwen3-coder-next",
+  "amazon-bedrock/minimax.minimax-m2.5",
+  "amazon-bedrock/mistral.devstral-2-123b",
 ]
 
 [opencode.models.anthropic]
