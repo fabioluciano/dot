@@ -11,11 +11,11 @@ default-cache-ttl 3600
 # Maximum cache TTL: 2 hours
 max-cache-ttl 7200
 
-# SSH cache TTL: 1 hour
-default-cache-ttl-ssh 3600
+# SSH cache TTL: 4 hours
+default-cache-ttl-ssh 14400
 
-# Maximum SSH cache TTL: 2 hours
-max-cache-ttl-ssh 7200
+# Maximum SSH cache TTL: 8 hours
+max-cache-ttl-ssh 28800
 
 # Pinentry program for password prompts
 {{- if eq .chezmoi.os "darwin" }}

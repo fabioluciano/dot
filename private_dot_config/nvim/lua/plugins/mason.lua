@@ -21,7 +21,6 @@ return {
 
         -- TypeScript/JavaScript
         "typescript-language-server",
-        "prettier",
         "eslint-lsp",
         "biome",
 

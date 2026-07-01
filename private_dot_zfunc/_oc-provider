@@ -1,6 +1,12 @@
 #compdef oc-provider
 
-local -a providers profiles
+local -a commands providers profiles
+
+commands=(
+  'status:mostrar provider/profile atuais'
+  'reset:restaurar provider/profile padrão'
+  'dry-run:mostrar mudança sem aplicar'
+)
 
 providers=(
   'bedrock-claude:Bedrock Claude (Anthropic via AWS)'
@@ -23,15 +29,28 @@ profiles=(
   'recommended:Tiers recomendados pelo Oh My OpenAgent'
 )
 
-_arguments \
-  '1:provider:->provider' \
-  '2:profile:->profile'
+if (( CURRENT == 2 )); then
+  _alternative \
+    'commands:command:((commands))' \
+    'providers:provider:((providers))'
+  return
+fi
 
-case "$state" in
-  provider)
-    _describe 'provider' providers
+case "${words[2]-}" in
+  status|reset)
+    return
     ;;
-  profile)
-    _describe 'profile' profiles
+  dry-run)
+    if (( CURRENT == 3 )); then
+      _describe 'provider' providers
+    elif (( CURRENT == 4 )); then
+      _describe 'profile' profiles
+    fi
+    return
+    ;;
+  *)
+    if (( CURRENT == 3 )); then
+      _describe 'profile' profiles
+    fi
     ;;
 esac

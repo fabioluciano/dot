@@ -1,5 +1,5 @@
 {{- $defaultProvider := get $.opencode "default_provider" | default "xiaomi" -}}
-{{- $stateFile := "/Users/fabioluciano/.config/opencode/.active_provider" -}}
+{{- $stateFile := printf "%s/.config/opencode/.active_provider" (env "HOME") -}}
 {{- $state := output "sh" "-c" (printf "cat %s 2>/dev/null || { echo provider:%s; echo profile:default; }" $stateFile $defaultProvider) | trim -}}
 {{- $provider := "xiaomi" -}}
 {{- $profile := "moderate" -}}

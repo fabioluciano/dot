@@ -20,13 +20,6 @@ no_retry = true
 # Notifications
 notify_each_step = true
 
-[pre_commands]
-"Chezmoi Update" = "chezmoi update --apply || { echo 'WARN: chezmoi update failed' >&2; true; }"
-
-[commands]
-"Krew Update" = "kubectl krew upgrade || true"
-"Tmux Plugins" = "~/.tmux/plugins/tpm/bin/update_plugins all || true"
-"Neovim Plugins" = "nvim --headless '+Lazy! sync' +qa || true"
 
 [brew]
 greedy_cask = true

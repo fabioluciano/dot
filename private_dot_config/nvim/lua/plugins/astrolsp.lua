@@ -1,3 +1,10 @@
+local conform_first_filetypes = {
+  "javascript",
+  "javascriptreact",
+  "typescript",
+  "typescriptreact",
+}
+
 ---@type LazySpec
 return {
   "AstroNvim/astrolsp",
@@ -15,7 +22,7 @@ return {
       format_on_save = {
         enabled = true,
         allow_filetypes = {},
-        ignore_filetypes = {},
+        ignore_filetypes = conform_first_filetypes,
       },
       disabled = {},
       timeout_ms = 2000,

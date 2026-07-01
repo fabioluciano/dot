@@ -4,7 +4,7 @@ return {
   opts = {
     features = {
       large_buf = { size = 1024 * 500, lines = 10000 },
-      autopairs = true,
+        autopairs = false,
       diagnostics_mode = 3,
       highlighturl = true,
       notifications = true,
@@ -92,8 +92,8 @@ return {
         ["<S-C-d>"]    = { function() require("opencode").command("session.half.page.down") end,       desc = "OpenCode scroll down" },
 
         -- Operator (go / goo) — motion e line
-        ["go"]  = { function() return require("opencode").operator("@this ") end,        expr = true, desc = "Send range to OpenCode" },
-        ["goo"] = { function() return require("opencode").operator("@this ") .. "_" end, expr = true, desc = "Send line to OpenCode" },
+        ["<Leader>or"] = { function() return require("opencode").operator("@this ") end, expr = true, desc = "Send range to OpenCode" },
+        ["<Leader>oo"] = { function() return require("opencode").operator("@this ") .. "_" end, expr = true, desc = "Send line to OpenCode" },
 
         -- Run / Tasks (overseer)
         ["<Leader>R"] = { desc = "󱓞 Run/Tasks" },

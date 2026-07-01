@@ -45,7 +45,8 @@ chezmoi edit <file>     # edit a source file in $EDITOR
 chezmoi diff            # preview pending changes
 chezmoi apply           # apply (and run package sync if a manifest changed)
 chezmoi update          # pull latest from the repo and apply
-topgrade                # update everything (system, brew, mise, plugins, …)
+mise run update-safe    # update host packages only (topgrade)
+mise run update-full    # full update: packages + dotfiles + krew + nvim + tmux
 ```
 
 ## Layout

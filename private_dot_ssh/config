@@ -4,6 +4,10 @@ IdentitiesOnly yes
 ServerAliveInterval 60
 ServerAliveCountMax 3
 HashKnownHosts yes
+# SSH connection multiplexing: reuse existing connections
+ControlMaster auto
+ControlPath ~/.ssh/control-%h-%p-%r
+ControlPersist 600
 
 Host github.com
 IdentityFile ~/.ssh/yubikey.pub

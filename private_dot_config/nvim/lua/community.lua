@@ -61,7 +61,6 @@ return {
   { import = "astrocommunity.editing-support.multicursors-nvim" },
   { import = "astrocommunity.editing-support.nvim-regexplainer" },
   { import = "astrocommunity.editing-support.todo-comments-nvim" },
-  { import = "astrocommunity.editing-support.ultimate-autopair-nvim" },
   { import = "astrocommunity.editing-support.vim-move" },
   { import = "astrocommunity.editing-support.rainbow-delimiters-nvim" },
   { import = "astrocommunity.editing-support.yanky-nvim" },
@@ -100,12 +99,6 @@ return {
   -- │                    Markdown & LaTeX                    │
   -- ╰────────────────────────────────────────────────────────╯
   { import = "astrocommunity.markdown-and-latex.markdown-preview-nvim" },
-  {
-    "iamcco/markdown-preview.nvim",
-    build = function()
-      vim.fn.system { "sh", "-c", "cd app && bash install.sh" }
-    end,
-  },
 
   -- ╭────────────────────────────────────────────────────────╮
   -- │                    Motion                              │
