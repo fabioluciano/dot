@@ -4,15 +4,12 @@ root: ~/
 windows:
   - name: system
 
-  - name: editor
+  - name: develop
     root: ~/developer
-    commands:
-      - nvim
-
-  - name: opencode
-    root: ~/developer
-    commands:
-      - opencode
+    panes:
+      - type: horizontal
+        commands:
+          - nvim
 
   - name: monitoring
     commands:

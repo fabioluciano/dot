@@ -30,9 +30,8 @@ profiles=(
 )
 
 if (( CURRENT == 2 )); then
-  _alternative \
-    'commands:command:((commands))' \
-    'providers:provider:((providers))'
+  _describe 'command' commands
+  _describe 'provider' providers
   return
 fi
 
