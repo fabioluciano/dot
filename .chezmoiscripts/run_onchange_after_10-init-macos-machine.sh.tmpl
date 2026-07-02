@@ -7,7 +7,7 @@ set -euo pipefail
 
 sudo -v
 
-machine_name={{ .chezmoi.hostname | quote }}
+machine_name={{ .machineName | quote }}
 screenshot_dir="$HOME/screenshots"
 downloads_dir="$HOME/Downloads"
 raycast_app="/Applications/Raycast.app"
